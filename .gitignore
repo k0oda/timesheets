@@ -1,2 +1,4 @@
 .idea/
 timesheets/__pycache__/
+authentication/__pycache__/
+authentication/migrations/__pycache__/
