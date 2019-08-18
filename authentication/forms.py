@@ -6,10 +6,12 @@ class LoginForm(forms.Form):
 
     login.widget.attrs.update({
         'class': 'form-control',
+        'placeholder': 'Login',
     })
 
     password.widget.attrs.update({
         'class': 'form-control',
+        'placeholder': 'Password'
     })
 
 class RegisterForm(forms.Form):
@@ -22,25 +24,31 @@ class RegisterForm(forms.Form):
 
     login.widget.attrs.update({
         'class': 'form-control',
+        'placeholder': 'Login',
     })
 
     email.widget.attrs.update({
         'class': 'form-control',
+        'placeholder': 'Email'
     })
 
     first_name.widget.attrs.update({
         'class': 'form-control',
+        'placeholder': 'First name',
     })
 
     last_name.widget.attrs.update({
         'class': 'form-control',
+        'placeholder': 'Last name',
     })
 
     password.widget.attrs.update({
         'class': 'form-control',
+        'placeholder': 'Password',
     })
 
     repeat_password.widget.attrs.update({
         'class': 'form-control',
+        'placeholder': 'Repeat password',
     })
 
