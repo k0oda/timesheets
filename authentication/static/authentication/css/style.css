@@ -1,3 +1,7 @@
+body{
+    background: url(prism.png);
+}
+
 .mt-1{
     margin-top: 5% !important;
 }
