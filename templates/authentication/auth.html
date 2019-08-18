@@ -1,0 +1,22 @@
+{% extends 'authentication/auth_base.html' %}
+
+{% block content %}
+    <form method="POST" class="mt-2">
+        {% csrf_token %}
+
+        {% for field in form %}
+        <div class="d-flex justify-content-center">
+            <div class="form-group">
+                {{ field }}
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="d-flex justify-content-center">
+            <div class="col-auto">
+                <input type="submit" class="btn btn-primary" value="{{ primary_value }}">
+                <a href="{% url secondary_link %}" class="btn btn-secondary">{{ secondary_value }}</a>
+            </div>
+        </div>
+    </form>
+{% endblock content %}

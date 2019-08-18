@@ -20,7 +20,12 @@ class Authentication:
                     return redirect('/login/')  # TODO: Add authentication error page
         else:
             form = LoginForm()
-        return render(request, 'authentication/login.html', {'form': form})
+        return render(request, 'authentication/auth.html', {
+            'form': form,
+            'primary_value': 'Login',
+            'secondary_link': 'register',
+            'secondary_value': 'Create account',
+            })
 
     @staticmethod
     def register(request):
@@ -48,5 +53,10 @@ class Authentication:
                     return redirect('/login/')  # TODO: Add registration error page
         else:
             form = RegisterForm()
-        return render(request, 'authentication/register.html', {'form': form})
+        return render(request, 'authentication/auth.html', {
+            'form': form,
+            'primary_value': 'Create account',
+            'secondary_link': 'login',
+            'secondary_value': 'Login',
+            })
 
