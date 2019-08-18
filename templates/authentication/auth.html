@@ -1,7 +1,7 @@
 {% extends 'authentication/auth_base.html' %}
 
 {% block content %}
-    <form method="POST" class="mt-2">
+    <form method="POST">
         {% csrf_token %}
 
         {% for field in form %}
