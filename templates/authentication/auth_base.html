@@ -1,0 +1,26 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <!-- Local styles -->
+    <link rel="stylesheet" href="{% static 'authentication/css/style.css' %}">
+    <title>Timesheets</title>
+</head>
+<body class="bg-dark">
+<div class="mt-1">
+    <ol class="breadcrumb bg-transparent d-flex justify-content-center">
+        <li class="breadcrumb-item"><a class="btn btn-link" href="/">Timesheets</a></li>
+        <li class="breadcrumb-item active"><a class="btn btn-link">Auth</a></li>
+    </ol>
+    {% block content %}
+    {% endblock content %}
+</div>
+</body>
+</html>
