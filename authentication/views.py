@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from .forms import LoginForm, RegisterForm
 
@@ -15,6 +15,7 @@ class Authentication:
 
                 user = authenticate(username=username, password=password)
                 if user is not None:
+                    login(request, user)
                     return redirect('/')
                 else:
                     return redirect('/login/')  # TODO: Add authentication error page
