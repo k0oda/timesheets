@@ -1,0 +1,9 @@
+{% extends 'timesheets/base.html' %}
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <p>Authed</p>
+    {% else %}
+        <p>Not authed</p>
+        <a href="/login">Login</a>
+    {% endif %}
+{% endblock %}
