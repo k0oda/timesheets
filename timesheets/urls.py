@@ -16,9 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from authentication.views import Authentication
+from timesheets_app.views import Main
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', Main.main, name='main'),
     path('login/', Authentication.login, name='login'),
     path('register/', Authentication.register, name='register'),
+    path('exit', Authentication.exit, name='exit'),
 ]
