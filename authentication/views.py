@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .forms import LoginForm, RegisterForm
 
@@ -60,4 +60,10 @@ class Authentication:
             'secondary_link': 'login',
             'secondary_value': 'Login',
             })
+
+    @staticmethod
+    def exit(request):
+        if request.user.is_authenticated:
+            logout(request)
+        return redirect('/')
 
