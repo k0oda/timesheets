@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from timesheets_app.models import Company
 from authentication.models import UserProfile
+from timesheets_app.forms import CreateCompanyForm
 
 
 class Main:
@@ -15,3 +17,18 @@ class Main:
             return render(request, 'timesheets/index.html', context={'company': company})
         else:
             return render(request, 'timesheets/unauthenticated_index.html')
+
+    @staticmethod
+    @login_required
+    def new_company(request):
+        if request.method.lower() == 'post':
+            form = CreateCompanyForm(request.POST)
+            company = form.save(commit=False)
+            user = UserProfile.objects.get(username=request.user.username)
+            company.save()
+            user.company_id = company.pk
+            user.save()
+            return redirect('/')
+        else:
+            form = CreateCompanyForm()
+        return render(request, 'timesheets/new_company.html', {'form': form})

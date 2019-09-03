@@ -102,6 +102,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = 'authentication.UserProfile'
+LOGIN_URL = 'login'
 
 
 # Internationalization

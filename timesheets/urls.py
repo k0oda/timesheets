@@ -24,4 +24,5 @@ urlpatterns = [
     path('login/', Authentication.login, name='login'),
     path('register/', Authentication.register, name='register'),
     path('exit', Authentication.exit, name='exit'),
+    path('company/new', Main.new_company, name='new_company'),
 ]
