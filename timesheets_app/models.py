@@ -1,3 +1,10 @@
 from django.db import models
+from django.utils import timezone
 
-# Create your models here.
+
+class Company(models.Model):
+    name = models.CharField(max_length=150)
+    date_of_creation = models.DateField(default=timezone.now())
+
+    def __str__(self):
+        return self.name
