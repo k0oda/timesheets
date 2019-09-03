@@ -1,0 +1,10 @@
+{% extends 'timesheets/base.html' %}
+{% block content %}
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome to Timesheets!</h1>
+        <p class="lead">Timesheets is a time tracking and team management system for you</p>
+        <hr class="my-4">
+        <a class="btn btn-primary btn-lg" href="{% url 'register' %}">Sign up</a>
+        <a class="btn btn-success btn-lg" href="{% url 'login' %}">Sign in</a>
+    </div>
+{% endblock %}

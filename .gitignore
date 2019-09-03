@@ -2,3 +2,5 @@
 timesheets/__pycache__/
 authentication/__pycache__/
 authentication/migrations/__pycache__/
+timesheets_app/__pycache__/
+timesheets_app/migrations/__pycache__/

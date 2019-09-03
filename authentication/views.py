@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from .models import UserProfile
 from .forms import LoginForm, RegisterForm
 
 
@@ -15,6 +15,7 @@ class Authentication:
 
                 user = authenticate(username=username, password=password)
                 if user is not None:
+                    login(request, user)
                     return redirect('/')
                 else:
                     return redirect('/login/')  # TODO: Add authentication error page
@@ -40,7 +41,7 @@ class Authentication:
                 repeat_password = form.cleaned_data['repeat_password']
 
                 if password == repeat_password:
-                    user = User.objects.create_user(
+                    user = UserProfile.objects.create_user(
                         login, 
                         email=email, 
                         password=password, 
@@ -59,4 +60,10 @@ class Authentication:
             'secondary_link': 'login',
             'secondary_value': 'Login',
             })
+
+    @staticmethod
+    def exit(request):
+        if request.user.is_authenticated:
+            logout(request)
+        return redirect('/')
 
