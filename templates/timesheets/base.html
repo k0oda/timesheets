@@ -9,15 +9,19 @@
 <body>
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/">Timesheets</a>
-        {% if request.user.is_authenticated %}
-            <span class="badge badge-secondary">
-                {{ request.user }}
-            </span>
-            <a class="badge badge-danger" href="{% url 'exit' %}">Exit</a>
-        {% else %}
-            <a class="badge badge-primary" href="{% url 'register' %}">Sign up</a>
-            <a class="badge badge-success" href="{% url 'login' %}">Sign in</a>
-        {% endif %}
+        <ul class="nav ml-auto">
+            {% if request.user.is_authenticated %}
+                <span class="badge badge-secondary">
+                    {{ request.user }}
+                </span>
+                <a class="badge badge-danger" href="{% url 'exit' %}">Exit</a>
+            {% else %}
+                <div class="btn-group">
+                    <a class="btn btn-primary btn-sm" href="{% url 'register' %}">Sign up</a>
+                    <a class="btn btn-success btn-sm" href="{% url 'login' %}">Sign in</a>
+                </div>
+            {% endif %}
+        </ul>
     </nav>
     {% block content %}
     {% endblock content %}
