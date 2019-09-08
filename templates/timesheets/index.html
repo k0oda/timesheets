@@ -8,5 +8,29 @@
             <p>Click button below to create new company</p>
             <a class="btn btn-primary btn-lg" href="{% url 'new_company' %}">Create company</a>
         </div>
+    {% else %}
+        <div class="sticky-top">
+            <h3 class="mt-4 text-center text-monospace">{{ company.name }}</h3>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active btn btn-link" href="#">Time</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-link" href="#">Expenses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-link" href="#">Projects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-link" href="#">Team</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-link" href="#">Invoices</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-link" href="#">Manage</a>
+                </li>
+            <ul>
+        </div>
     {% endif %}
 {% endblock %}
