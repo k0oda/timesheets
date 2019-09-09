@@ -32,3 +32,19 @@ class Main:
         else:
             form = CreateCompanyForm()
         return render(request, 'timesheets/new_company.html', {'form': form})
+
+
+class CompanyPanel:
+    @staticmethod
+    @login_required
+    def time(request):
+        # TEMP
+        if request.user.is_authenticated:
+            company_id = UserProfile.objects.get(username=request.user.username).company_id
+            if Company.objects.filter(pk=company_id).exists():
+                company = Company.objects.get(pk=company_id)
+            else:
+                company = 0
+            return render(request, 'timesheets/index.html', context={'company': company})
+        else:
+            return render(request, 'timesheets/unauthenticated_index.html')
