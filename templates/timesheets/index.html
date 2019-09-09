@@ -9,26 +9,34 @@
             <a class="btn btn-primary btn-lg" href="{% url 'new_company' %}">Create company</a>
         </div>
     {% else %}
+
+        {% url 'time' as time_path %}
+        {% url 'expenses' as expenses_path %}
+        {% url 'projects' as projects_path %}
+        {% url 'team' as team_path %}
+        {% url 'invoices' as invoices_path %}
+        {% url 'manage' as manage_path %}
+
         <div class="sticky-top">
             <h3 class="mt-4 text-center text-monospace">{{ company.name }}</h3>
             <ul class="nav nav-tabs justify-content-center">
                 <li class="nav-item">
-                    <a class="nav-link active btn btn-link" href="#">Time</a>
+                    <a class="nav-link {% if request.path == time_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ time_path }}">Time</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn btn-link" href="#">Expenses</a>
+                    <a class="nav-link {% if request.path == expenses_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ expenses_path }}">Expenses</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn btn-link" href="#">Projects</a>
+                    <a class="nav-link {% if request.path == projects_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ projects_path }}">Projects</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn btn-link" href="#">Team</a>
+                    <a class="nav-link {% if request.path == team_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ team_path }}">Team</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn btn-link" href="#">Invoices</a>
+                    <a class="nav-link {% if request.path == invoices_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ invoices_path }}">Invoices</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn btn-link" href="#">Manage</a>
+                    <a class="nav-link {% if request.path == manage_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ manage_path }}">Manage</a>
                 </li>
             </ul>
         </div>
