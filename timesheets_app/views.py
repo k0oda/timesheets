@@ -14,7 +14,7 @@ class Main:
                 company = Company.objects.get(pk=company_id)
             else:
                 company = 0
-            return render(request, 'timesheets/index.html', context={'company': company})
+            return render(request, 'timesheets/company_header.html', context={'company': company})
         else:
             return render(request, 'timesheets/unauthenticated_index.html')
 
@@ -45,6 +45,6 @@ class CompanyPanel:
                 company = Company.objects.get(pk=company_id)
             else:
                 company = 0
-            return render(request, 'timesheets/index.html', context={'company': company})
+            return render(request, 'timesheets/company_header.html', context={'company': company})
         else:
             return render(request, 'timesheets/unauthenticated_index.html')
