@@ -9,17 +9,39 @@
 <body>
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/">Timesheets</a>
-        {% if request.user.is_authenticated %}
-            <span class="badge badge-secondary">
-                {{ request.user }}
-            </span>
-            <a class="badge badge-danger" href="{% url 'exit' %}">Exit</a>
-        {% else %}
-            <a class="badge badge-primary" href="{% url 'register' %}">Sign up</a>
-            <a class="badge badge-success" href="{% url 'login' %}">Sign in</a>
-        {% endif %}
+        <ul class="nav ml-auto">
+            {% if request.user.is_authenticated %}
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Profile
+                    </button>
+
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown">
+                        <h6 class="dropdown-header text-center">{{ request.user }}</h6>
+                        <div class="dropdown-divider"></div>
+                        <div class="btn-group-vertical w-100">
+                            <a class="btn btn-block btn-outline-dark" href="#">Settings</a>
+                            <a class="btn btn-block btn-outline-dark" href="#">Notifications</a>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a class="btn btn-block btn-outline-danger" href="{% url 'exit' %}">Exit</a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="btn-group">
+                    <a class="btn btn-primary btn-sm" href="{% url 'register' %}">Sign up</a>
+                    <a class="btn btn-success btn-sm" href="{% url 'login' %}">Sign in</a>
+                </div>
+            {% endif %}
+        </ul>
     </nav>
     {% block content %}
     {% endblock content %}
+
+    <!-- Bootstrap JS scripts -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
 </body>
 </html>

@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from authentication.views import Authentication
-from timesheets_app.views import Main
+from timesheets_app.views import Main, CompanyPanel
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +25,10 @@ urlpatterns = [
     path('register/', Authentication.register, name='register'),
     path('exit', Authentication.exit, name='exit'),
     path('company/new', Main.new_company, name='new_company'),
+    path('time/', CompanyPanel.time, name='time'),
+    path('expenses/', CompanyPanel.time, name='expenses'),
+    path('projects/', CompanyPanel.time, name='projects'),
+    path('team/', CompanyPanel.time, name='team'),
+    path('invoices/', CompanyPanel.time, name='invoices'),
+    path('manage/', CompanyPanel.time, name='manage'),
 ]
