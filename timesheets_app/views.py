@@ -16,7 +16,7 @@ class Main:
                 company = 0
             return render(request, 'timesheets/company_header.html', context={'company': company})
         else:
-            return render(request, 'timesheets/unauthenticated_index.html')
+            return render(request, 'timesheets/unauthenticated.html')
 
     @staticmethod
     @login_required
@@ -47,4 +47,4 @@ class CompanyPanel:
                 company = 0
             return render(request, 'timesheets/company_header.html', context={'company': company})
         else:
-            return render(request, 'timesheets/unauthenticated_index.html')
+            return render(request, 'timesheets/unauthenticated.html')
