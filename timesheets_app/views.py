@@ -38,13 +38,59 @@ class CompanyPanel:
     @staticmethod
     @login_required
     def time(request):
-        # TEMP
-        if request.user.is_authenticated:
-            company_id = UserProfile.objects.get(username=request.user.username).company_id
-            if Company.objects.filter(pk=company_id).exists():
-                company = Company.objects.get(pk=company_id)
-            else:
-                company = 0
-            return render(request, 'timesheets/company_header.html', context={'company': company})
+        company_id = UserProfile.objects.get(username=request.user.username).company_id
+        if Company.objects.filter(pk=company_id).exists():
+            company = Company.objects.get(pk=company_id)
         else:
-            return render(request, 'timesheets/unauthenticated.html')
+            company = 0
+        return render(request, 'timesheets/company_panel/time.html', context={'company': company})
+
+    @staticmethod
+    @login_required
+    def expenses(request):
+        company_id = UserProfile.objects.get(username=request.user.username).company_id
+        if Company.objects.filter(pk=company_id).exists():
+            company = Company.objects.get(pk=company_id)
+        else:
+            company = 0
+        return render(request, 'timesheets/company_panel/expenses.html', context={'company': company})
+
+    @staticmethod
+    @login_required
+    def projects(request):
+        company_id = UserProfile.objects.get(username=request.user.username).company_id
+        if Company.objects.filter(pk=company_id).exists():
+            company = Company.objects.get(pk=company_id)
+        else:
+            company = 0
+        return render(request, 'timesheets/company_panel/projects.html', context={'company': company})
+
+    @staticmethod
+    @login_required
+    def team(request):
+        company_id = UserProfile.objects.get(username=request.user.username).company_id
+        if Company.objects.filter(pk=company_id).exists():
+            company = Company.objects.get(pk=company_id)
+        else:
+            company = 0
+        return render(request, 'timesheets/company_panel/team.html', context={'company': company})
+
+    @staticmethod
+    @login_required
+    def invoices(request):
+        company_id = UserProfile.objects.get(username=request.user.username).company_id
+        if Company.objects.filter(pk=company_id).exists():
+            company = Company.objects.get(pk=company_id)
+        else:
+            company = 0
+        return render(request, 'timesheets/company_panel/invoices.html', context={'company': company})
+
+    @staticmethod
+    @login_required
+    def manage(request):
+        company_id = UserProfile.objects.get(username=request.user.username).company_id
+        if Company.objects.filter(pk=company_id).exists():
+            company = Company.objects.get(pk=company_id)
+        else:
+            company = 0
+        return render(request, 'timesheets/company_panel/manage.html', context={'company': company})
