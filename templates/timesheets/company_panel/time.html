@@ -1,4 +1,27 @@
 {% extends 'timesheets/company_header.html' %}
+{% load static %}
+
 {% block tab_content %}
-    <p>Time</p>
+    <div class="btn-toolbar justify-content-center" role="toolbar">
+        <div class="btn-group mr-4">
+            <a class="btn btn-outline-secondary" href="#"><img src="{% static 'timesheets_app/img/arrow-left.svg' %}" alt="Previous"></a>
+            <a class="btn btn-outline-secondary" href="#"><img src="{% static 'timesheets_app/img/arrow-right.svg' %}" alt="Next"></a>
+        </div>
+
+        <h3 class="text-wrap mr-5"><strong>Today:</strong> {{ date }}</h3>
+
+        <div class="btn-group mr-3 ml-5">
+            <a class="btn btn-outline-secondary" href="#"><img src="{% static 'timesheets_app/img/calendar.svg' %}" alt="Change date"></a>
+        </div>
+        <div class='btn-group'>
+            <a class="btn btn-outline-secondary active" href="#">Day</a>
+            <a class="btn btn-outline-secondary" href="#">Week</a>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class='col-sm'>
+            <a class="btn btn-outline-success" href="#"><img src="{% static 'timesheets_app/img/add.svg' %}" alt="Add"></a>
+        </div>
+    </div>
 {% endblock %}
