@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.utils.timezone import localdate
 from timesheets_app.models import Company
 from authentication.models import UserProfile
 from timesheets_app.forms import CreateCompanyForm
@@ -43,7 +44,9 @@ class CompanyPanel:
             company = Company.objects.get(pk=company_id)
         else:
             company = 0
-        return render(request, 'timesheets/company_panel/time.html', context={'company': company})
+
+        date = localdate()
+        return render(request, 'timesheets/company_panel/time.html', context={'company': company, 'date': date})
 
     @staticmethod
     @login_required
