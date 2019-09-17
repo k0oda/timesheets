@@ -19,9 +19,19 @@
         </div>
     </div>
 
-    <div class="row mt-3">
-        <div class='col-sm'>
-            <a class="btn btn-outline-success" href="#"><img src="{% static 'timesheets_app/img/add.svg' %}" alt="Add"></a>
+    <div class="btn-toolbar mt-4 justify-content-center">
+        <div class="btn-group mr-5">
+            <a class="btn btn-outline-success p-4" href="#"><img src="{% static 'timesheets_app/img/add.svg' %}" alt="Add"></a>
+        </div>
+
+        <div class="btn-group ml-2 justify-content-center">
+            <a class="btn btn-outline-secondary {% if today.weekday == 0 %} active {% endif %} pr-5" href="#">Mon<br><small>0:00</small></a>
+            <a class="btn btn-outline-secondary {% if today.weekday == 1 %} active {% endif %} pr-5" href="#">Tue<br><small>0:00</small></a>
+            <a class="btn btn-outline-secondary {% if today.weekday == 2 %} active {% endif %} pr-5" href="#">Wed<br><small>0:00</small></a>
+            <a class="btn btn-outline-secondary {% if today.weekday == 3 %} active {% endif %} pr-5" href="#">Thu<br><small>0:00</small></a>
+            <a class="btn btn-outline-secondary {% if today.weekday == 4 %} active {% endif %} pr-5" href="#">Fri<br><small>0:00</small></a>
+            <a class="btn btn-outline-secondary {% if today.weekday == 5 %} active {% endif %} pr-5" href="#">Sat<br><small>0:00</small></a>
+            <a class="btn btn-outline-secondary {% if today.weekday == 6 %} active {% endif %} pr-5" href="#">Sun<br><small>0:00</small></a>
         </div>
     </div>
 {% endblock %}
