@@ -15,7 +15,7 @@ class Entry(models.Model):
     project_id = models.BigIntegerField()
     task_id = models.BigIntegerField()
     notes = models.CharField(max_length=350, blank=True)
-    timer = models.TimeField(blank=True)
+    timer = models.TimeField(default='0:00')
 
     def __str__(self):
         return self.name
