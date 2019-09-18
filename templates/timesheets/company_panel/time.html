@@ -2,29 +2,29 @@
 {% load static %}
 
 {% block tab_content %}
-    <div class="btn-toolbar justify-content-center" role="toolbar">
-        <div class="btn-group mr-4">
+    <div class="row btn-toolbar justify-content-center" role="toolbar">
+        <div class="col-auto btn-group">
             <a class="btn btn-outline-secondary" href="#"><img src="{% static 'timesheets_app/img/arrow-left.svg' %}" alt="Previous"></a>
             <a class="btn btn-outline-secondary" href="#"><img src="{% static 'timesheets_app/img/arrow-right.svg' %}" alt="Next"></a>
         </div>
 
-        <h3 class="text-wrap mr-4"><strong>{{ weekday }}:</strong> {{ today }}</h3>
+        <h3 class="col-auto text-wrap"><strong>{{ weekday }}:</strong> {{ today }}</h3>
 
-        <div class="btn-group mr-3 ml-5">
+        <div class="col-auto btn-group">
             <a class="btn btn-outline-secondary" href="#"><img src="{% static 'timesheets_app/img/calendar.svg' %}" alt="Change date"></a>
         </div>
-        <div class='btn-group'>
+        <div class='col-auto btn-group'>
             <a class="btn btn-outline-secondary active" href="#">Day</a>
             <a class="btn btn-outline-secondary" href="#">Week</a>
         </div>
     </div>
 
-    <div class="btn-toolbar mt-4 justify-content-center">
-        <div class="btn-group mr-5">
+    <div class="row btn-toolbar mt-4 justify-content-center">
+        <div class="col-auto btn-group">
             <a class="btn btn-outline-success p-4" href="#"><img src="{% static 'timesheets_app/img/add.svg' %}" alt="Add"></a>
         </div>
 
-        <div class="btn-group ml-2 justify-content-center">
+        <div class="col-auto btn-group justify-content-center">
             <a class="btn btn-outline-secondary {% if today.weekday == 0 %} active {% endif %} pr-5" href="#">Mon<br><small>0:00</small></a>
             <a class="btn btn-outline-secondary {% if today.weekday == 1 %} active {% endif %} pr-5" href="#">Tue<br><small>0:00</small></a>
             <a class="btn btn-outline-secondary {% if today.weekday == 2 %} active {% endif %} pr-5" href="#">Wed<br><small>0:00</small></a>
