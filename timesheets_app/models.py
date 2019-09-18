@@ -1,11 +1,10 @@
 from django.db import models
-from django.utils import timezone
 from datetime import date
 
 
 class Company(models.Model):
     name = models.CharField(max_length=150)
-    date_of_creation = models.DateField(default=timezone.now())
+    date_of_creation = models.DateField(default=date.today())
 
     def __str__(self):
         return self.name
