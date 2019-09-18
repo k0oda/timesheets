@@ -8,3 +8,13 @@ class Company(models.Model):
 
     def __str__(self):
         return self.name
+
+class Entry(models.Model):
+    name = models.CharField(max_length=100)
+    project_id = models.BigIntegerField()
+    task_id = models.BigIntegerField()
+    notes = models.CharField(max_length=350, blank=True)
+    timer = models.TimeField(blank=True)
+
+    def __str__(self):
+        return self.name
