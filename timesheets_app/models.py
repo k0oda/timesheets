@@ -10,7 +10,6 @@ class Company(models.Model):
         return self.name
 
 class Entry(models.Model):
-    name = models.CharField(max_length=100)
     date = models.DateField(default=date.today())
     project_id = models.BigIntegerField()
     task_id = models.BigIntegerField()
