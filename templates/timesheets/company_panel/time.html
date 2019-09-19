@@ -34,4 +34,20 @@
             <a class="btn btn-outline-secondary {% if today.weekday == 6 %} active {% endif %} pr-5" href="#">Sun<br><small>0:00</small></a>
         </div>
     </div>
+
+    <div class="row justify-content-center mt-2">
+        <ul class="list-group">
+            {% for entry in entries %}
+                <li class="list-group-item">
+                    <div class="d-flex w-100">
+                        <h6 class="col-auto mr-5 align-self-center"><strong>{{ entry }}</strong> ({{ entry.project.client.name }})</h6>
+                        <h4 class="col-auto ml-5 mb-1 align-self-center">{{ entry.timer }}</h4>
+                        <a class="col-auto ml-2 btn btn-outline-primary" href="#"><img src="{% static 'timesheets_app/img/timer-start.svg' %}" alt="Start"> Start</a>
+                    </div>
+                    <p class="col-auto mb-1">{{ entry.task.name }}</p>
+                    <p class="col-auto text-muted mb-1">{{ entry.notes }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
