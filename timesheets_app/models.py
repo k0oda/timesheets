@@ -37,7 +37,7 @@ class Project(models.Model):
 class Entry(models.Model):
     company = models.ForeignKey(Company, models.CASCADE)
     date = models.DateField(default=date.today())
-    project = models.ForeignKey(Project, models.CASCADE, default=None)
+    project = models.ForeignKey(Project, models.CASCADE)
     task = models.ForeignKey(Task, models.CASCADE)
     notes = models.CharField(max_length=350, blank=True)
     timer = models.TimeField(default='0:00')
