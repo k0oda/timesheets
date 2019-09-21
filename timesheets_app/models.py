@@ -10,14 +10,15 @@ class Company(models.Model):
         return self.name
 
 class Task(models.Model):
+    company = models.ForeignKey(Company, models.CASCADE)
     name = models.CharField(max_length=150)
-    company_id = models.BigIntegerField()
     default_hourly_rate = models.FloatField(default=0.0)
 
     def __str__(self):
         return self.name
 
 class Client(models.Model):
+    company = models.ForeignKey(Company, models.CASCADE)
     name = models.CharField(max_length=150)
     email = models.EmailField(blank=True)
 
@@ -25,6 +26,7 @@ class Client(models.Model):
         return self.name
 
 class Project(models.Model):
+    company = models.ForeignKey(Company, models.CASCADE)
     name = models.CharField(max_length=150)
     client = models.ForeignKey(Client, models.CASCADE)
     tasks = models.ManyToManyField(Task)
@@ -33,9 +35,10 @@ class Project(models.Model):
         return self.name
 
 class Entry(models.Model):
+    company = models.ForeignKey(Company, models.CASCADE)
     date = models.DateField(default=date.today())
     project = models.ForeignKey(Project, models.CASCADE, default=None)
-    task = models.ForeignKey(Task, models.CASCADE, default=None)
+    task = models.ForeignKey(Task, models.CASCADE)
     notes = models.CharField(max_length=350, blank=True)
     timer = models.TimeField(default='0:00')
 
