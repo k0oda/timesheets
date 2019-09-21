@@ -39,8 +39,8 @@ class Entry(models.Model):
     date = models.DateField(default=date.today())
     project = models.ForeignKey(Project, models.CASCADE)
     task = models.ForeignKey(Task, models.CASCADE)
-    notes = models.CharField(max_length=350, blank=True)
-    timer = models.TimeField(default='0:00')
+    notes = models.CharField(max_length=350, blank=True, default=' ')
+    timer = models.TimeField()
 
     def __str__(self):
         return self.project.name
