@@ -38,6 +38,25 @@ class Main:
 class CompanyPanel:
     @staticmethod
     @login_required
+    def add_entry(request):
+        if request.method.lower() == 'post':
+            company = Company.objects.get(pk=request.user.company_id)
+            project = Project.objects.get(name=request.POST.get('project'), company=company)
+            task = Task.objects.get(name=request.POST.get('task'), company=company)
+            notes = request.POST.get('notes')
+            timer = request.POST.get('timer')
+            new_entry = Entry.objects.create(
+                company=company,
+                project=project,
+                task=task,
+                notes=notes,
+                timer=timer
+            )
+            new_entry.save()
+        return redirect('time')
+
+    @staticmethod
+    @login_required
     def time(request):
         company_id = UserProfile.objects.get(username=request.user.username).company_id
         if Company.objects.filter(pk=company_id).exists():
