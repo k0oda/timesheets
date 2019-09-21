@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from timesheets_app.models import Company, Entry
+from timesheets_app.models import Company, Entry, Project, Task
 from authentication.models import UserProfile
 from timesheets_app.forms import CreateCompanyForm
 from datetime import date
@@ -48,11 +48,15 @@ class CompanyPanel:
         today = date.today()
         weekday = today.strftime('%A')
         entries = Entry.objects.filter(date=today)
+        projects = Project.objects.all()
+        tasks = Task.objects.all()
         return render(request, 'timesheets/company_panel/time.html', context={
             'company': company,
             'today': today,
             'weekday': weekday,
-            'entries': entries
+            'entries': entries,
+            'projects': projects,
+            'tasks': tasks
         })
 
     @staticmethod
