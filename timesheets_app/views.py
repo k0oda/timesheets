@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from timesheets_app.models import Company, Entry, Project, Task
 from authentication.models import UserProfile
 from timesheets_app.forms import CreateCompanyForm
-from datetime import date
+from datetime import date, time, timedelta, datetime
 
 
 class Main:
@@ -36,6 +36,15 @@ class Main:
 
 
 class CompanyPanel:
+    @staticmethod
+    @login_required
+    def start_timer(request, entry_id):
+        entry = Entry.objects.get(pk=entry_id)
+        entry.start_time = datetime.now().time()
+        entry.is_active = True
+        entry.save()
+        return redirect('time')
+
     @staticmethod
     @login_required
     def add_entry(request):
