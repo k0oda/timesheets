@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import date
+from datetime import date, time
 
 
 class Company(models.Model):
@@ -40,7 +40,7 @@ class Entry(models.Model):
     project = models.ForeignKey(Project, models.CASCADE)
     task = models.ForeignKey(Task, models.CASCADE)
     notes = models.CharField(max_length=350, blank=True, default=' ')
-    timer = models.TimeField()
+    timer = models.TimeField(default=time(0, 0))
 
     def __str__(self):
         return self.project.name
