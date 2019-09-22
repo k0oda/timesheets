@@ -88,7 +88,11 @@
                     <div class="d-flex w-100">
                         <h6 class="col-auto mr-5 align-self-center"><strong>{{ entry }}</strong> ({{ entry.project.client.name }})</h6>
                         <h4 class="col-auto ml-5 mb-1 align-self-center">{{ entry.timer }}</h4>
-                        <a class="col-auto ml-2 btn btn-outline-primary" href="#"><img src="{% static 'timesheets_app/img/timer-start.svg' %}" alt="Start"> Start</a>
+                        {% if entry.is_active == True %}
+                            <a class="col-auto ml-2 btn btn-outline-secondary" href="{% url 'stop' entry.pk %}"><img src="{% static 'timesheets_app/img/timer-stop.svg' %}"> Stop</a>
+                        {% else %}
+                            <a class="col-auto ml-2 btn btn-outline-primary" href="{% url 'start' entry.pk %}"><img src="{% static 'timesheets_app/img/timer-start.svg' %}"> Start</a>
+                        {% endif %}
                     </div>
                     <p class="col-auto mb-1">{{ entry.task.name }}</p>
                     <p class="col-auto text-muted mb-1">{{ entry.notes }}</p>
