@@ -32,4 +32,6 @@ urlpatterns = [
     path('team/', CompanyPanel.team, name='team'),
     path('invoices/', CompanyPanel.invoices, name='invoices'),
     path('manage/', CompanyPanel.manage, name='manage'),
+    path('start/<int:entry_id>/', CompanyPanel.start_timer, name='start'),
+    path('stop/<int:entry_id>/', CompanyPanel.stop_timer, name='stop')
 ]
