@@ -47,6 +47,22 @@ class CompanyPanel:
 
     @staticmethod
     @login_required
+    def stop_timer(request, entry_id):
+        entry = Entry.objects.get(pk=entry_id)
+        entry.is_active = False
+
+        now = datetime.now()
+        now_delta = timedelta(hours=now.hour, minutes=now.minute)
+        start_time_delta = timedelta(hours=entry.start_time.hour, minutes=entry.start_time.minute)
+        timer_delta = timedelta(hours=entry.timer.hour, minutes=entry.timer.minute)
+
+        entry.timer = (datetime.min + ((now_delta - start_time_delta) + timer_delta)).time()
+        entry.start_time = time(0, 0)
+        entry.save()
+        return redirect('time')
+
+    @staticmethod
+    @login_required
     def add_entry(request):
         if request.method.lower() == 'post':
             company = Company.objects.get(pk=request.user.company_id)
