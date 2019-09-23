@@ -82,21 +82,26 @@ class CompanyPanel:
 
     @staticmethod
     @login_required
-    def time(request):
+    def time(request, year=0, month=0, day=0):
         company_id = UserProfile.objects.get(username=request.user.username).company_id
         if Company.objects.filter(pk=company_id).exists():
             company = Company.objects.get(pk=company_id)
         else:
             company = 0
 
-        today = date.today()
-        weekday = today.strftime('%A')
-        entries = Entry.objects.filter(date=today)
+        if year == 0 and month == 0 and day == 0:
+            today = date.today()
+            return redirect('time', today.year, today.month, today.day)
+        else:
+            _date = date(year, month, day)
+
+        weekday = _date.strftime('%A')
+        entries = Entry.objects.filter(date=_date)
         projects = Project.objects.all()
         tasks = Task.objects.all()
         return render(request, 'timesheets/company_panel/time.html', context={
             'company': company,
-            'today': today,
+            'date': _date,
             'weekday': weekday,
             'entries': entries,
             'projects': projects,
