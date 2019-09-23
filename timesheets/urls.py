@@ -26,6 +26,7 @@ urlpatterns = [
     path('exit', Authentication.exit, name='exit'),
     path('company/new', Main.new_company, name='new_company'),
     path('time/', CompanyPanel.time, name='time'),
+    path('time/<int:year>/<int:month>/<int:day>/', CompanyPanel.time, name='time'),
     path('time/add/', CompanyPanel.add_entry, name='add_entry'),
     path('expenses/', CompanyPanel.expenses, name='expenses'),
     path('projects/', CompanyPanel.projects, name='projects'),
