@@ -8,7 +8,7 @@
             <a class="btn btn-outline-secondary" href="#"><img src="{% static 'timesheets_app/img/arrow-right.svg' %}" alt="Next"></a>
         </div>
 
-        <h3 class="col-auto text-wrap"><strong>{{ weekday }}:</strong> {{ date }}</h3>
+        <h3 class="col-auto text-wrap"><strong>{{ date|date:"l" }}</strong>, {{ date|date:"d M" }}</h3>
 
         <div class="col-auto btn-group">
             <a class="btn btn-outline-secondary" href="#"><img src="{% static 'timesheets_app/img/calendar.svg' %}" alt="Change date"></a>

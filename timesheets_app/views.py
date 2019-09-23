@@ -94,14 +94,12 @@ class CompanyPanel:
         else:
             _date = date(year, month, day)
 
-        weekday = _date.strftime('%A')
         entries = Entry.objects.filter(date=_date)
         projects = Project.objects.all()
         tasks = Task.objects.all()
         return render(request, 'timesheets/company_panel/time.html', context={
             'company': company,
             'date': _date,
-            'weekday': weekday,
             'entries': entries,
             'projects': projects,
             'tasks': tasks
