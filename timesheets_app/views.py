@@ -94,6 +94,11 @@ class CompanyPanel:
         else:
             _date = date(year, month, day)
 
+        start_of_week = _date - timedelta(days=_date.weekday())
+        week = [start_of_week]
+        for i in range(1, 7):
+            week.append(start_of_week + timedelta(days=i))
+
         entries = Entry.objects.filter(date=_date)
         projects = Project.objects.all()
         tasks = Task.objects.all()
@@ -102,7 +107,8 @@ class CompanyPanel:
             'date': _date,
             'entries': entries,
             'projects': projects,
-            'tasks': tasks
+            'tasks': tasks,
+            'week': week
         })
 
     @staticmethod
