@@ -90,8 +90,7 @@ class CompanyPanel:
             company = 0
 
         if year == 0 and month == 0 and day == 0:
-            today = date.today()
-            return redirect('time', today.year, today.month, today.day)
+            _date = date.today()
         else:
             _date = date(year, month, day)
 
