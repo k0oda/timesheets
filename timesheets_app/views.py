@@ -63,22 +63,24 @@ class CompanyPanel:
 
     @staticmethod
     @login_required
-    def add_entry(request):
+    def add_entry(request, year, month, day):
         if request.method.lower() == 'post':
             company = Company.objects.get(pk=request.user.company_id)
+            _date = date(year, month, day)
             project = Project.objects.get(name=request.POST.get('project'), company=company)
             task = Task.objects.get(name=request.POST.get('task'), company=company)
             notes = request.POST.get('notes')
             timer = request.POST.get('timer')
             new_entry = Entry.objects.create(
                 company=company,
+                date=_date,
                 project=project,
                 task=task,
                 notes=notes,
                 timer=timer
             )
             new_entry.save()
-        return redirect('time')
+        return redirect('time', year, month, day)
 
     @staticmethod
     @login_required
