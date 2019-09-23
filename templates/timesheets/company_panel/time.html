@@ -8,7 +8,7 @@
             <a class="btn btn-outline-secondary" href="#"><img src="{% static 'timesheets_app/img/arrow-right.svg' %}" alt="Next"></a>
         </div>
 
-        <h3 class="col-auto text-wrap"><strong>{{ weekday }}:</strong> {{ today }}</h3>
+        <h3 class="col-auto text-wrap"><strong>{{ weekday }}:</strong> {{ date }}</h3>
 
         <div class="col-auto btn-group">
             <a class="btn btn-outline-secondary" href="#"><img src="{% static 'timesheets_app/img/calendar.svg' %}" alt="Change date"></a>
@@ -25,13 +25,13 @@
         </div>
 
         <div class="col-auto btn-group justify-content-center">
-            <a class="btn btn-outline-secondary {% if today.weekday == 0 %} active {% endif %} pr-5" href="#">Mon<br><small>0:00</small></a>
-            <a class="btn btn-outline-secondary {% if today.weekday == 1 %} active {% endif %} pr-5" href="#">Tue<br><small>0:00</small></a>
-            <a class="btn btn-outline-secondary {% if today.weekday == 2 %} active {% endif %} pr-5" href="#">Wed<br><small>0:00</small></a>
-            <a class="btn btn-outline-secondary {% if today.weekday == 3 %} active {% endif %} pr-5" href="#">Thu<br><small>0:00</small></a>
-            <a class="btn btn-outline-secondary {% if today.weekday == 4 %} active {% endif %} pr-5" href="#">Fri<br><small>0:00</small></a>
-            <a class="btn btn-outline-secondary {% if today.weekday == 5 %} active {% endif %} pr-5" href="#">Sat<br><small>0:00</small></a>
-            <a class="btn btn-outline-secondary {% if today.weekday == 6 %} active {% endif %} pr-5" href="#">Sun<br><small>0:00</small></a>
+            <a class="btn btn-outline-secondary {% if date.weekday == 0 %} active {% endif %} pr-5" href="#">Mon<br><small>0:00</small></a>
+            <a class="btn btn-outline-secondary {% if date.weekday == 1 %} active {% endif %} pr-5" href="#">Tue<br><small>0:00</small></a>
+            <a class="btn btn-outline-secondary {% if date.weekday == 2 %} active {% endif %} pr-5" href="#">Wed<br><small>0:00</small></a>
+            <a class="btn btn-outline-secondary {% if date.weekday == 3 %} active {% endif %} pr-5" href="#">Thu<br><small>0:00</small></a>
+            <a class="btn btn-outline-secondary {% if date.weekday == 4 %} active {% endif %} pr-5" href="#">Fri<br><small>0:00</small></a>
+            <a class="btn btn-outline-secondary {% if date.weekday == 5 %} active {% endif %} pr-5" href="#">Sat<br><small>0:00</small></a>
+            <a class="btn btn-outline-secondary {% if date.weekday == 6 %} active {% endif %} pr-5" href="#">Sun<br><small>0:00</small></a>
         </div>
 
         <div class="modal fade" id="newEntryModal" role="dialog">
