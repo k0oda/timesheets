@@ -43,7 +43,7 @@ class CompanyPanel:
         entry.start_time = datetime.now().time()
         entry.is_active = True
         entry.save()
-        return redirect('time')
+        return redirect('time', entry.date.year, entry.date.month, entry.date.day)
 
     @staticmethod
     @login_required
@@ -59,7 +59,7 @@ class CompanyPanel:
         entry.timer = (datetime.min + ((now_delta - start_time_delta) + timer_delta)).time()
         entry.start_time = time(0, 0)
         entry.save()
-        return redirect('time')
+        return redirect('time', entry.date.year, entry.date.month, entry.date.day)
 
     @staticmethod
     @login_required
