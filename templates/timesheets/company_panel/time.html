@@ -27,14 +27,16 @@
     </div>
 
     <div class="row btn-toolbar mt-4 justify-content-center">
-        <div class="col-auto btn-group" style="margin-right: 1em;">
+        <div class="col-auto btn-group" style="margin-right: 0.1em;">
             <button type="button" class="btn btn-outline-success p-4" data-toggle="modal" data-target="#newEntryModal"><img src="{% static 'timesheets_app/img/add.svg' %}" alt="Add"></a>
         </div>
 
         <div class="col-auto btn-group justify-content-center">
             {% for weekday in week %}
-                <a class="btn btn-outline-secondary {% if date.weekday == weekday.weekday %} active {% endif %} pr-5" href="{% url 'time' weekday.year weekday.month weekday.day %}">{{ weekday|date:"D" }}<br><small>0:00</small></a>
+                <a class="btn btn-outline-secondary {% if date.weekday == weekday.weekday %} active {% endif %}" style="padding-right: 3em;" href="{% url 'time' weekday.year weekday.month weekday.day %}">{{ weekday|date:"D" }}<br><small>0:00</small></a>
             {% endfor %}
+
+            <button type="button" class="btn btn-outline-secondary text-dark" disabled>Total: 0:00</button>
         </div>
 
         <div class="modal fade" id="newEntryModal" role="dialog">
