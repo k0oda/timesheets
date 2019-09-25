@@ -104,13 +104,15 @@ class CompanyPanel:
         entries = Entry.objects.filter(date=_date)
         projects = Project.objects.all()
         tasks = Task.objects.all()
+        today = date.today()
         return render(request, 'timesheets/company_panel/time.html', context={
             'company': company,
             'date': _date,
             'entries': entries,
             'projects': projects,
             'tasks': tasks,
-            'week': week
+            'week': week,
+            'today': today
         })
 
     @staticmethod
