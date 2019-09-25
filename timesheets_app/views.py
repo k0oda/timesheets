@@ -101,6 +101,9 @@ class CompanyPanel:
         for i in range(1, 7):
             week.append(start_of_week + timedelta(days=i))
 
+        next_date = _date + timedelta(days=1)
+        previous_date = _date - timedelta(days=1)
+
         entries = Entry.objects.filter(date=_date)
         projects = Project.objects.all()
         tasks = Task.objects.all()
@@ -112,7 +115,9 @@ class CompanyPanel:
             'projects': projects,
             'tasks': tasks,
             'week': week,
-            'today': today
+            'today': today,
+            'next_date': next_date,
+            'previous_date': previous_date
         })
 
     @staticmethod
