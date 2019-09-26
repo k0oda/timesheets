@@ -33,10 +33,10 @@
 
         <div class="col-auto btn-group justify-content-center">
             {% for weekday in week %}
-                <a class="btn btn-outline-secondary {% if date.weekday == weekday.weekday %} active {% endif %}" style="padding-right: 3em;" href="{% url 'time' weekday.year weekday.month weekday.day %}">{{ weekday|date:"D" }}<br><small>0:00</small></a>
+                <a class="btn btn-outline-secondary {% if date.weekday == weekday.weekday %} active {% endif %}" style="padding-right: 3em;" href="{% url 'time' weekday.year weekday.month weekday.day %}">{{ weekday|date:"D" }}<br><small>{% cycle totals.0.time totals.1.time totals.2.time totals.3.time totals.4.time totals.5.time totals.6.time %}</small></a>
             {% endfor %}
 
-            <button type="button" class="btn btn-outline-secondary text-dark" disabled>Total: 0:00</button>
+            <button type="button" class="btn btn-outline-secondary text-dark" disabled>Total: {{ week_total }}</button>
         </div>
 
         <div class="modal fade" id="newEntryModal" role="dialog">
