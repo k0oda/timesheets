@@ -97,9 +97,20 @@ class CompanyPanel:
             _date = date(year, month, day)
 
         start_of_week = _date - timedelta(days=_date.weekday())
-        week = [start_of_week]
-        for i in range(1, 7):
+        week = []
+        totals = []
+        for i in range(0, 7):
+            total = datetime(year=date.min.year, month=date.min.month, day=date.min.day, hour=0, minute=0)
+            day_entries = Entry.objects.filter(date=start_of_week + timedelta(days=i))
+            for entry in day_entries:
+                total += timedelta(hours=entry.timer.hour, minutes=entry.timer.minute)
+            totals.append(total)
             week.append(start_of_week + timedelta(days=i))
+
+        week_total = datetime(year=date.min.year, month=date.min.month, day=date.min.day, hour=0, minute=0)
+        for total in totals:
+            week_total += timedelta(hours=total.hour, minutes=total.minute)
+        week_total = week_total.time
 
         next_date = _date + timedelta(days=1)
         previous_date = _date - timedelta(days=1)
@@ -117,7 +128,9 @@ class CompanyPanel:
             'week': week,
             'today': today,
             'next_date': next_date,
-            'previous_date': previous_date
+            'previous_date': previous_date,
+            'totals': totals,
+            'week_total': week_total
         })
 
     @staticmethod
