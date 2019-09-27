@@ -88,21 +88,28 @@
 
     <div class="row justify-content-center mt-2">
         <ul class="list-group" style="margin-left: 6.5em;">
-            {% for entry in entries %}
-                <li class="list-group-item">
-                    <div class="d-flex w-100">
-                        <h6 class="col-auto align-self-center" style="width: 30em; word-break: break-all;"><strong>{{ entry }}</strong> ({{ entry.project.client.name }})</h6>
-                        <h4 class="col-auto mb-1 align-self-center">{{ entry.timer }}</h4>
-                        {% if entry.is_active == True %}
-                            <a class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" href="{% url 'stop' entry.pk %}"><img src="{% static 'timesheets_app/img/timer-stop.svg' %}"> Stop</a>
-                        {% else %}
-                            <a class="col-auto btn btn-outline-primary" style="margin-left: 1em;" href="{% url 'start' entry.pk %}"><img src="{% static 'timesheets_app/img/timer-start.svg' %}"> Start</a>
-                        {% endif %}
-                    </div>
-                    <p class="col-auto mb-1">{{ entry.task.name }}</p>
-                    <p class="col-auto text-muted mb-1" style="width: 24em; word-break: break-word;">{{ entry.notes }}</p>
-                </li>
-            {% endfor %}
+            {% if entries %}
+                {% for entry in entries %}
+                    <li class="list-group-item">
+                        <div class="d-flex w-100">
+                            <h6 class="col-auto align-self-center" style="width: 30em; word-break: break-all;"><strong>{{ entry }}</strong> ({{ entry.project.client.name }})</h6>
+                            <h4 class="col-auto mb-1 align-self-center">{{ entry.timer }}</h4>
+                            {% if entry.is_active == True %}
+                                <a class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" href="{% url 'stop' entry.pk %}"><img src="{% static 'timesheets_app/img/timer-stop.svg' %}"> Stop</a>
+                            {% else %}
+                                <a class="col-auto btn btn-outline-primary" style="margin-left: 1em;" href="{% url 'start' entry.pk %}"><img src="{% static 'timesheets_app/img/timer-start.svg' %}"> Start</a>
+                            {% endif %}
+                        </div>
+                        <p class="col-auto mb-1">{{ entry.task.name }}</p>
+                        <p class="col-auto text-muted mb-1" style="width: 24em; word-break: break-word;">{{ entry.notes }}</p>
+                    </li>
+                {% endfor %}
+                <hr>
+                <h4 class="text-right mb-4"><span class="text-muted">Total:</span> {{ date_total.time }}</h4>
+            {% else %}
+                <hr>
+                <h3 class="text-muted" style="width: 5em;">No entries</h3>
+            {% endif %}
         </ul>
     </div>
 {% endblock %}

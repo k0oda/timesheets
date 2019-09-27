@@ -128,7 +128,8 @@ class CompanyPanel:
             'next_date': next_date,
             'previous_date': previous_date,
             'totals': totals,
-            'week_total': week_total
+            'week_total': week_total,
+            'date_total': totals[_date.weekday()]
         })
 
     @staticmethod
