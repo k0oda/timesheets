@@ -28,6 +28,7 @@ urlpatterns = [
     path('time/', CompanyPanel.time, name='time'),
     path('time/<int:year>/<int:month>/<int:day>/', CompanyPanel.time, name='time'),
     path('time/add/<int:year>/<int:month>/<int:day>/', CompanyPanel.add_entry, name='add_entry'),
+    path('time/edit/<int:pk>/', CompanyPanel.edit_entry, name='edit_entry'),
     path('expenses/', CompanyPanel.expenses, name='expenses'),
     path('projects/', CompanyPanel.projects, name='projects'),
     path('team/', CompanyPanel.team, name='team'),
