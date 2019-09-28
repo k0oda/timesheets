@@ -8,7 +8,7 @@
             <a class="btn btn-outline-secondary" href="{% url 'time' next_date.year next_date.month next_date.day %}"><img src="{% static 'timesheets_app/img/arrow-right.svg' %}" alt="Next"></a>
         </div>
 
-        <h3 class="col-auto" style="width: 17em; word-wrap: break-all;">
+        <h3 class="col-auto" style="width: 16.4em; word-wrap: break-all;">
             <strong>{{ date|date:"l" }}</strong>, {{ date|date:"d M" }}
             {% if date == today %}
             (Today)
@@ -18,7 +18,19 @@
         </h3>
 
         <div class="col-auto btn-group">
-            <a class="btn btn-outline-secondary" href="#"><img src="{% static 'timesheets_app/img/calendar.svg' %}" alt="Change date"></a>
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="datepicker" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="{% static 'timesheets_app/img/calendar.svg' %}" alt="Change date">
+            </button>
+            <div class="dropdown-menu pd-0" aria-labelledby="datepicker">
+                <form action="{% url 'pick_date' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ datepicker.date }}
+                        <div class="dropdown-divider"></div>
+                        <button class="border-0 rounded-0 form-control btn btn-outline-success" type="submit">Select</button>
+                    </div>
+                </form>
+            </div>
         </div>
         <div class='col-auto btn-group'>
             <a class="btn btn-outline-secondary active" href="#">Day</a>
