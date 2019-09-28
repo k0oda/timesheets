@@ -123,7 +123,7 @@ class CompanyPanel:
         week_total = datetime(year=date.min.year, month=date.min.month, day=date.min.day, hour=0, minute=0)
         for i in range(0, 7):
             total = datetime(year=date.min.year, month=date.min.month, day=date.min.day, hour=0, minute=0)
-            day_entries = Entry.objects.filter(date=start_of_week + timedelta(days=i))
+            day_entries = Entry.objects.filter(date=start_of_week + timedelta(days=i), company=company)
             for entry in day_entries:
                 total += timedelta(hours=entry.timer.hour, minutes=entry.timer.minute)
                 week_total += timedelta(hours=entry.timer.hour, minutes=entry.timer.minute)
@@ -134,7 +134,7 @@ class CompanyPanel:
         next_date = _date + timedelta(days=1)
         previous_date = _date - timedelta(days=1)
 
-        entries = Entry.objects.filter(date=_date)
+        entries = Entry.objects.filter(date=_date, company=company)
         projects = Project.objects.all()
         tasks = Task.objects.all()
         today = date.today()
