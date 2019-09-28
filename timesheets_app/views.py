@@ -84,6 +84,19 @@ class CompanyPanel:
 
     @staticmethod
     @login_required
+    def edit_entry(request, pk):
+        if request.method.lower() == 'post':
+            company = Company.objects.get(pk=request.user.company_id)
+            entry = Entry.objects.get(company=company, pk=pk)
+            entry.project = Project.objects.get(name=request.POST.get('project'), company=company)
+            entry.task = Task.objects.get(name=request.POST.get('task'), company=company)
+            entry.notes = request.POST.get('notes')
+            entry.timer = request.POST.get('timer')
+            entry.save()
+        return redirect('time', entry.date.year, entry.date.month, entry.date.day)
+
+    @staticmethod
+    @login_required
     def time(request, year=0, month=0, day=0):
         company_id = UserProfile.objects.get(username=request.user.username).company_id
         if Company.objects.filter(pk=company_id).exists():
