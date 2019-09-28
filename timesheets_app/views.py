@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from timesheets_app.models import Company, Entry, Project, Task
 from authentication.models import UserProfile
-from timesheets_app.forms import CreateCompanyForm
+from timesheets_app.forms import CreateCompanyForm, DatePicker
 from datetime import date, time, timedelta, datetime
 
 
@@ -150,8 +150,16 @@ class CompanyPanel:
             'previous_date': previous_date,
             'totals': totals,
             'week_total': week_total,
-            'date_total': totals[_date.weekday()]
+            'date_total': totals[_date.weekday()],
+            'datepicker': DatePicker()
         })
+
+    @staticmethod
+    @login_required
+    def pick_date(request):
+        _date = request.POST.get('date').split('-')
+        _date = date(int(_date[0]), int(_date[1]), int(_date[2]))
+        return redirect('time', _date.year, _date.month, _date.day)
 
     @staticmethod
     @login_required
