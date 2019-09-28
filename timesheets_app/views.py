@@ -97,6 +97,14 @@ class CompanyPanel:
 
     @staticmethod
     @login_required
+    def delete_entry(request, pk):
+        company = Company.objects.get(pk=request.user.company_id)
+        entry = Entry.objects.get(company=company, pk=pk)
+        entry.delete()
+        return redirect('time', entry.date.year, entry.date.month, entry.date.day)
+
+    @staticmethod
+    @login_required
     def time(request, year=0, month=0, day=0):
         company_id = UserProfile.objects.get(username=request.user.username).company_id
         if Company.objects.filter(pk=company_id).exists():
