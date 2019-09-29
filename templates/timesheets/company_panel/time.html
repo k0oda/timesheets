@@ -1,0 +1,171 @@
+{% extends 'timesheets/company_header.html' %}
+{% load static %}
+
+{% block tab_content %}
+    <div class="row btn-toolbar justify-content-center" role="toolbar">
+        <div class="col-auto btn-group">
+            <a class="btn btn-outline-secondary" href="{% url 'time' previous_date.year previous_date.month previous_date.day %}"><img src="{% static 'times/img/arrow-left.svg' %}" alt="Previous"></a>
+            <a class="btn btn-outline-secondary" href="{% url 'time' next_date.year next_date.month next_date.day %}"><img src="{% static 'times/img/arrow-right.svg' %}" alt="Next"></a>
+        </div>
+
+        <h3 class="col-auto" style="width: 21.8em; word-wrap: break-all;">
+            <strong>{{ date|date:"l" }}</strong>, {{ date|date:"d M" }}
+            {% if date == today %}
+            (Today)
+            {% else %}
+            <small><a class="btn btn-link py-0" href="{% url 'time' today.year today.month today.day %}">return to today</a></small>
+            {% endif %}
+        </h3>
+
+        <div class="col-auto btn-group">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="datepicker" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="{% static 'times/img/calendar.svg' %}" alt="Change date">
+            </button>
+            <div class="dropdown-menu pd-0" aria-labelledby="datepicker">
+                <form action="{% url 'pick_date' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ datepicker.date }}
+                        <div class="dropdown-divider"></div>
+                        <button class="border-0 rounded-0 form-control btn btn-outline-success" type="submit">Select</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row btn-toolbar mt-4 justify-content-center">
+        <div class="col-auto btn-group" style="margin-right: 0.1em;">
+            <button type="button" class="btn btn-outline-success p-4" data-toggle="modal" data-target="#newEntryModal"><img src="{% static 'times/img/add.svg' %}" alt="Add"></a>
+        </div>
+
+        <div class="col-auto btn-group justify-content-center">
+            {% for weekday in week %}
+                <a class="btn btn-outline-secondary {% if date.weekday == weekday.weekday %} active {% endif %}" style="padding-right: 3em;" href="{% url 'time' weekday.year weekday.month weekday.day %}">{{ weekday|date:"D" }}<br><small>{% cycle totals.0.time totals.1.time totals.2.time totals.3.time totals.4.time totals.5.time totals.6.time %}</small></a>
+            {% endfor %}
+
+            <button type="button" class="btn btn-outline-secondary text-dark" disabled>Total: {{ week_total }}</button>
+        </div>
+
+        <div class="modal fade" id="newEntryModal" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">New entry</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{% url 'add_entry' date.year date.month date.day %}" method="POST">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Project</label>
+                                <select name="project" class="form-control">
+                                    {% for project in projects %}
+                                        <option>{{ project }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Task</label>
+                                <select name="task" class="form-control">
+                                    {% for task in tasks %}
+                                        <option>{{ task }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <textarea class="form-control" name="notes" cols="3" rows="5" placeholder="Notes (optional)"></textarea>
+                                </div>
+                                <div class="form-group col-2">
+                                    <input type="text" name="timer" class="form-control" value="0:00">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-outline-primary" type="submit">Create</button>
+                            <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-2">
+        <ul class="list-group" style="margin-left: 6.5em;">
+            {% if entries %}
+                {% for entry in entries %}
+                    <li class="list-group-item">
+                        <div class="d-flex w-100">
+                            <h6 class="col-auto align-self-center" style="width: 26em; word-break: break-all;"><strong>{{ entry }}</strong> ({{ entry.project.client.name }})</h6>
+                            <h4 class="col-auto mb-1 align-self-center">{{ entry.timer }}</h4>
+                            {% if entry.is_active == True %}
+                                <a class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" href="{% url 'stop' entry.pk %}"><img src="{% static 'times/img/timer-stop.svg' %}"> Stop</a>
+                            {% else %}
+                                <a class="col-auto btn btn-outline-primary" style="margin-left: 1em;" href="{% url 'start' entry.pk %}"><img src="{% static 'times/img/timer-start.svg' %}"> Start</a>
+                            {% endif %}
+                            <button type="button" data-toggle="modal" data-target="#edit_{{ entry.pk }}" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;"><img src="{% static 'times/img/edit.svg' %}" alt="Edit"></button>
+                        </div>
+                        <p class="col-auto mb-1">{{ entry.task.name }}</p>
+                        <p class="col-auto text-muted mb-1" style="width: 24em; word-break: break-word;">{{ entry.notes }}</p>
+                    </li>
+                    
+                    <div class="modal fade" id="edit_{{ entry.pk }}" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Edit Time Entry</h5>
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form action="{% url 'edit_entry' entry.pk %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label>Project</label>
+                                            <select name="project" class="form-control">
+                                                {% for project in projects %}
+                                                    <option>{{ project }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Task</label>
+                                            <select name="task" class="form-control">
+                                                {% for task in tasks %}
+                                                    <option>{{ task }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col">
+                                                <textarea class="form-control" name="notes" cols="3" rows="5" placeholder="Notes (optional)">{{ entry.notes }}</textarea>
+                                            </div>
+                                            <div class="form-group col-2">
+                                                <input type="text" name="timer" class="form-control" value="{{ entry.timer }}">
+                                            </div>
+                                        </div>
+                                    </div>        
+                                    <div class="modal-footer">
+                                        <a class="btn btn-outline-danger mr-auto" href="{% url 'delete_entry' entry.pk %}">Delete</a>
+                                        <button class="btn btn-outline-primary" type="submit">Edit</button>
+                                        <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <hr>
+                <h4 class="text-right mb-4"><span class="text-muted">Total:</span> {{ date_total.time }}</h4>
+            {% else %}
+                <hr>
+                <h3 class="text-muted" style="width: 5em;">No entries</h3>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}

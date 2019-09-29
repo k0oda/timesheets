@@ -16,19 +16,32 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from authentication.views import Authentication
-from timesheets_app.views import Main, CompanyPanel
+from company_panel.views import CompanyPanel
+from times.views import Time
+from expenses.views import Expenses
+from projects.views import Projects
+from team.views import Team
+from invoices.views import Invoices
+from manage_app.views import Manage
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', Main.main, name='main'),
+    path('', CompanyPanel.main, name='main'),
     path('login/', Authentication.login, name='login'),
     path('register/', Authentication.register, name='register'),
     path('exit', Authentication.exit, name='exit'),
-    path('company/new', Main.new_company, name='new_company'),
-    path('time/', CompanyPanel.time, name='time'),
-    path('expenses/', CompanyPanel.time, name='expenses'),
-    path('projects/', CompanyPanel.time, name='projects'),
-    path('team/', CompanyPanel.time, name='team'),
-    path('invoices/', CompanyPanel.time, name='invoices'),
-    path('manage/', CompanyPanel.time, name='manage'),
+    path('company/new', CompanyPanel.new_company, name='new_company'),
+    path('time/', Time.time, name='time'),
+    path('time/<int:year>/<int:month>/<int:day>/', Time.time, name='time'),
+    path('time/add/<int:year>/<int:month>/<int:day>/', Time.add_entry, name='add_entry'),
+    path('time/edit/<int:pk>/', Time.edit_entry, name='edit_entry'),
+    path('time/delete/<int:pk>/', Time.delete_entry, name="delete_entry"),
+    path('time/pick/', Time.pick_date, name='pick_date'),
+    path('start/<int:entry_id>/', Time.start_timer, name='start'),
+    path('stop/<int:entry_id>/', Time.stop_timer, name='stop'),
+    path('expenses/', Expenses.expenses, name='expenses'),
+    path('projects/', Projects.projects, name='projects'),
+    path('team/', Team.team, name='team'),
+    path('invoices/', Invoices.invoices, name='invoices'),
+    path('manage/', Manage.manage, name='manage')
 ]

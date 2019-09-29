@@ -38,7 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authentication',
-    'timesheets_app',
+    'company_panel',
+    'times',
+    'team',
+    'projects',
+    'manage_app',
+    'invoices',
+    'expenses'
 ]
 
 MIDDLEWARE = [

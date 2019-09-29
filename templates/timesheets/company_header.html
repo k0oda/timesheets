@@ -21,7 +21,7 @@
             <h3 class="mt-4 text-center text-monospace">{{ company.name }}</h3>
             <ul class="nav nav-tabs justify-content-center">
                 <li class="nav-item">
-                    <a class="nav-link {% if request.path == time_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ time_path }}">Time</a>
+                    <a class="nav-link {% if time_path in request.path %} active {% else %} '' {% endif %} btn btn-link" href="{{ time_path }}">Time</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == expenses_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ expenses_path }}">Expenses</a>
@@ -39,6 +39,11 @@
                     <a class="nav-link {% if request.path == manage_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ manage_path }}">Manage</a>
                 </li>
             </ul>
+        </div>
+
+        <div class="container mt-5">
+            {% block tab_content %}
+            {% endblock %}
         </div>
     {% endif %}
 {% endblock %}
