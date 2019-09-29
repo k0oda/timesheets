@@ -16,15 +16,15 @@
                         Profile
                     </button>
 
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown">
+                    <div class="dropdown-menu dropdown-menu-right py-1" aria-labelledby="profileDropdown">
                         <h6 class="dropdown-header text-center">{{ request.user }}</h6>
                         <div class="dropdown-divider"></div>
                         <div class="btn-group-vertical w-100">
-                            <a class="btn btn-block btn-outline-dark" href="#">Settings</a>
-                            <a class="btn btn-block btn-outline-dark" href="#">Notifications</a>
+                            <a class="btn btn-block btn-outline-dark border-0 rounded-0" href="#">Settings</a>
+                            <a class="btn btn-block btn-outline-dark border-0 rounded-0" href="#">Notifications</a>
                         </div>
                         <div class="dropdown-divider"></div>
-                        <a class="btn btn-block btn-outline-danger" href="{% url 'exit' %}">Exit</a>
+                        <a class="btn btn-block btn-outline-danger border-0 rounded-0" href="{% url 'exit' %}">Exit</a>
                     </div>
                 </div>
             {% else %}
