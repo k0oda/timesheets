@@ -39,7 +39,9 @@
                     <a class="nav-link {% if request.path == manage_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ manage_path }}">Manage</a>
                 </li>
             </ul>
+        </div>
 
+        <div class="container mt-5">
             {% block tab_content %}
             {% endblock %}
         </div>
