@@ -26,9 +26,16 @@ urlpatterns = [
     path('exit', Authentication.exit, name='exit'),
     path('company/new', Main.new_company, name='new_company'),
     path('time/', CompanyPanel.time, name='time'),
+    path('time/<int:year>/<int:month>/<int:day>/', CompanyPanel.time, name='time'),
+    path('time/add/<int:year>/<int:month>/<int:day>/', CompanyPanel.add_entry, name='add_entry'),
+    path('time/edit/<int:pk>/', CompanyPanel.edit_entry, name='edit_entry'),
+    path('time/delete/<int:pk>/', CompanyPanel.delete_entry, name="delete_entry"),
+    path('time/pick/', CompanyPanel.pick_date, name='pick_date'),
     path('expenses/', CompanyPanel.expenses, name='expenses'),
     path('projects/', CompanyPanel.projects, name='projects'),
     path('team/', CompanyPanel.team, name='team'),
     path('invoices/', CompanyPanel.invoices, name='invoices'),
     path('manage/', CompanyPanel.manage, name='manage'),
+    path('start/<int:entry_id>/', CompanyPanel.start_timer, name='start'),
+    path('stop/<int:entry_id>/', CompanyPanel.stop_timer, name='stop')
 ]
