@@ -8,7 +8,7 @@
             <a class="btn btn-outline-secondary" href="{% url 'time' next_date.year next_date.month next_date.day %}"><img src="{% static 'timesheets_app/img/arrow-right.svg' %}" alt="Next"></a>
         </div>
 
-        <h3 class="col-auto" style="width: 16.4em; word-wrap: break-all;">
+        <h3 class="col-auto" style="width: 21.8em; word-wrap: break-all;">
             <strong>{{ date|date:"l" }}</strong>, {{ date|date:"d M" }}
             {% if date == today %}
             (Today)
@@ -31,10 +31,6 @@
                     </div>
                 </form>
             </div>
-        </div>
-        <div class='col-auto btn-group'>
-            <a class="btn btn-outline-secondary active" href="#">Day</a>
-            <a class="btn btn-outline-secondary" href="#">Week</a>
         </div>
     </div>
 
