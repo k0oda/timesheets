@@ -18,3 +18,8 @@ class Client(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Category(models.Model):
+    company = models.ForeignKey(Company, models.CASCADE)
+    name = models.CharField(max_length=150)
