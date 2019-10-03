@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from company_panel.models import Company
 from expenses.models import Expense
@@ -26,3 +26,23 @@ class Expenses:
             'projects': projects,
             'categories': categories
         })
+
+    @staticmethod
+    @login_required
+    def add_expense(request):
+        if request.method.lower() == 'post':
+            company = Company.objects.get(pk=request.user.company_id)
+            project = Project.objects.get(name=request.POST.get('project'), company=company)
+            category = Category.objects.get(name=request.POST.get('category'), company=company)
+            notes = request.POST.get('notes')
+            amount = request.POST.get('amount')
+            
+            expense = Expense.objects.create(
+                company=company,
+                project=project,
+                category=category,
+                notes=notes,
+                amount=amount
+            )
+            expense.save()
+        return redirect('expenses')
