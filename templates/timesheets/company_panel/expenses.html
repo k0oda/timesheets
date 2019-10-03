@@ -1,7 +1,53 @@
 {% extends 'timesheets/company_header.html' %}
 {% block tab_content %}
     <div class="row">
-        <a class="ml-3 col-auto btn btn-outline-success" href="#">New Expense</a>
+        <button type="button" class="ml-3 col-auto btn btn-outline-success" data-toggle="modal" data-target="#newExpenseModal">New Expense</button>
+    </div>
+
+    <div class="modal fade" id="newExpenseModal" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New expense</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{% url 'add_expense' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Project</label>
+                            <select name="project" class="form-control">
+                                {% for project in projects %}
+                                    <option>{{ project }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select name="category" class="form-control">
+                                {% for category in categories %}
+                                    <option>{{ category }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <textarea class="form-control" name="notes" cols="3" rows="5" placeholder="Notes (optional)"></textarea>
+                            </div>
+                            <div class="form-group col-2">
+                                <input type="text" name="amount" class="form-control" value="0.0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-primary" type="submit">Create</button>
+                        <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <ul class="list-group list-group-flush mt-3">
