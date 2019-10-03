@@ -1,4 +1,21 @@
 {% extends 'timesheets/company_header.html' %}
 {% block tab_content %}
-    <p>Expenses</p>
+    <div class="row">
+        <a class="ml-3 col-auto btn btn-outline-success" href="#">New Expense</a>
+    </div>
+
+    <ul class="list-group list-group-flush mt-3">
+        {% for expense in expenses %}
+            <li class="d-flex list-group-item justify-content-center">
+                <p>
+                <span style="width: 5em;">{{ expense.date|date:"D, d M" }}</span>
+                <span class="font-weight-bold" style="width: 15em; margin-left: 2em;">{{ expense.project }}</span>
+                <span style="width: 15em;">({{ expense.project.client }})</span>
+                <span class="font-weight-bold" style="width: 5em; margin-left: 10em;">{{ expense.amount }}</span>
+                <br>
+                <span style="margin-left: 7em;">{{ expense.category }}</span>
+                </p>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
