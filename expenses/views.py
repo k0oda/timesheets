@@ -46,3 +46,21 @@ class Expenses:
             )
             expense.save()
         return redirect('expenses')
+
+    @staticmethod
+    @login_required
+    def edit_expense(request, expense_id):
+        if request.method.lower() == 'post':
+            company = Company.objects.get(pk=request.user.company_id)
+            expense = Expense.objects.get(pk=expense_id, company=company)
+            project = Project.objects.get(name=request.POST.get('project'), company=company)
+            category = Category.objects.get(name=request.POST.get('category'), company=company)
+            notes = request.POST.get('notes')
+            amount = request.POST.get('amount')
+
+            expense.project = project
+            expense.category = category
+            expense.notes = notes
+            expense.amount = amount
+            expense.save()
+        return redirect('expenses')
