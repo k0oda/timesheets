@@ -41,6 +41,7 @@ urlpatterns = [
     path('stop/<int:entry_id>/', Time.stop_timer, name='stop'),
     path('expenses/', Expenses.expenses, name='expenses'),
     path('expenses/add/', Expenses.add_expense, name='add_expense'),
+    path('expenses/edit/<int:expense_id>/', Expenses.edit_expense, name='edit_expense'),
     path('projects/', Projects.projects, name='projects'),
     path('team/', Team.team, name='team'),
     path('invoices/', Invoices.invoices, name='invoices'),
