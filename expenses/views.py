@@ -64,3 +64,11 @@ class Expenses:
             expense.amount = amount
             expense.save()
         return redirect('expenses')
+
+    @staticmethod
+    @login_required
+    def delete_expense(request, expense_id):
+        company = Company.objects.get(pk=request.user.company_id)
+        expense = Expense.objects.get(pk=expense_id, company=company)
+        expense.delete()
+        return redirect('expenses')
