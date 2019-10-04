@@ -60,7 +60,7 @@
                 <span style="width: 5em;">{{ expense.date|date:"D, d M" }}</span>
                 <span class="font-weight-bold" style="width: 15em; margin-left: 2em;">{{ expense.project }}</span>
                 <span style="width: 15em;">({{ expense.project.client }})</span>
-                <span class="font-weight-bold" style="width: 5em; margin-left: 10em;">{{ expense.amount }}</span>
+                <span class="font-weight-bold" style="width: 5em; margin-left: 15em;">{{ expense.amount }}</span>
                 <button type="button" class="btn btn-outline-secondary" style="margin-left: 2em;" data-toggle="modal" data-target="#edit_{{ expense.pk }}"><img src="{% static 'expenses/img/edit.svg' %}" alt="Edit"></button>
                 <br>
                 <span style="margin-left: 7em;">{{ expense.category }}</span>
