@@ -1,4 +1,7 @@
 {% extends 'timesheets/company_header.html' %}
+{% load static %}
+{% load l10n %}
+
 {% block tab_content %}
     <div class="row">
         <button type="button" class="ml-3 col-auto btn btn-outline-success" data-toggle="modal" data-target="#newExpenseModal">New Expense</button>
@@ -58,10 +61,58 @@
                 <span class="font-weight-bold" style="width: 15em; margin-left: 2em;">{{ expense.project }}</span>
                 <span style="width: 15em;">({{ expense.project.client }})</span>
                 <span class="font-weight-bold" style="width: 5em; margin-left: 10em;">{{ expense.amount }}</span>
+                <button type="button" class="btn btn-outline-secondary" style="margin-left: 2em;" data-toggle="modal" data-target="#edit_{{ expense.pk }}"><img src="{% static 'expenses/img/edit.svg' %}" alt="Edit"></button>
                 <br>
                 <span style="margin-left: 7em;">{{ expense.category }}</span>
                 </p>
             </li>
+
+            <div class="modal fade" id="edit_{{ expense.pk }}" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Expense</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="{% url 'edit_expense' expense.pk %}" method="POST">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Project</label>
+                                    <select name="project" class="form-control" required>
+                                        {% for project in projects %}
+                                            <option {% if expense.project == project %} selected {% endif %}>{{ project }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <select name="category" class="form-control" required>
+                                        {% for category in categories %}
+                                            <option {% if expense.category == category %} selected {% endif %}>{{ category }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col">
+                                        <textarea class="form-control" name="notes" cols="3" rows="5" placeholder="Notes (optional)">{{ expense.notes }}</textarea>
+                                    </div>
+                                    <div class="form-group col-2">
+                                        <input type="text" name="amount" class="form-control" required value="{{ expense.amount|unlocalize }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a class="btn btn-outline-danger mr-auto" href="{% url 'delete_expense' expense.pk %}">Delete</a>
+                                <button class="btn btn-outline-primary" type="submit">Save</button>
+                                <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         {% endfor %}
     </ul>
 {% endblock %}
