@@ -108,8 +108,8 @@ class Time:
         previous_date = _date - timedelta(days=1)
 
         entries = Entry.objects.filter(date=_date, company=company)
-        projects = Project.objects.all()
-        tasks = Task.objects.all()
+        projects = Project.objects.filter(company=company)
+        tasks = Task.objects.filter(company=company)
         today = date.today()
         return render(request, 'timesheets/company_panel/time.html', context={
             'company': company,
