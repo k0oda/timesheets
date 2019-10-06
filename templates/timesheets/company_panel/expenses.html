@@ -55,16 +55,15 @@
 
     <ul class="list-group list-group-flush mt-3">
         {% for expense in expenses %}
-            <li class="d-flex list-group-item justify-content-center">
-                <p>
-                <span style="width: 5em;">{{ expense.date|date:"D, d M" }}</span>
-                <span class="font-weight-bold" style="width: 15em; margin-left: 2em;">{{ expense.project }}</span>
-                <span style="width: 15em;">({{ expense.project.client }})</span>
-                <span class="font-weight-bold" style="width: 5em; margin-left: 15em;">{{ expense.amount }}</span>
-                <button type="button" class="btn btn-outline-secondary" style="margin-left: 2em;" data-toggle="modal" data-target="#edit_{{ expense.pk }}"><img src="{% static 'expenses/img/edit.svg' %}" alt="Edit"></button>
-                <br>
-                <span style="margin-left: 7em;">{{ expense.category }}</span>
-                </p>
+            <li class="list-group-item mx-auto">
+                <div class="d-flex w-100">
+                    <p class="col-auto" style="width: 7em;">{{ expense.date|date:"D, d M" }}</p>
+                    <h6 class="col-auto" style="width: 26em; word-break: break-all;"><strong>{{ expense }}</strong> ({{ expense.project.client.name }})</h6>
+                    <h4 class="col-auto align-self-center" style="width: 4em;">{{ expense.amount }}</h4>
+                    <button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_{{ expense.pk }}"><img src="{% static 'expenses/img/edit.svg' %}" alt="Edit"></button>
+                </div>
+                <p class="col-auto mb-1" style="margin-left: 7em;">{{ expense.category }}</p>
+                <p class="col-auto text-muted mb-1" style="width: 24em; word-break: break-word; margin-left: 7em;">{{ expense.notes }}</p>
             </li>
 
             <div class="modal fade" id="edit_{{ expense.pk }}" role="dialog">
