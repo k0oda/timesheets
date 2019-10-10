@@ -9,6 +9,7 @@ class Project(models.Model):
     client = models.ForeignKey(Client, models.CASCADE)
     tasks = models.ManyToManyField(Task)
     notes = models.CharField(max_length=350, blank=True, default=' ')
+    budget = models.FloatField()
 
     def __str__(self):
         return self.name
