@@ -1,4 +1,58 @@
 {% extends 'timesheets/company_header.html' %}
+{% load static %}
+
 {% block tab_content %}
-    <p>Projects</p>
+    <div class="row">
+        <button type="button" class="mx-auto col-auto btn btn-outline-success" data-toggle="modal" data-target="#newProjectModal"><img src="{% static 'projects/img/add.svg' %}"> New Project</button>
+    </div>
+
+    <div class="modal fade" id="newProjectModal" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New project</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="#" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Project name</label>
+                            <input type="text" name="name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Client</label>
+                            <select name="client" class="form-control" required>
+                                {% for client in clients %}
+                                    <option>{{ client }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tasks</label>
+                            <select name="tasks" class="form-control" multiple required>
+                                {% for task in tasks %}
+                                    <option>{{ task }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <textarea class="form-control" name="notes" cols="3" rows="5" placeholder="Notes (optional)"></textarea>
+                            </div>
+                            <div class="form-group col-2">
+                                <input type="text" name="budget" class="form-control" required value="0.0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-primary" type="submit">Create</button>
+                        <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
