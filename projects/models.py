@@ -8,6 +8,7 @@ class Project(models.Model):
     name = models.CharField(max_length=150)
     client = models.ForeignKey(Client, models.CASCADE)
     tasks = models.ManyToManyField(Task)
+    notes = models.CharField(max_length=350, blank=True, default=' ')
 
     def __str__(self):
         return self.name
