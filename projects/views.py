@@ -63,3 +63,11 @@ class Projects:
                 project.tasks.add(Task.objects.get(company=company, name=task))
             project.save()
         return redirect('projects')
+
+    @staticmethod
+    @login_required
+    def delete_project(request, pk):
+        company = Company.objects.get(pk=request.user.company_id)
+        project = Project.objects.get(company=company, pk=pk)
+        project.delete()
+        return redirect('projects')
