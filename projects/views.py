@@ -46,3 +46,20 @@ class Projects:
                 new_project.tasks.add(Task.objects.get(company=company, name=task))
             new_project.save()
         return redirect('projects')
+
+    @staticmethod
+    @login_required
+    def edit_project(request, pk):
+        if request.method.lower() == 'post':
+            company = Company.objects.get(pk=request.user.company_id)
+            project = Project.objects.get(company=company, pk=pk)
+            project.name = request.POST.get('name')
+            project.client = Client.objects.get(company=company, name=request.POST.get('client'))
+            project.notes = request.POST.get('notes')
+            project.budget = request.POST.get('budget')
+            project.tasks.clear()
+            tasks = request.POST.getlist('tasks')
+            for task in tasks:
+                project.tasks.add(Task.objects.get(company=company, name=task))
+            project.save()
+        return redirect('projects')
