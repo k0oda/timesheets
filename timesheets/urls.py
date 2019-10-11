@@ -31,7 +31,7 @@ urlpatterns = [
     path('company/', include('company_panel.urls')),
     path('time/', include('times.urls')),
     path('expenses/', include('expenses.urls')),
-    path('projects/', Projects.projects, name='projects'),
+    path('projects/', include('projects.urls')),
     path('team/', Team.team, name='team'),
     path('invoices/', Invoices.invoices, name='invoices'),
     path('manage/', Manage.manage, name='manage')
