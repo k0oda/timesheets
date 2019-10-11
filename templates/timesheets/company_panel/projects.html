@@ -16,7 +16,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="#" method="POST">
+                <form action="{% url 'add_project' %}" method="POST">
                     {% csrf_token %}
                     <div class="modal-body">
                         <div class="form-group">
