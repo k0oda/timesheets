@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from company_panel.models import Company
 from projects.models import Project
@@ -25,3 +25,24 @@ class Projects:
             'tasks': tasks
         })
 
+    @staticmethod
+    @login_required
+    def add_project(request):
+        if request.method.lower() == 'post':
+            company = Company.objects.get(pk=request.user.company_id)
+            name = request.POST.get('name')
+            client = Client.objects.get(company=company, name=request.POST.get('client'))
+            notes = request.POST.get('notes')
+            budget = request.POST.get('budget')
+            new_project = Project.objects.create(
+                company=company,
+                name=name,
+                client=client,
+                notes=notes,
+                budget=budget
+            )
+            tasks = request.POST.getlist('tasks')
+            for task in tasks:
+                new_project.tasks.add(Task.objects.get(company=company, name=task))
+            new_project.save()
+        return redirect('projects')
