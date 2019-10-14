@@ -18,3 +18,23 @@ class Manage:
         else:
             company = 0
         return render(request, 'manage/clients.html', context={'company': company})
+
+    @staticmethod
+    @login_required
+    def tasks(request):
+        company_id = request.user.company_id
+        if Company.objects.filter(pk=company_id).exists():
+            company = Company.objects.get(pk=company_id)
+        else:
+            company = 0
+        return render(request, 'manage/tasks.html', context={'company': company})
+
+    @staticmethod
+    @login_required
+    def expense_categories(request):
+        company_id = request.user.company_id
+        if Company.objects.filter(pk=company_id).exists():
+            company = Company.objects.get(pk=company_id)
+        else:
+            company = 0
+        return render(request, 'manage/expense_categories.html', context={'company': company})
