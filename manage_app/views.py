@@ -12,5 +12,5 @@ class Manage:
             company = Company.objects.get(pk=company_id)
         else:
             company = 0
-        return render(request, 'timesheets/company_panel/manage.html', context={'company': company})
+        return render(request, 'manage/base.html', context={'company': company})
 
