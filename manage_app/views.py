@@ -27,6 +27,21 @@ class Manage:
 
     @staticmethod
     @login_required
+    def add_client(request):
+        if request.method.lower() == 'post':
+            company = Company.objects.get(pk=request.user.company_id)
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            new_client = Client.objects.create(
+                company=company,
+                name=name,
+                email=email
+            )
+            new_client.save()
+        return redirect('clients')
+
+    @staticmethod
+    @login_required
     def tasks(request):
         company_id = request.user.company_id
         if Company.objects.filter(pk=company_id).exists():
