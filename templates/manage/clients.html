@@ -49,6 +49,37 @@
                 </h6>
             </div>
         </li>
+        
+        <div class="modal fade" id="edit_{{ client.pk }}" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Client</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{% url 'edit_client' client.pk %}" method="POST">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Client name</label>
+                                <input type="text" name="name" class="form-control" value="{{ client.name }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" name="email" class="form-control" value="{{ client.email }}">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-outline-danger mr-auto" href="#">Delete</a>
+                            <button class="btn btn-outline-primary" type="submit">Save</button>
+                            <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     {% endfor %}
 </ul>
 {% endblock %}
