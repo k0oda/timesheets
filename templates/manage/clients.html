@@ -1,1 +1,20 @@
 {% extends 'manage/base.html' %}
+{% load static %}
+
+{% block tab_content %}
+<ul class="list-group mt-3">
+    {% for client in clients %}
+        <li class="list-group-item mx-auto">
+            <div class="d-flex w-100">
+                <button type="button" class="col-auto btn btn-outline-secondary" data-toggle="modal" data-target="#edit_{{ client.pk }}"><img src="{% static 'manage_app/img/edit.svg' %}" alt="Edit"></button>
+                <h6 class="col-auto font-weight-bold" style="width: 25em; word-break: break-all;">
+                    {{ client }} 
+                    {% if client.email %}
+                    <span class="text-muted">({{ client.email }})</span>
+                    {% endif %}
+                </h6>
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
