@@ -53,6 +53,14 @@ class Manage:
 
     @staticmethod
     @login_required
+    def delete_client(request, pk):
+        company = Company.objects.get(pk=request.user.company_id)
+        client = Client.objects.get(pk=pk)
+        client.delete()
+        return redirect('clients')
+
+    @staticmethod
+    @login_required
     def tasks(request):
         company_id = request.user.company_id
         if Company.objects.filter(pk=company_id).exists():
