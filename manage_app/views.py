@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from company_panel.models import Company
+from manage_app.models import Client
 
 
 class Manage:
@@ -17,7 +18,12 @@ class Manage:
             company = Company.objects.get(pk=company_id)
         else:
             company = 0
-        return render(request, 'manage/clients.html', context={'company': company})
+        clients = Client.objects.filter(company=company)
+
+        return render(request, 'manage/clients.html', context={
+            'company': company,
+            'clients': clients
+        })
 
     @staticmethod
     @login_required
