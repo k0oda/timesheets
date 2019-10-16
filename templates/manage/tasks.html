@@ -1,5 +1,6 @@
 {% extends 'manage/base.html' %}
 {% load static %}
+{% load l10n %}
 
 {% block tab_content %}
 <div class="row">
@@ -47,6 +48,37 @@
                 </h6>
             </div>
         </li>
+
+        <div class="modal fade" id="edit_{{ task.pk }}" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Task</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{% url 'edit_task' task.pk %}" method="POST">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Task name</label>
+                                <input type="text" name="name" class="form-control" value="{{ task.name }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Default hourly rate</label>
+                                <input type="text" name="hourly_rate" class="form-control" value="{{ task.default_hourly_rate|unlocalize }}">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-outline-danger mr-auto">Delete</a>
+                            <button class="btn btn-outline-primary" type="submit">Save</button>
+                            <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     {% endfor %}
 </ul>
 {% endblock %}
