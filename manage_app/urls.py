@@ -9,5 +9,6 @@ urlpatterns = [
     path('clients/delete/<int:pk>/', Manage.delete_client, name='delete_client'),
     path('tasks', Manage.tasks, name='tasks'),
     path('tasks/new/', Manage.add_task, name='add_task'),
+    path('tasks/edit/<int:pk>/', Manage.edit_task, name='edit_task'),
     path('expense_categories', Manage.expense_categories, name='expense_categories')
 ]
