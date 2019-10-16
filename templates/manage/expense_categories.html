@@ -42,6 +42,33 @@
                 </h6>
             </div>
         </li>
+
+        <div class="modal fade" id="edit_{{ category.pk }}" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Category</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{% url 'edit_expense_category' category.pk %}" method="POST">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Category name</label>
+                                <input type="text" name="name" class="form-control" value="{{ category.name }}" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-outline-danger mr-auto">Delete</a>
+                            <button class="btn btn-outline-primary" type="submit">Save</button>
+                            <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     {% endfor %}
 </ul>
 {% endblock %}
