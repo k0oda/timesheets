@@ -122,3 +122,16 @@ class Manage:
             'company': company,
             'categories': categories
         })
+
+    @staticmethod
+    @login_required
+    def add_category(request):
+        if request.method.lower() == 'post':
+            company = Company.objects.get(pk=request.user.company_id)
+            name = request.POST.get('name')
+            new_category = Category.objects.create(
+                company=company,
+                name=name
+            )
+            new_category.save()
+        return redirect('expense_categories')
