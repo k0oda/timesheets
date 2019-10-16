@@ -6,6 +6,36 @@
     <button type="button" class="mx-auto col-auto btn btn-outline-success" data-toggle="modal" data-target="#newTaskModal"><img src="{% static 'manage_app/img/add.svg' %}"> New Task</button>
 </div>
 
+<div class="modal fade" id="newTaskModal" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Task</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{% url 'add_task' %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Task name</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Default hourly rate</label>
+                        <input type="text" name="hourly_rate" class="form-control" value="0.0">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-primary" type="submit">Create</button>
+                    <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <ul class="list-group mt-3">
     {% for task in tasks %}
         <li class="list-group-item mx-auto">
