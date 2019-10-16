@@ -145,3 +145,11 @@ class Manage:
             category.name = request.POST.get('name')
             category.save()
         return redirect('expense_categories')
+
+    @staticmethod
+    @login_required
+    def delete_category(request, pk):
+        company = Company.objects.get(pk=request.user.company_id)
+        category = Category.objects.get(pk=pk)
+        category.delete()
+        return redirect('expense_categories')
