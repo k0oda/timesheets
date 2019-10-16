@@ -1,1 +1,21 @@
 {% extends 'manage/base.html' %}
+{% load static %}
+
+{% block tab_content %}
+<div class="row">
+    <button type="button" class="mx-auto col-auto btn btn-outline-success" data-toggle="modal" data-target="#newCategoryModal"><img src="{% static 'manage_app/img/add.svg' %}"> New Task</button>
+</div>
+
+<ul class="list-group mt-3">
+    {% for category in categories %}
+        <li class="list-group-item mx-auto">
+            <div class="d-flex w-100">
+                <button type="button" class="col-auto btn btn-outline-secondary" data-toggle="modal" data-target="#edit_{{ category.pk }}"><img src="{% static 'manage_app/img/edit.svg' %}" alt="Edit"></button>
+                <h6 class="col-auto font-weight-bold align-self-center" style="width: 20em; word-break: break-all;">
+                    {{ category }} 
+                </h6>
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
