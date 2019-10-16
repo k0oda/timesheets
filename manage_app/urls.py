@@ -13,5 +13,6 @@ urlpatterns = [
     path('tasks/delete/<int:pk>/', Manage.delete_task, name='delete_task'),
     path('expense_categories', Manage.expense_categories, name='expense_categories'),
     path('expense_categories/new/', Manage.add_category, name='add_expense_category'),
-    path('expense_categories/edit/<int:pk>/', Manage.edit_category, name='edit_expense_category')
+    path('expense_categories/edit/<int:pk>/', Manage.edit_category, name='edit_expense_category'),
+    path('expense_categories/delete/<int:pk>/', Manage.delete_category, name='delete_expense_category')
 ]

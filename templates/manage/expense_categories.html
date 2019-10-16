@@ -61,7 +61,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <a href="#" class="btn btn-outline-danger mr-auto">Delete</a>
+                            <a href="{% url 'delete_expense_category' category.pk %}" class="btn btn-outline-danger mr-auto">Delete</a>
                             <button class="btn btn-outline-primary" type="submit">Save</button>
                             <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                         </div>
