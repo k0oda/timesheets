@@ -76,6 +76,21 @@ class Manage:
 
     @staticmethod
     @login_required
+    def add_task(request):
+        if request.method.lower() == 'post':
+            company = Company.objects.get(pk=request.user.company_id)
+            name = request.POST.get('name')
+            hourly_rate = request.POST.get('hourly_rate')
+            new_task = Task.objects.create(
+                company=company,
+                name=name,
+                default_hourly_rate=hourly_rate
+            )
+            new_task.save()
+        return redirect('tasks')
+
+    @staticmethod
+    @login_required
     def expense_categories(request):
         company_id = request.user.company_id
         if Company.objects.filter(pk=company_id).exists():
