@@ -6,6 +6,32 @@
     <button type="button" class="mx-auto col-auto btn btn-outline-success" data-toggle="modal" data-target="#newCategoryModal"><img src="{% static 'manage_app/img/add.svg' %}"> New Task</button>
 </div>
 
+<div class="modal fade" id="newCategoryModal" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Category</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{% url 'add_expense_category' %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Category name</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-primary" type="submit">Create</button>
+                    <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <ul class="list-group mt-3">
     {% for category in categories %}
         <li class="list-group-item mx-auto">
