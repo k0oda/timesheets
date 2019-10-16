@@ -102,6 +102,14 @@ class Manage:
 
     @staticmethod
     @login_required
+    def delete_task(request, pk):
+        company = Company.objects.get(pk=request.user.company_id)
+        task = Task.objects.get(pk=pk)
+        task.delete()
+        return redirect('tasks')
+
+    @staticmethod
+    @login_required
     def expense_categories(request):
         company_id = request.user.company_id
         if Company.objects.filter(pk=company_id).exists():
