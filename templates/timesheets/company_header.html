@@ -36,10 +36,13 @@
                     <a class="nav-link {% if request.path == invoices_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ invoices_path }}">Invoices</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if request.path == manage_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ manage_path }}">Manage</a>
+                    <a class="nav-link {% if manage_path in request.path %} active {% else %} '' {% endif %} btn btn-link" href="{{ manage_path }}">Manage</a>
                 </li>
             </ul>
         </div>
+
+        {% block unmargin %}
+        {% endblock %}
 
         <div class="container mt-5">
             {% block tab_content %}
