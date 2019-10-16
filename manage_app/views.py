@@ -135,3 +135,13 @@ class Manage:
             )
             new_category.save()
         return redirect('expense_categories')
+
+    @staticmethod
+    @login_required
+    def edit_category(request, pk):
+        if request.method.lower() == 'post':
+            company = Company.objects.get(pk=request.user.company_id)
+            category = Category.objects.get(pk=pk)
+            category.name = request.POST.get('name')
+            category.save()
+        return redirect('expense_categories')
