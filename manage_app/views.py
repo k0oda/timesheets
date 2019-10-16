@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from company_panel.models import Company
-from manage_app.models import Client, Task
+from manage_app.models import Client, Task, Category
 
 
 class Manage:
@@ -116,4 +116,9 @@ class Manage:
             company = Company.objects.get(pk=company_id)
         else:
             company = 0
-        return render(request, 'manage/expense_categories.html', context={'company': company})
+        categories = Category.objects.filter(company=company)
+
+        return render(request, 'manage/expense_categories.html', context={
+            'company': company,
+            'categories': categories
+        })
