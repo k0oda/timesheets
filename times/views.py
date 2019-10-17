@@ -111,7 +111,7 @@ class Time:
         projects = Project.objects.filter(company=company)
         tasks = Task.objects.filter(company=company)
         today = date.today()
-        return render(request, 'timesheets/company_panel/time.html', context={
+        return render(request, 'times/time.html', context={
             'company': company,
             'date': _date,
             'entries': entries,

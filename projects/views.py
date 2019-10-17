@@ -18,7 +18,7 @@ class Projects:
         projects = Project.objects.filter(company=company)
         clients = Client.objects.filter(company=company)
         tasks = Task.objects.filter(company=company)
-        return render(request, 'timesheets/company_panel/projects.html', context={
+        return render(request, 'projects/projects.html', context={
             'company': company,
             'projects': projects,
             'clients': clients,

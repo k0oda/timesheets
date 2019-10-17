@@ -12,4 +12,4 @@ class Invoices:
             company = Company.objects.get(pk=company_id)
         else:
             company = 0
-        return render(request, 'timesheets/company_panel/invoices.html', context={'company': company})
+        return render(request, 'invoices/invoices.html', context={'company': company})

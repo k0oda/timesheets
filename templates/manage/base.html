@@ -1,0 +1,20 @@
+{% extends 'company_panel/company_header.html' %}
+
+{% block unmargin %}
+<div class="container mt-4">
+    <ul class="nav nav-tabs justify-content-center">
+        <li class="nav-item">
+            {% url 'clients' as clients_path %}
+            <a class="nav-link {% if clients_path in request.path %} active {% else %} '' {% endif %} btn btn-link" href="{{ clients_path }}">Clients</a>
+        </li>
+        <li class="nav-item">
+            {% url 'tasks' as tasks_path %}
+            <a class="nav-link {% if tasks_path in request.path %} active {% else %} '' {% endif %} btn btn-link" href="{{ tasks_path }}">Tasks</a>
+        </li>
+        <li class="nav-item">
+            {% url 'expense_categories' as expense_categories_path %}
+            <a class="nav-link {% if expense_categories_path in request.path %} active {% else %} '' {% endif %} btn btn-link" href="{{ expense_categories_path }}">Expense Categories</a>
+        </li>
+    </ul>
+</div>
+{% endblock %}

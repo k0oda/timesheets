@@ -20,7 +20,7 @@ class Expenses:
         projects = Project.objects.filter(company=company)
         categories = Category.objects.filter(company=company)
 
-        return render(request, 'timesheets/company_panel/expenses.html', context={
+        return render(request, 'expenses/expenses.html', context={
             'company': company,
             'expenses': expenses,
             'projects': projects,
