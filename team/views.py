@@ -12,5 +12,5 @@ class Team:
             company = Company.objects.get(pk=company_id)
         else:
             company = 0
-        return render(request, 'timesheets/company_panel/team.html', context={'company': company})
+        return render(request, 'team/team.html', context={'company': company})
 

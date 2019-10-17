@@ -13,9 +13,9 @@ class CompanyPanel:
                 company = Company.objects.get(pk=company_id)
             else:
                 company = 0
-            return render(request, 'timesheets/company_header.html', context={'company': company})
+            return render(request, 'company_panel/company_header.html', context={'company': company})
         else:
-            return render(request, 'timesheets/unauthenticated.html')
+            return render(request, 'company_panel/unauthenticated.html')
 
     @staticmethod
     @login_required
@@ -30,4 +30,4 @@ class CompanyPanel:
             return redirect('/')
         else:
             form = CreateCompanyForm()
-        return render(request, 'timesheets/new_company.html', {'form': form})
+        return render(request, 'company_panel/new_company.html', {'form': form})
