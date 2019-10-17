@@ -13,7 +13,7 @@ class CompanyPanel:
                 company = Company.objects.get(pk=company_id)
             else:
                 company = 0
-            return render(request, 'company_panel/company_header.html', context={'company': company})
+            return redirect('time')
         else:
             return render(request, 'company_panel/unauthenticated.html')
 
