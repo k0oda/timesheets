@@ -1,4 +1,6 @@
 {% extends 'company_panel/company_header.html' %}
 {% block tab_content %}
-    <p>Team</p>
+    {% for user in team %}
+        {{ user }}
+    {% endfor %}
 {% endblock %}

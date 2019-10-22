@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from company_panel.models import Company
+from authentication.models import UserProfile
 
 
 class Team:
@@ -12,5 +13,10 @@ class Team:
             company = Company.objects.get(pk=company_id)
         else:
             company = 0
-        return render(request, 'team/team.html', context={'company': company})
+        team = UserProfile.objects.filter(company=company)
+
+        return render(request, 'team/team.html', context={
+            'company': company,
+            'team': team
+        })
 
