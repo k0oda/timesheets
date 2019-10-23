@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('company_panel', '0004_auto_20191023_1727'),
+        ('company_panel', '0004_auto_20191023_1735'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
