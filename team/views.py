@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from company_panel.models import Company
 from authentication.models import UserProfile
-from team.models import Invitation
+from notifications.models import Invitation
 
 
 class Team:
