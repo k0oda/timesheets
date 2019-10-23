@@ -32,11 +32,5 @@ class Team:
                 company = company,
                 target_user = user
             )
-            send_mail(
-                f'Invitation to {company}',
-                f'Hello! You have been invited to {company} company in Timesheets application!\nGo to url below to accept invitation\n{new_invitation.pk}',
-                'noreply_timesheets@mail.ru',
-                [user.email]
-            )
             new_invitation.save()
         return redirect('team')
