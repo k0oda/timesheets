@@ -34,5 +34,6 @@ urlpatterns = [
     path('projects/', include('projects.urls')),
     path('team/', include('team.urls')),
     path('invoices/', Invoices.invoices, name='invoices'),
-    path('manage/', include('manage_app.urls'))
+    path('manage/', include('manage_app.urls')),
+    path('notifications/', include('notifications.urls'))
 ]
