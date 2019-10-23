@@ -8,4 +8,4 @@ class Invitation(models.Model):
     target_user = models.ForeignKey(UserProfile, models.CASCADE)
 
     def __str__(self):
-        return self.target_user.name
+        return self.target_user.username
