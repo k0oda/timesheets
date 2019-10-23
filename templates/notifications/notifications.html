@@ -1,0 +1,7 @@
+{% extends 'company_panel/company_header.html' %}
+
+{% block tab_content %}
+    {% for notification in notifications %}
+        {{ notification }}
+    {% endfor %}
+{% endblock %}
