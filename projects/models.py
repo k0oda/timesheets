@@ -11,6 +11,7 @@ class Project(models.Model):
     notes = models.CharField(max_length=350, blank=True, default=' ')
     budget = models.FloatField()
     total_earned = models.FloatField()
+    total_spent = models.FloatField()
 
     def __str__(self):
         return self.name
