@@ -79,6 +79,12 @@ class Time:
     def delete_entry(request, pk):
         company = Company.objects.get(pk=request.user.company_id)
         entry = Entry.objects.get(company=company, pk=pk)
+        
+        hourly_rate = 0
+        for task in entry.project.tasks.all():
+            hourly_rate += task.default_hourly_rate
+        entry.project.total_earned -= entry.timer.hour * hourly_rate
+        entry.project.save()
         entry.delete()
         return redirect('time', entry.date.year, entry.date.month, entry.date.day)
 
