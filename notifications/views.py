@@ -12,7 +12,7 @@ class Notifications:
         if Company.objects.filter(pk=company_id).exists():
             company = Company.objects.get(pk=company_id)
         else:
-            company = 0
+            company = -1
 
         notifications = Invitation.objects.filter(target_user=request.user)
         return render(request, 'notifications/notifications.html', context={
