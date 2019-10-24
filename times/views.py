@@ -46,6 +46,7 @@ class Time:
             timer = request.POST.get('timer')
             new_entry = Entry.objects.create(
                 company=company,
+                user=request.user,
                 date=_date,
                 project=project,
                 task=task,
@@ -107,7 +108,7 @@ class Time:
         next_date = _date + timedelta(days=1)
         previous_date = _date - timedelta(days=1)
 
-        entries = Entry.objects.filter(date=_date, company=company)
+        entries = Entry.objects.filter(date=_date, company=company, user=request.user)
         projects = Project.objects.filter(company=company)
         tasks = Task.objects.filter(company=company)
         today = date.today()
