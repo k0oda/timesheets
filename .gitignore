@@ -16,3 +16,6 @@ team/__pycache__/
 team/migrations/__pycache__/
 times/__pycache__/
 times/migrations/__pycache__/
+notifications/__pycache__/
+notifications/migrations/__pycache__/
+notifications/templatetags/__pycache__/

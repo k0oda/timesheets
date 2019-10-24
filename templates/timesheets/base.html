@@ -1,3 +1,5 @@
+{% load notifications_count %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +15,8 @@
             {% if request.user.is_authenticated %}
                 <div class="btn-group">
                     <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Profile
+                        {% get_notifications_count request.user as notifications_count %}
+                        Profile {% if notifications_count > 0 %} <span class="badge badge-light">{{ notifications_count }}</span> {% endif %}
                     </button>
 
                     <div class="dropdown-menu dropdown-menu-right py-1" aria-labelledby="profileDropdown">
@@ -21,7 +24,7 @@
                         <div class="dropdown-divider"></div>
                         <div class="btn-group-vertical w-100">
                             <a class="btn btn-block btn-outline-dark border-0 rounded-0" href="#">Settings</a>
-                            <a class="btn btn-block btn-outline-dark border-0 rounded-0" href="#">Notifications</a>
+                            <a class="btn btn-block btn-outline-dark border-0 rounded-0" href="{% url 'notifications' %}">Notifications {% if notifications_count > 0 %}<span class="badge badge-primary">{{ notifications_count }}</span>{% endif %}</a>
                         </div>
                         <div class="dropdown-divider"></div>
                         <a class="btn btn-block btn-outline-danger border-0 rounded-0" href="{% url 'exit' %}">Exit</a>

@@ -24,6 +24,7 @@ class CompanyPanel:
             form = CreateCompanyForm(request.POST)
             company = form.save(commit=False)
             user = request.user
+            company.owner = user
             company.save()
             user.company_id = company.pk
             user.save()

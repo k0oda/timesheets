@@ -1,0 +1,23 @@
+{% extends 'company_panel/company_header.html' %}
+
+{% block tab_content %}
+    <div class="row">
+        <h3 class="col-auto font-weight-bold mx-auto text-primary">Notifications</h3>
+    </div>
+
+    <ul class="list-group list-group-flush mt-3">
+        {% if notifications %}
+            {% for notification in notifications %}
+                <li class="list-group-item mx-auto">
+                    <div class="d-flex w-100">
+                        <h6 class="col-auto" style="width: 26em; word-break: break-all;"><strong>{{ notification.company }}</strong></h6>
+                        <a href="{% url 'accept_invitation' notification.pk %}" class="btn btn-outline-success btn-sm">Accept</a>
+                    </div>
+                </li>      
+            {% endfor %}
+        {% else %}
+            <br>
+            <h3 class="text-muted mx-auto text-center" style="width: 5em;">Empty</h3>
+        {% endif %}
+    </ul>
+{% endblock %}
