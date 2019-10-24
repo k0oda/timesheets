@@ -1,4 +1,44 @@
 {% extends 'company_panel/company_header.html' %}
+{% load static %}
+
 {% block tab_content %}
-    <p>Team</p>
+    <div class="row">
+        <button type="button" class="mx-auto col-auto btn btn-outline-success" data-toggle="modal" data-target="#inviteModal"><img src="{% static 'team/img/add.svg' %}">Invite Person</button>
+    </div>
+
+    <div class="modal fade" id="inviteModal" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Invite Person</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{% url 'invite' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" name="username" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-primary" type="submit">Invite</button>
+                        <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <ul class="list-group list-group-flush mt-3">
+        {% for user in team %}
+            <li class="list-group-item mx-auto">
+                <div class="d-flex w-100">
+                    <a href="#" class="btn btn-link"><h6 class="col-auto" style="width: 20em; word-break: break-all;">{{ user.first_name }} {{ user.last_name }}</a></h6> <h6 style="width: 10em; word-break: break-all;"> ({{ user.username }}) {% if company.owner == user %} <span class="badge badge-secondary">OWNER</span> {% endif %}</h6>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

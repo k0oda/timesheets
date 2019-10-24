@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'projects',
     'manage_app',
     'invoices',
-    'expenses'
+    'expenses',
+    'notifications'
 ]
 
 MIDDLEWARE = [
