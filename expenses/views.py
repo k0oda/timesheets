@@ -46,7 +46,7 @@ class Expenses:
             )
             expense.save()
 
-            project.total_spent += amount
+            project.total_spent += float(amount)
             project.save()
         return redirect('expenses')
 
