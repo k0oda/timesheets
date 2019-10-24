@@ -45,6 +45,9 @@ class Expenses:
                 amount=amount
             )
             expense.save()
+
+            project.total_spent += amount
+            project.save()
         return redirect('expenses')
 
     @staticmethod
