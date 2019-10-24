@@ -34,3 +34,12 @@ class Team:
             )
             new_invitation.save()
         return redirect('team')
+
+    @staticmethod
+    @login_required
+    def accept_invitation(request, pk):
+        invitation = Invitation.objects.get(pk=pk)
+        request.user.company_id = invitation.company.pk
+        request.user.save()
+        invitation.delete()
+        return redirect('time')
