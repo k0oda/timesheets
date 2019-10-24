@@ -15,7 +15,7 @@ class Team:
             company = Company.objects.get(pk=company_id)
         else:
             company = 0
-        team = UserProfile.objects.filter(company=company)
+        team = UserProfile.objects.filter(company_id=request.user.company_id)
 
         return render(request, 'team/team.html', context={
             'company': company,
