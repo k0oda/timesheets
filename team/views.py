@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from company_panel.models import Company
 from authentication.models import UserProfile
-from team.models import Invitation
+from notifications.models import Invitation
 
 
 class Team:
@@ -15,7 +15,7 @@ class Team:
             company = Company.objects.get(pk=company_id)
         else:
             company = 0
-        team = UserProfile.objects.filter(company=company)
+        team = UserProfile.objects.filter(company_id=request.user.company_id)
 
         return render(request, 'team/team.html', context={
             'company': company,
@@ -32,11 +32,14 @@ class Team:
                 company = company,
                 target_user = user
             )
-            send_mail(
-                f'Invitation to {company}',
-                f'Hello! You have been invited to {company} company in Timesheets application!\nGo to url below to accept invitation\n{new_invitation.pk}',
-                'noreply_timesheets@mail.ru',
-                [user.email]
-            )
             new_invitation.save()
         return redirect('team')
+
+    @staticmethod
+    @login_required
+    def accept_invitation(request, pk):
+        invitation = Invitation.objects.get(pk=pk)
+        request.user.company_id = invitation.company.pk
+        request.user.save()
+        invitation.delete()
+        return redirect('time')
