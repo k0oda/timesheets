@@ -18,3 +18,4 @@ times/__pycache__/
 times/migrations/__pycache__/
 notifications/__pycache__/
 notifications/migrations/__pycache__/
+notifications/templatetags/__pycache__/
