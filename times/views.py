@@ -31,6 +31,11 @@ class Time:
 
         entry.timer = (datetime.min + ((now_delta - start_time_delta) + timer_delta)).time()
         entry.start_time = time(0, 0)
+        hourly_rate = 0
+        for task in entry.project.tasks.all():
+            hourly_rate += task.default_hourly_rate
+        entry.project.total_earned += entry.timer.hour * hourly_rate
+        entry.project.save()
         entry.save()
         return redirect('time', entry.date.year, entry.date.month, entry.date.day)
 
