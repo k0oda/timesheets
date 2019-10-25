@@ -31,6 +31,11 @@ class Time:
 
         entry.timer = (datetime.min + ((now_delta - start_time_delta) + timer_delta)).time()
         entry.start_time = time(0, 0)
+        hourly_rate = 0
+        for task in entry.project.tasks.all():
+            hourly_rate += task.default_hourly_rate
+        entry.project.total_earned += entry.timer.hour * hourly_rate
+        entry.project.save()
         entry.save()
         return redirect('time', entry.date.year, entry.date.month, entry.date.day)
 
@@ -46,6 +51,7 @@ class Time:
             timer = request.POST.get('timer')
             new_entry = Entry.objects.create(
                 company=company,
+                user=request.user,
                 date=_date,
                 project=project,
                 task=task,
@@ -73,6 +79,12 @@ class Time:
     def delete_entry(request, pk):
         company = Company.objects.get(pk=request.user.company_id)
         entry = Entry.objects.get(company=company, pk=pk)
+        
+        hourly_rate = 0
+        for task in entry.project.tasks.all():
+            hourly_rate += task.default_hourly_rate
+        entry.project.total_earned -= entry.timer.hour * hourly_rate
+        entry.project.save()
         entry.delete()
         return redirect('time', entry.date.year, entry.date.month, entry.date.day)
 
@@ -107,7 +119,7 @@ class Time:
         next_date = _date + timedelta(days=1)
         previous_date = _date - timedelta(days=1)
 
-        entries = Entry.objects.filter(date=_date, company=company)
+        entries = Entry.objects.filter(date=_date, company=company, user=request.user)
         projects = Project.objects.filter(company=company)
         tasks = Task.objects.filter(company=company)
         today = date.today()

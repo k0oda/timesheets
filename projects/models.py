@@ -10,6 +10,8 @@ class Project(models.Model):
     tasks = models.ManyToManyField(Task)
     notes = models.CharField(max_length=350, blank=True, default=' ')
     budget = models.FloatField()
+    total_earned = models.FloatField(default=0)
+    total_spent = models.FloatField(default=0)
 
     def __str__(self):
         return self.name

@@ -33,12 +33,24 @@
     </div>
 
     <ul class="list-group list-group-flush mt-3">
-        {% for user in team %}
+        {% if team %}
             <li class="list-group-item mx-auto">
                 <div class="d-flex w-100">
-                    <a href="#" class="btn btn-link"><h6 class="col-auto" style="width: 20em; word-break: break-all;">{{ user.first_name }} {{ user.last_name }}</a></h6> <h6 style="width: 10em; word-break: break-all;"> ({{ user.username }}) {% if company.owner == user %} <span class="badge badge-secondary">OWNER</span> {% endif %}</h6>
+                    <h6 class="col-auto" style="width: 20em; word-break: break-all; margin-left: 3em;">Name</h6> 
+                    <h6 style="width: 10em; word-break: break-all;"> Username</h6>
                 </div>
             </li>
-        {% endfor %}
+            {% for user in team %}
+                <li class="list-group-item mx-auto">
+                    <div class="d-flex w-100">
+                        <a href="#" class="btn btn-link"><h6 class="col-auto" style="width: 20em; word-break: break-all;">{{ user.first_name }} {{ user.last_name }}</a></h6> 
+                        <h6 class="align-self-center" style="width: 10em; word-break: break-all;"> ({{ user.username }}) {% if company.owner == user %} <span class="badge badge-secondary">OWNER</span> {% endif %}</h6>
+                    </div>
+                </li>
+            {% endfor %}
+        {% else %}
+            <hr>
+            <h3 class="text-muted mx-auto text-center" style="width: 5em;">Empty</h3>
+        {% endif %}
     </ul>
 {% endblock %}

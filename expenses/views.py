@@ -45,6 +45,9 @@ class Expenses:
                 amount=amount
             )
             expense.save()
+
+            project.total_spent += float(amount)
+            project.save()
         return redirect('expenses')
 
     @staticmethod
@@ -70,5 +73,7 @@ class Expenses:
     def delete_expense(request, expense_id):
         company = Company.objects.get(pk=request.user.company_id)
         expense = Expense.objects.get(pk=expense_id, company=company)
+        expense.project.total_spent -= expense.amount
+        expense.project.save()
         expense.delete()
         return redirect('expenses')

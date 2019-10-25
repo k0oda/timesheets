@@ -58,67 +58,82 @@
     </div>
 
     <ul class="list-group list-group-flush mt-3">
-        {% for project in projects %}
+        {% if projects %}
             <li class="list-group-item mx-auto">
                 <div class="d-flex w-100">
-                    <h6 class="col-auto" style="width: 26em; word-break: break-all;"><strong>{{ project }}</strong> ({{ project.client.name }})</h6>
-                    <h4 class="col-auto align-self-center" style="width: 4em;">{{ project.budget }}</h4>
-                    <button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_{{ project.pk }}"><img src="{% static 'projects/img/edit.svg' %}" alt="Edit"></button>
+                    <h5 class="col-auto" style="width: 20em; word-break: break-all;">Project (Client)</h5>
+                    <h5 class="col-auto align-self-center" style="width: 4em; margin-right: 1em;">Budget</h5>
+                    <h5 class="col-auto align-self-center" style="width: 4em; margin-right: 1em;">Earned</h5>
+                    <h5 class="col-auto align-self-center" style="width: 4em; margin-right: 5em;">Spent</h5>
                 </div>
-                <p class="col-auto mb-1" style="width: 24em; word-break: break-word;">({% for task in project.tasks.all %}{{ task }}{% if not forloop.last %}, {% endif %}{% endfor %})</p>
-                <p class="col-auto text-muted mb-1" style="width: 24em; word-break: break-word;">{{ project.notes }}</p>
             </li>
+            {% for project in projects %}
+                <li class="list-group-item mx-auto">
+                    <div class="d-flex w-100">
+                        <h6 class="col-auto" style="width: 26em; word-break: break-all;"><strong>{{ project }}</strong> ({{ project.client.name }})</h6>
+                        <h4 class="col-auto align-self-center" style="width: 4em;">{{ project.budget }}</h4>
+                        <h4 class="col-auto align-self-center" style="width: 4em;">{{ project.total_earned }}</h4>
+                        <h4 class="col-auto align-self-center" style="width: 4em;">{{ project.total_spent }}</h4>
+                        <button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_{{ project.pk }}"><img src="{% static 'projects/img/edit.svg' %}" alt="Edit"></button>
+                    </div>
+                    <p class="col-auto mb-1" style="width: 24em; word-break: break-word;">({% for task in project.tasks.all %}{{ task }}{% if not forloop.last %}, {% endif %}{% endfor %})</p>
+                    <p class="col-auto text-muted mb-1" style="width: 24em; word-break: break-word;">{{ project.notes }}</p>
+                </li>
 
-            <div class="modal fade" id="edit_{{ project.pk }}" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Edit Project</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                <div class="modal fade" id="edit_{{ project.pk }}" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edit Project</h5>
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form action="{% url 'edit_project' project.pk %}" method="POST">
+                                {% csrf_token %}
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>Project name</label>
+                                        <input type="text" name="name" class="form-control" value="{{ project.name }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Client</label>
+                                        <select name="client" class="form-control" required>
+                                            {% for client in clients %}
+                                                <option {% if project.client == client %} selected {% endif %}>{{ client }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tasks</label>
+                                        <select name="tasks" class="form-control" multiple required>
+                                            {% for task in tasks %}
+                                                <option {% if task in project.tasks.all %} selected {% endif %}>{{ task }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col">
+                                            <textarea class="form-control" name="notes" cols="3" rows="5" placeholder="Notes (optional)">{{ project.notes }}</textarea>
+                                        </div>
+                                        <div class="form-group col-2">
+                                            <input type="text" name="budget" class="form-control" required value="{{ project.budget|unlocalize }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="btn btn-outline-danger mr-auto" href="{% url 'delete_project' project.pk %}">Delete</a>
+                                    <button class="btn btn-outline-primary" type="submit">Save</button>
+                                    <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
                         </div>
-                        <form action="{% url 'edit_project' project.pk %}" method="POST">
-                            {% csrf_token %}
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label>Project name</label>
-                                    <input type="text" name="name" class="form-control" value="{{ project.name }}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Client</label>
-                                    <select name="client" class="form-control" required>
-                                        {% for client in clients %}
-                                            <option {% if project.client == client %} selected {% endif %}>{{ client }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Tasks</label>
-                                    <select name="tasks" class="form-control" multiple required>
-                                        {% for task in tasks %}
-                                            <option {% if task in project.tasks.all %} selected {% endif %}>{{ task }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col">
-                                        <textarea class="form-control" name="notes" cols="3" rows="5" placeholder="Notes (optional)">{{ project.notes }}</textarea>
-                                    </div>
-                                    <div class="form-group col-2">
-                                        <input type="text" name="budget" class="form-control" required value="{{ project.budget|unlocalize }}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <a class="btn btn-outline-danger mr-auto" href="{% url 'delete_project' project.pk %}">Delete</a>
-                                <button class="btn btn-outline-primary" type="submit">Save</button>
-                                <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+            <hr>
+            <h3 class="text-muted mx-auto text-center" style="width: 5em;">Empty</h3>
+        {% endif %}
     </ul>
 {% endblock %}

@@ -54,64 +54,76 @@
     </div>
 
     <ul class="list-group list-group-flush mt-3">
-        {% for expense in expenses %}
+        {% if expenses %}
             <li class="list-group-item mx-auto">
                 <div class="d-flex w-100">
-                    <p class="col-auto" style="width: 7em;">{{ expense.date|date:"D, d M" }}</p>
-                    <h6 class="col-auto" style="width: 26em; word-break: break-all;"><strong>{{ expense }}</strong> ({{ expense.project.client.name }})</h6>
-                    <h4 class="col-auto align-self-center" style="width: 4em;">{{ expense.amount }}</h4>
-                    <button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_{{ expense.pk }}"><img src="{% static 'expenses/img/edit.svg' %}" alt="Edit"></button>
+                    <h5 class="col-auto" style="width: 2em; margin-right: 4em;">Date</h5>
+                    <h5 class="col-auto align-self-center" style="width: 20em;">Project (Client)</h5>
+                    <h5 class="col-auto align-self-center" style="width: 4em; margin-right: 5em;">Amount</h5>
                 </div>
-                <p class="col-auto mb-1" style="margin-left: 7em;">{{ expense.category }}</p>
-                <p class="col-auto text-muted mb-1" style="width: 24em; word-break: break-word; margin-left: 7em;">{{ expense.notes }}</p>
             </li>
+            {% for expense in expenses %}
+                <li class="list-group-item mx-auto">
+                    <div class="d-flex w-100">
+                        <p class="col-auto" style="width: 7em;">{{ expense.date|date:"D, d M" }}</p>
+                        <h6 class="col-auto" style="width: 26em; word-break: break-all;"><strong>{{ expense }}</strong> ({{ expense.project.client.name }})</h6>
+                        <h4 class="col-auto align-self-center" style="width: 4em;">{{ expense.amount }}</h4>
+                        <button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_{{ expense.pk }}"><img src="{% static 'expenses/img/edit.svg' %}" alt="Edit"></button>
+                    </div>
+                    <p class="col-auto mb-1" style="margin-left: 7em;">{{ expense.category }}</p>
+                    <p class="col-auto text-muted mb-1" style="width: 24em; word-break: break-word; margin-left: 7em;">{{ expense.notes }}</p>
+                </li>
 
-            <div class="modal fade" id="edit_{{ expense.pk }}" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Edit Expense</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                <div class="modal fade" id="edit_{{ expense.pk }}" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edit Expense</h5>
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form action="{% url 'edit_expense' expense.pk %}" method="POST">
+                                {% csrf_token %}
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>Project</label>
+                                        <select name="project" class="form-control" required>
+                                            {% for project in projects %}
+                                                <option {% if expense.project == project %} selected {% endif %}>{{ project }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Category</label>
+                                        <select name="category" class="form-control" required>
+                                            {% for category in categories %}
+                                                <option {% if expense.category == category %} selected {% endif %}>{{ category }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col">
+                                            <textarea class="form-control" name="notes" cols="3" rows="5" placeholder="Notes (optional)">{{ expense.notes }}</textarea>
+                                        </div>
+                                        <div class="form-group col-2">
+                                            <input type="text" name="amount" class="form-control" required value="{{ expense.amount|unlocalize }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="btn btn-outline-danger mr-auto" href="{% url 'delete_expense' expense.pk %}">Delete</a>
+                                    <button class="btn btn-outline-primary" type="submit">Save</button>
+                                    <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
                         </div>
-                        <form action="{% url 'edit_expense' expense.pk %}" method="POST">
-                            {% csrf_token %}
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label>Project</label>
-                                    <select name="project" class="form-control" required>
-                                        {% for project in projects %}
-                                            <option {% if expense.project == project %} selected {% endif %}>{{ project }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Category</label>
-                                    <select name="category" class="form-control" required>
-                                        {% for category in categories %}
-                                            <option {% if expense.category == category %} selected {% endif %}>{{ category }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col">
-                                        <textarea class="form-control" name="notes" cols="3" rows="5" placeholder="Notes (optional)">{{ expense.notes }}</textarea>
-                                    </div>
-                                    <div class="form-group col-2">
-                                        <input type="text" name="amount" class="form-control" required value="{{ expense.amount|unlocalize }}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <a class="btn btn-outline-danger mr-auto" href="{% url 'delete_expense' expense.pk %}">Delete</a>
-                                <button class="btn btn-outline-primary" type="submit">Save</button>
-                                <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+            <hr>
+            <h3 class="text-muted mx-auto text-center" style="width: 5em;">Empty</h3>
+        {% endif %}
     </ul>
 {% endblock %}
