@@ -21,4 +21,4 @@ class Invoice(models.Model):
     notes = models.CharField(max_length=350, blank=True)
 
     def __str__(self):
-        return self.client
+        return self.client.name
