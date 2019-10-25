@@ -18,6 +18,7 @@ class Invoice(models.Model):
     company = models.ForeignKey(Company, models.CASCADE)
     date = models.DateField(auto_now=True)
     items = models.ManyToManyField(Item)
+    total_amount = models.FloatField()
     notes = models.CharField(max_length=350, blank=True)
 
     def __str__(self):
