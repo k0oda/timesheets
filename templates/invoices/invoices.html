@@ -1,4 +1,31 @@
 {% extends 'company_panel/company_header.html' %}
+{% load static %}
+
 {% block tab_content %}
-    <p>Invoices</p>
+<ul class="list-group list-group-flush mt-3">
+    {% if invoices %}
+        <li class="list-group-item mx-auto">
+            <div class="d-flex w-100">
+                <h5 class="col-auto" style="width: 9em; word-break: break-all;">Date</h5>
+                <h5 class="col-auto align-self-center" style="width: 10em; margin-right: 1em;">Client</h5>
+                <h5 class="col-auto align-self-center" style="width: 5em; margin-right: 5em;">Amount</h5>
+            </div>
+        </li>
+        {% for invoice in invoices %}
+            <li class="list-group-item mx-auto">
+                <div class="d-flex w-100">
+                    <h6 class="col-auto align-self-center" style="width: 11em;">{{ invoice.date }}</h6>
+                    <h4 class="col-auto" style="width: 10em; word-break: break-all;">{{ invoice.client }}</h4>
+                    <h4 class="col-auto" style="width: 5em; word-break: break-all;">{{ invoice.total_amount }}</h4>
+                    <button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_{{ invoice.pk }}"><img src="{% static 'projects/img/edit.svg' %}" alt="Edit"></button>
+                </div>
+                <p class="col-auto mb-1" style="width: 24em; word-break: break-word;">{% for item in invoice.items.all %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+                <p class="col-auto text-muted mb-1" style="width: 24em; word-break: break-word;">{{ invoice.notes }}</p>
+            </li>
+        {% endfor %}
+    {% else %}
+        <hr>
+        <h3 class="text-muted mx-auto text-center" style="width: 5em;">Empty</h3>
+    {% endif %}
+</ul>
 {% endblock %}
