@@ -72,9 +72,15 @@ class Invoices:
                 name=request.POST.get('name'),
                 description=request.POST.get('description'),
                 amount=request.POST.get('amount'),
-                unit_price=request.POST.get('unit_price')
+                unit_price=request.POST.get('unit_price'),
+                total_price=int(request.POST.get('amount')) * float(request.POST.get('unit_price'))
             )
             new_item.save()
+
+            invoice.total_amount += int(new_item.amount)
+            invoice.total_unit_price += float(new_item.unit_price)
+            invoice.total_price += int(new_item.amount) * float(new_item.unit_price)
+            invoice.save()
         return render(request, 'invoices/add_items.html', context={
             'company': company,
             'invoice': invoice,
