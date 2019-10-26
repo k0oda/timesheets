@@ -24,6 +24,7 @@ class Item(models.Model):
     description = models.CharField(max_length=350, blank=True)
     unit_price = models.FloatField(default=0.0)
     amount = models.IntegerField(default=0)
+    total_price = models.FloatField(null=True, default=0)
 
     def __str__(self):
         return self.name
