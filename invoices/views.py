@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from company_panel.models import Company
-from invoices.models import Invoice
+from invoices.models import Invoice, Item
 
 
 class Invoices:
@@ -15,8 +15,10 @@ class Invoices:
             company = 0
         
         invoices = Invoice.objects.filter(company=company)
+        items = Item.objects.filter(company=company)
 
         return render(request, 'invoices/invoices.html', context={
             'company': company,
-            'invoices': invoices
+            'invoices': invoices,
+            'items': items
         })
