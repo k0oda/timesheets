@@ -10,9 +10,11 @@
     {% if invoices %}
         <li class="list-group-item mx-auto">
             <div class="d-flex w-100">
-                <h5 class="col-auto" style="width: 9em; word-break: break-all;">Date</h5>
+                <h5 class="col-auto align-self-center" style="width: 9em; word-break: break-all;">Date</h5>
                 <h5 class="col-auto align-self-center" style="width: 10em; margin-right: 1em;">Client</h5>
-                <h5 class="col-auto align-self-center" style="width: 5em; margin-right: 5em;">Amount</h5>
+                <h5 class="col-auto align-self-center" style="width: 5em; margin-right: 1em;">Amount</h5>
+                <h5 class="col-auto align-self-center" style="width: 5em; margin-right: 1em;">Unit price</h5>
+                <h5 class="col-auto align-self-center" style="width: 5em; margin-right: 5em;">Total price</h5>
             </div>
         </li>
         {% for invoice in invoices %}
@@ -21,12 +23,16 @@
                     <h6 class="col-auto align-self-center" style="width: 11em;">{{ invoice.date }}</h6>
                     <h4 class="col-auto" style="width: 10em; word-break: break-all;">{{ invoice.client }}</h4>
                     <h4 class="col-auto" style="width: 5em; word-break: break-all;">{{ invoice.total_amount }}</h4>
-                    <button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_{{ invoice.pk }}"><img src="{% static 'projects/img/edit.svg' %}" alt="Edit"></button>
+                    <h4 class="col-auto" style="width: 5em; word-break: break-all;">{{ invoice.total_unit_price }}</h4>
+                    <h4 class="col-auto" style="width: 5em; word-break: break-all;">{{ invoice.total_price }}</h4>
+                    <button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_{{ invoice.pk }}"><img src="{% static 'invoices/img/edit.svg' %}" alt="Edit"></button>
                 </div>
                 {% for item in invoice.get_items %}
                     <div class="d-flex w-100">
                         <h5 class="col-auto mb-1" style="width: 21em; word-break: break-word;">{{ item }}</h5>
                         <h5 class="col-auto" style="width: 5em; word-break: break-all;">{{ item.amount }}</h5>
+                        <h5 class="col-auto" style="width: 5em; word-break: break-all; margin-left: 1em;">{{ item.unit_price }}</h5>
+                        <h5 class="col-auto" style="width: 5em; word-break: break-all; margin-left: 1em;">{{ item.total_price }}</h5>
                     </div>
                 {% endfor %}
                 <p class="col-auto text-muted mb-1" style="width: 24em; word-break: break-word;">{{ invoice.notes }}</p>
