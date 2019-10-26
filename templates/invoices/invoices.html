@@ -2,6 +2,10 @@
 {% load static %}
 
 {% block tab_content %}
+<div class="row">
+    <a class="mx-auto col-auto btn btn-outline-success" href="{% url 'add_invoice' %}"><img src="{% static 'invoices/img/add.svg' %}"> New Invoice</a>
+</div>
+
 <ul class="list-group list-group-flush mt-3">
     {% if invoices %}
         <li class="list-group-item mx-auto">
