@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from company_panel.models import Company
 from invoices.models import Invoice, Item
+from manage_app.models import Client
 
 
 class Invoices:
@@ -53,3 +54,29 @@ class Invoices:
             })
 
     @staticmethod
+    @login_required
+    def add_item(request, invoice_pk):
+        company_id = request.user.company_id
+        if Company.objects.filter(pk=company_id).exists():
+            company = Company.objects.get(pk=company_id)
+        else:
+            company = 0
+        
+        invoice = Invoice.objects.get(company=company, pk=invoice_pk)
+        items = Item.objects.filter(company=company, invoice=invoice)
+
+        if request.method.lower() == 'post':
+            new_item = Item.objects.create(
+                company=company,
+                invoice=invoice,
+                name=request.POST.get('name'),
+                description=request.POST.get('description'),
+                amount=request.POST.get('amount'),
+                unit_price=request.POST.get('unit_price')
+            )
+            new_item.save()
+        return render(request, 'invoices/add_items.html', context={
+            'company': company,
+            'invoice': invoice,
+            'items': items
+        })
