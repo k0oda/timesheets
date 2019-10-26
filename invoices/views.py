@@ -86,3 +86,32 @@ class Invoices:
             'invoice': invoice,
             'items': items
         })
+
+    @staticmethod
+    @login_required
+    def edit_item(request, pk):
+        company_id = request.user.company_id
+        if Company.objects.filter(pk=company_id).exists():
+            company = Company.objects.get(pk=company_id)
+        else:
+            company = 0
+
+        item = Item.objects.get(company=company, pk=pk)
+
+        if request.method.lower() == 'post':
+            item.invoice.total_amount -= int(item.amount)
+            item.invoice.total_unit_price -= float(item.unit_price)
+            item.invoice.total_price -= int(item.amount) * float(item.unit_price)
+
+            item.name = request.POST.get('name')
+            item.description = request.POST.get('description')
+            item.amount = request.POST.get('amount')
+            item.unit_price = request.POST.get('unit_price')
+            item.total_price = int(item.amount) * float(item.unit_price)
+            item.save()
+
+            item.invoice.total_amount += int(item.amount)
+            item.invoice.total_unit_price += float(item.unit_price)
+            item.invoice.total_price += item.total_price
+            item.invoice.save()
+        return redirect('add_item', item.invoice.pk)
