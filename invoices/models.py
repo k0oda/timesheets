@@ -7,7 +7,9 @@ class Invoice(models.Model):
     client = models.ForeignKey(Client, models.CASCADE)
     company = models.ForeignKey(Company, models.CASCADE)
     date = models.DateField(auto_now=True)
-    total_amount = models.FloatField(null=True)
+    total_amount = models.IntegerField(null=True, default=0)
+    total_unit_price = models.FloatField(null=True, default=0)
+    total_price = models.FloatField(null=True, default=0)
     notes = models.CharField(max_length=350, blank=True)
 
     def __str__(self):
