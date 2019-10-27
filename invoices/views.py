@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from company_panel.models import Company
 from invoices.models import Invoice, Item
 from manage_app.models import Client
+from django.utils.dateparse import parse_date
 
 
 class Invoices:
@@ -35,7 +36,7 @@ class Invoices:
 
         if request.method.lower() == 'post':
             client = Client.objects.get(name=request.POST.get('client'), company=company)
-            date = request.POST.get('date')
+            date = parse_date(request.POST.get('date'))
             notes = request.POST.get('notes')
             new_invoice = Invoice.objects.create(
                 company=company,
