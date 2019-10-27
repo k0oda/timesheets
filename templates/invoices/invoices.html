@@ -69,7 +69,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <a href="{% url 'add_item' invoice.pk %}" class="btn btn-outline-primary mr-auto">Edit items</a>
+                                <a href="{% url 'delete_invoice' invoice.pk %}" class="btn btn-outline-danger mr-auto">Delete</a>
+                                <a href="{% url 'add_item' invoice.pk %}" class="btn btn-outline-primary">Edit items</a>
                                 <button class="btn btn-outline-success" type="submit">Save</button>
                                 <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                             </div>
