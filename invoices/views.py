@@ -75,6 +75,19 @@ class Invoices:
 
     @staticmethod
     @login_required
+    def delete_invoice(request, pk):
+        company_id = request.user.company_id
+        if Company.objects.filter(pk=company_id).exists():
+            company = Company.objects.get(pk=company_id)
+        else:
+            company = 0
+
+        invoice = Invoice.objects.get(company=company, pk=pk)
+        invoice.delete()
+        return redirect('invoices')
+
+    @staticmethod
+    @login_required
     def add_item(request, invoice_pk):
         company_id = request.user.company_id
         if Company.objects.filter(pk=company_id).exists():
