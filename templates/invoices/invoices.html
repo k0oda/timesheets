@@ -1,4 +1,87 @@
 {% extends 'company_panel/company_header.html' %}
+{% load static %}
+
 {% block tab_content %}
-    <p>Invoices</p>
+<div class="row">
+    <a class="mx-auto col-auto btn btn-outline-success" href="{% url 'add_invoice' %}"><img src="{% static 'invoices/img/add.svg' %}"> New Invoice</a>
+</div>
+
+<ul class="list-group list-group-flush mt-3">
+    {% if invoices %}
+        <li class="list-group-item mx-auto">
+            <div class="d-flex w-100">
+                <h5 class="col-auto align-self-center" style="width: 9em; word-break: break-all;">Date</h5>
+                <h5 class="col-auto align-self-center" style="width: 10em; margin-right: 1em;">Client</h5>
+                <h5 class="col-auto align-self-center" style="width: 5em; margin-right: 1em;">Amount</h5>
+                <h5 class="col-auto align-self-center" style="width: 5em; margin-right: 1em;">Unit price</h5>
+                <h5 class="col-auto align-self-center" style="width: 5em; margin-right: 5em;">Total price</h5>
+            </div>
+        </li>
+        {% for invoice in invoices %}
+            <li class="list-group-item mx-auto">
+                <div class="d-flex w-100">
+                    <h6 class="col-auto align-self-center" style="width: 11em;">{{ invoice.date }}</h6>
+                    <h4 class="col-auto" style="width: 10em; word-break: break-all;">{{ invoice.client }}</h4>
+                    <h4 class="col-auto" style="width: 5em; word-break: break-all;">{{ invoice.total_amount }}</h4>
+                    <h4 class="col-auto" style="width: 5em; word-break: break-all;">{{ invoice.total_unit_price }}</h4>
+                    <h4 class="col-auto" style="width: 5em; word-break: break-all;">{{ invoice.total_price }}</h4>
+                    <button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_{{ invoice.pk }}"><img src="{% static 'invoices/img/edit.svg' %}" alt="Edit"></button>
+                </div>
+                {% for item in invoice.get_items %}
+                    <div class="d-flex w-100">
+                        <h5 class="col-auto mb-1" style="width: 21em; word-break: break-word;">{{ item }}</h5>
+                        <h5 class="col-auto" style="width: 5em; word-break: break-all;">{{ item.amount }}</h5>
+                        <h5 class="col-auto" style="width: 5em; word-break: break-all; margin-left: 1em;">{{ item.unit_price }}</h5>
+                        <h5 class="col-auto" style="width: 5em; word-break: break-all; margin-left: 1em;">{{ item.total_price }}</h5>
+                    </div>
+                {% endfor %}
+                <p class="col-auto text-muted mb-1" style="width: 24em; word-break: break-word;">{{ invoice.notes }}</p>
+            </li>
+        
+            <div class="modal fade" id="edit_{{ invoice.pk }}" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit invoice</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="{% url 'edit_invoice' invoice.pk %}" method="POST">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Client</label>
+                                    <select name="client" class="form-control" required>
+                                        {% for client in clients %}
+                                            <option {% if invoice.client == client %} selected {% endif %}>{{ client }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Date</label>
+                                    <input type="date" name="date" class="form-control" value="{{ invoice.date|date:"Y-m-d" }}" required>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col">
+                                        <textarea class="form-control" name="notes" cols="3" rows="5" placeholder="Notes (optional)">{{ invoice.notes }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="{% url 'delete_invoice' invoice.pk %}" class="btn btn-outline-danger mr-auto">Delete</a>
+                                <a href="{% url 'add_item' invoice.pk %}" class="btn btn-outline-primary">Edit items</a>
+                                <button class="btn btn-outline-success" type="submit">Save</button>
+                                <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <hr>
+        <h3 class="text-muted mx-auto text-center" style="width: 5em;">Empty</h3>
+    {% endif %}
+</ul>
 {% endblock %}

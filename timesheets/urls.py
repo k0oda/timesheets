@@ -33,7 +33,7 @@ urlpatterns = [
     path('expenses/', include('expenses.urls')),
     path('projects/', include('projects.urls')),
     path('team/', include('team.urls')),
-    path('invoices/', Invoices.invoices, name='invoices'),
+    path('invoices/', include('invoices.urls')),
     path('manage/', include('manage_app.urls')),
     path('notifications/', include('notifications.urls'))
 ]
