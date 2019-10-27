@@ -6,7 +6,7 @@ from company_panel.models import Company
 class Invoice(models.Model):
     client = models.ForeignKey(Client, models.CASCADE)
     company = models.ForeignKey(Company, models.CASCADE)
-    date = models.DateField(auto_now=True)
+    date = models.DateField()
     total_amount = models.IntegerField(null=True, default=0)
     total_unit_price = models.FloatField(null=True, default=0)
     total_price = models.FloatField(null=True, default=0)
