@@ -58,6 +58,23 @@ class Invoices:
 
     @staticmethod
     @login_required
+    def edit_invoice(request, pk):
+        company_id = request.user.company_id
+        if Company.objects.filter(pk=company_id).exists():
+            company = Company.objects.get(pk=company_id)
+        else:
+            company = 0
+
+        if request.method.lower() == 'post':
+            invoice = Invoice.objects.get(company=company, pk=pk)
+            invoice.client = Client.objects.get(name=request.POST.get('client'), company=company)
+            invoice.date = parse_date(request.POST.get('date'))
+            invoice.notes = request.POST.get('notes')
+            invoice.save()
+        return redirect('invoices')
+
+    @staticmethod
+    @login_required
     def add_item(request, invoice_pk):
         company_id = request.user.company_id
         if Company.objects.filter(pk=company_id).exists():
