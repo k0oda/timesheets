@@ -18,11 +18,13 @@ class Invoices:
         
         invoices = Invoice.objects.filter(company=company)
         items = Item.objects.filter(company=company)
+        clients = Client.objects.filter(company=company)
 
         return render(request, 'invoices/invoices.html', context={
             'company': company,
             'invoices': invoices,
-            'items': items
+            'items': items,
+            'clients': clients
         })
 
     @staticmethod
