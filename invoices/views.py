@@ -115,3 +115,16 @@ class Invoices:
             item.invoice.total_price += item.total_price
             item.invoice.save()
         return redirect('add_item', item.invoice.pk)
+
+    @staticmethod
+    @login_required
+    def delete_item(request, pk):
+        company_id = request.user.company_id
+        if Company.objects.filter(pk=company_id).exists():
+            company = Company.objects.get(pk=company_id)
+        else:
+            company = 0
+
+        item = Item.objects.get(company=company, pk=pk)
+        item.delete()
+        return redirect('add_item', item.invoice.pk)
