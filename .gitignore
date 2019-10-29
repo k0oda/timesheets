@@ -4,6 +4,7 @@ authentication/__pycache__/
 authentication/migrations/__pycache__/
 company_panel/__pycache__/
 company_panel/migrations/__pycache__/
+company_panel/templatetags/__pycache__/
 expenses/__pycache__/
 expenses/migrations/__pycache__/
 invoices/__pycache__/
