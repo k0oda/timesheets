@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'manage_app',
     'invoices',
     'expenses',
-    'notifications'
+    'notifications',
+    'settings'
 ]
 
 MIDDLEWARE = [
