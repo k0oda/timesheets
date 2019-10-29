@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate
 from company_panel.models import Company
 
 
@@ -26,4 +27,19 @@ class Settings:
             request.user.last_name = request.POST.get('last_name')
             request.user.email = request.POST.get('email')
             request.user.save()
+        return redirect('settings')
+
+    @staticmethod
+    @login_required
+    def change_password(request):
+        if request.method.lower() == 'post':
+            old_password = request.POST.get('old_password')
+            new_password = request.POST.get('new_password')
+            repeat_password = request.POST.get('repeat_password')
+            
+            user = authenticate(username=request.user.username, password=old_password)
+            if user is not None:
+                if new_password == repeat_password:
+                    request.user.set_password(new_password)
+                    request.user.save()
         return redirect('settings')
