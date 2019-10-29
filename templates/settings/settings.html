@@ -1,5 +1,89 @@
 {% extends 'company_panel/company_header.html' %}
+{% load static %}
 
 {% block tab_content %}
-    Settings
+    <div class="row">
+        <h3 class="col-auto font-weight-bold mx-auto text-primary">Settings</h3>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-4">
+            <div class="list-group" role="tablist">
+                <a class="list-group-item list-group-item-action active" data-toggle="list" href="#main" role="tab">Main Info</a>
+                <a class="list-group-item list-group-item-action" data-toggle="list" href="#company" role="tab">Company</a>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="main" role="tabpanel">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-4 font-weight-bold">
+                                    Username
+                                </div>
+                                <div class="col-auto">
+                                    {{ request.user.username }}
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-4 font-weight-bold">
+                                    First name
+                                </div>
+                                <div class="col-auto">
+                                    {{ request.user.first_name }}
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-4 font-weight-bold">
+                                    Last name
+                                </div>
+                                <div class="col-auto">
+                                    {{ request.user.last_name }}
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-4 font-weight-bold">
+                                    Email
+                                </div>
+                                <div class="col-auto">
+                                    {{ request.user.email }}
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-4 font-weight-bold">
+                                    Date of registration
+                                </div>
+                                <div class="col-auto">
+                                    {{ request.user.date_joined }}
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-4 font-weight-bold">
+                                    Last login
+                                </div>
+                                <div class="col-auto">
+                                    {{ request.user.last_login }}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <button class="btn btn-outline-primary mt-2 float-right"><img src="{% static 'settings/img/edit.svg' %}" alt="Edit"></button>
+                </div>
+                <div class="tab-pane fade" id="company" role="tabpanel">
+                    Company
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
