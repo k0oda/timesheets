@@ -182,6 +182,8 @@
                         </ul>
 
                         <button class="btn btn-outline-primary mt-2 float-right" data-toggle="modal" data-target="#editCompanyModal"><img src="{% static 'settings/img/edit.svg' %}" alt="Edit"></button>
+                        <a href="{% url 'leave_company' %}" class="btn btn-outline-danger mt-2">{% if company.owner == request.user %} Delete {% else %} Leave {% endif %} company</a>
+
                         <div class="modal fade" id="editCompanyModal" role="dialog">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
