@@ -43,3 +43,12 @@ class Settings:
                     request.user.set_password(new_password)
                     request.user.save()
         return redirect('settings')
+
+    @staticmethod
+    @login_required
+    def edit_company(request):
+        if request.method.lower() == 'post':
+            company = Company.objects.get(pk=request.user.company_id)
+            company.name = request.POST.get('name')
+            company.save()
+        return redirect('settings')
