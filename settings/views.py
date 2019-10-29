@@ -52,3 +52,14 @@ class Settings:
             company.name = request.POST.get('name')
             company.save()
         return redirect('settings')
+
+    @staticmethod
+    @login_required
+    def leave_company(request):
+        company = Company.objects.get(pk=request.user.company_id)
+        if company.owner == request.user:
+            company.delete()
+
+        request.user.company_id = None
+        request.user.save()
+        return redirect('settings')
