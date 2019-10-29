@@ -182,7 +182,24 @@
                         </ul>
 
                         <button class="btn btn-outline-primary mt-2 float-right" data-toggle="modal" data-target="#editCompanyModal"><img src="{% static 'settings/img/edit.svg' %}" alt="Edit"></button>
-                        <a href="{% url 'leave_company' %}" class="btn btn-outline-danger mt-2">{% if company.owner == request.user %} Delete {% else %} Leave {% endif %} company</a>
+                        <button class="btn btn-outline-danger mt-2" data-toggle="modal" data-target="#confirmLeave">{% if company.owner == request.user %} Delete {% else %} Leave {% endif %} company</button>
+
+                        <div class="modal fade" id="confirmLeave" role="dialog">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Are you sure you want to {% if company.owner == request.user %} delete {% else %} leave {% endif %} company?</h5>
+                                        <button type="button" class="close" data-dismiss="modal">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="{% url 'leave_company' %}" class="btn btn-outline-danger">Yes</a>
+                                        <button class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="modal fade" id="editCompanyModal" role="dialog">
                             <div class="modal-dialog" role="document">
