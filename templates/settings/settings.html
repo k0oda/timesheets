@@ -155,9 +155,60 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="company" role="tabpanel">
-                    Company
-                </div>
+
+                {% if not company|is_numeric %}
+                    <div class="tab-pane fade" id="company" role="tabpanel">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-4 font-weight-bold">
+                                        Company name
+                                    </div>
+                                    <div class="col-auto">
+                                        {{ company.name }}
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-4 font-weight-bold">
+                                        Date of creation
+                                    </div>
+                                    <div class="col-auto">
+                                        {{ company.date_of_creation }}
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <button class="btn btn-outline-primary mt-2 float-right" data-toggle="modal" data-target="#editCompanyModal"><img src="{% static 'settings/img/edit.svg' %}" alt="Edit"></button>
+                        <div class="modal fade" id="editCompanyModal" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Edit company information</h5>
+                                        <button type="button" class="close" data-dismiss="modal">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="{% url 'edit_company' %}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label>Company name</label>
+                                                <input class="form-control" type="text" name="name" value="{{ company.name }}" required>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-outline-primary" type="submit">Save</button>
+                                            <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
