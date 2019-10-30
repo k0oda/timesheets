@@ -53,7 +53,7 @@ class Team:
             company = Company.objects.get(pk=company_id)
         else:
             company = 0
-        user = UserProfile.objects.get(company=company, pk=pk)
+        user = UserProfile.objects.get(company_id=company_id, pk=pk)
         entries = Entry.objects.filter(user=user)
 
         return render(request, 'team/user_profile.html', context={
