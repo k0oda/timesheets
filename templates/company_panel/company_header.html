@@ -30,7 +30,7 @@
                     <a class="nav-link {% if request.path == projects_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ projects_path }}">Projects</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if request.path == team_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ team_path }}">Team</a>
+                    <a class="nav-link {% if team_path in request.path %} active {% else %} '' {% endif %} btn btn-link" href="{{ team_path }}">Team</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == invoices_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ invoices_path }}">Invoices</a>
