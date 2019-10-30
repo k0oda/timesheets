@@ -61,3 +61,14 @@ class Team:
             'user': user,
             'entries': entries
         })
+
+    @staticmethod
+    @login_required
+    def kick_user(request, pk):
+        company = Company.objects.get(pk=request.user.company_id)
+        user_to_kick = UserProfile.objects.get(company_id=request.user.company_id, pk=pk)
+
+        if request.user == company.owner and request.user != user_to_kick:
+            user_to_kick.company_id = None
+            user_to_kick.save()
+        return redirect('team')
