@@ -1,22 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
-from company_panel.models import Company
 
 
 class Settings:
     @staticmethod
     @login_required
     def main(request):
-        company_id = request.user.company_id
-        if Company.objects.filter(pk=company_id).exists():
-            company = Company.objects.get(pk=company_id)
-        else:
-            company = -1
-
-        return render(request, 'settings/settings.html', context={
-            'company': company
-        })
+        return render(request, 'settings/settings.html', context={})
 
     @staticmethod
     @login_required
@@ -48,18 +39,16 @@ class Settings:
     @login_required
     def edit_company(request):
         if request.method.lower() == 'post':
-            company = Company.objects.get(pk=request.user.company_id)
-            company.name = request.POST.get('name')
-            company.save()
+            request.user.company.name = request.POST.get('name')
+            request.user.company.save()
         return redirect('settings')
 
     @staticmethod
     @login_required
     def leave_company(request):
-        company = Company.objects.get(pk=request.user.company_id)
-        if company.owner == request.user:
-            company.delete()
+        if request.user.company.owner == request.user:
+            request.user.company.delete()
 
-        request.user.company_id = None
+        request.user.company = None
         request.user.save()
         return redirect('settings')

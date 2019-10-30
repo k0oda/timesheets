@@ -165,7 +165,7 @@
                                         Company name
                                     </div>
                                     <div class="col-auto">
-                                        {{ company.name }}
+                                        {{ request.user.company.name }}
                                     </div>
                                 </div>
                             </li>
@@ -175,7 +175,7 @@
                                         Date of creation
                                     </div>
                                     <div class="col-auto">
-                                        {{ company.date_of_creation }}
+                                        {{ request.user.company.date_of_creation }}
                                     </div>
                                 </div>
                             </li>

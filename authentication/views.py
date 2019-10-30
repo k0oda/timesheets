@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from .models import UserProfile
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from .forms import LoginForm, RegisterForm
 
 
@@ -41,7 +40,7 @@ class Authentication:
                 repeat_password = form.cleaned_data['repeat_password']
 
                 if password == repeat_password:
-                    user = UserProfile.objects.create_user(
+                    user = get_user_model().objects.create_user(
                         login, 
                         email=email, 
                         password=password, 

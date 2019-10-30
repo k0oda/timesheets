@@ -8,11 +8,6 @@ class CompanyPanel:
     @staticmethod
     def main(request):
         if request.user.is_authenticated:
-            company_id = request.user.company_id
-            if Company.objects.filter(pk=company_id).exists():
-                company = Company.objects.get(pk=company_id)
-            else:
-                company = 0
             return redirect('time')
         else:
             return render(request, 'company_panel/unauthenticated.html')
