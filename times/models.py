@@ -8,10 +8,10 @@ from datetime import date, time
 
 class Entry(models.Model):
     company = models.ForeignKey(Company, models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE, related_name='+')
     date = models.DateField(default=date.today())
-    project = models.ForeignKey(Project, models.CASCADE)
-    task = models.ForeignKey(Task, models.CASCADE)
+    project = models.ForeignKey(Project, models.CASCADE, related_name='+')
+    task = models.ForeignKey(Task, models.CASCADE, related_name='+')
     notes = models.CharField(max_length=350, blank=True, default=' ')
     timer = models.TimeField(default=time(0, 0))
     start_time = models.TimeField(default=time(0, 0))

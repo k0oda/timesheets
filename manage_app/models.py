@@ -3,7 +3,7 @@ from company_panel.models import Company
 
 
 class Task(models.Model):
-    company = models.ForeignKey(Company, models.CASCADE)
+    company = models.ForeignKey(Company, models.CASCADE, related_name='+')
     name = models.CharField(max_length=150)
     default_hourly_rate = models.FloatField(default=0.0)
 
@@ -12,7 +12,7 @@ class Task(models.Model):
 
 
 class Client(models.Model):
-    company = models.ForeignKey(Company, models.CASCADE)
+    company = models.ForeignKey(Company, models.CASCADE, related_name='+')
     name = models.CharField(max_length=150)
     email = models.EmailField(blank=True)
 
@@ -21,7 +21,7 @@ class Client(models.Model):
 
 
 class Category(models.Model):
-    company = models.ForeignKey(Company, models.CASCADE)
+    company = models.ForeignKey(Company, models.CASCADE, related_name='+')
     name = models.CharField(max_length=150)
 
     def __str__(self):

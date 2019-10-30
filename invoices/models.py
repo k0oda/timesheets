@@ -4,8 +4,8 @@ from company_panel.models import Company
 
 
 class Invoice(models.Model):
-    client = models.ForeignKey(Client, models.CASCADE)
-    company = models.ForeignKey(Company, models.CASCADE)
+    client = models.ForeignKey(Client, models.CASCADE, related_name='+')
+    company = models.ForeignKey(Company, models.CASCADE, related_name='+')
     date = models.DateField()
     total_amount = models.IntegerField(null=True, default=0)
     total_unit_price = models.FloatField(null=True, default=0)
@@ -20,8 +20,8 @@ class Invoice(models.Model):
 
 
 class Item(models.Model):
-    company = models.ForeignKey(Company, models.CASCADE)
-    invoice = models.ForeignKey(Invoice, models.CASCADE)
+    company = models.ForeignKey(Company, models.CASCADE, related_name='+')
+    invoice = models.ForeignKey(Invoice, models.CASCADE, related_name='+')
     name = models.CharField(max_length=150)
     description = models.CharField(max_length=350, blank=True)
     unit_price = models.FloatField(default=0.0)
