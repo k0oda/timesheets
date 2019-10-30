@@ -25,7 +25,7 @@
                 <form action="{% url 'pick_date' %}" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
-                        {{ datepicker.date }}
+                        <input type="date" name="date" class="form-control" required>
                         <div class="dropdown-divider"></div>
                         <button class="border-0 rounded-0 form-control btn btn-outline-success" type="submit">Select</button>
                     </div>

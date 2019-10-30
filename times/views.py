@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from times.forms import DatePicker
 from times.models import Entry
 from projects.models import Project
 from manage_app.models import Task
@@ -124,8 +123,7 @@ class Time:
             'previous_date': previous_date,
             'totals': totals,
             'week_total': week_total,
-            'date_total': totals[_date.weekday()],
-            'datepicker': DatePicker()
+            'date_total': totals[_date.weekday()]
         })
 
     @staticmethod
