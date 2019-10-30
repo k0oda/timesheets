@@ -4,6 +4,7 @@ from django.core.mail import send_mail
 from company_panel.models import Company
 from authentication.models import UserProfile
 from notifications.models import Invitation
+from times.models import Entry
 
 
 class Team:
@@ -43,3 +44,20 @@ class Team:
         request.user.save()
         invitation.delete()
         return redirect('time')
+
+    @staticmethod
+    @login_required
+    def user_profile(request, pk):
+        company_id = request.user.company_id
+        if Company.objects.filter(pk=company_id).exists():
+            company = Company.objects.get(pk=company_id)
+        else:
+            company = 0
+        user = UserProfile.objects.get(company=company, pk=pk)
+        entries = Entry.objects.filter(user=user)
+
+        return render(request, 'team/user_profile.html', context={
+            'company': company,
+            'user': user,
+            'entries': entries
+        })
