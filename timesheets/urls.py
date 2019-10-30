@@ -35,5 +35,6 @@ urlpatterns = [
     path('team/', include('team.urls')),
     path('invoices/', include('invoices.urls')),
     path('manage/', include('manage_app.urls')),
-    path('notifications/', include('notifications.urls'))
+    path('notifications/', include('notifications.urls')),
+    path('settings/', include('settings.urls'))
 ]

@@ -1,6 +1,6 @@
 {% extends 'timesheets/base.html' %}
 {% block content %}
-    {% if company == 0 %}
+    {% if request.user.company is None %}
         <div class="jumbotron">
             <h1 class="display-4">Welcome!</h1>
             <p class="lead">Seems you are not member of any company</p>
@@ -18,7 +18,7 @@
         {% url 'manage' as manage_path %}
 
         <div class="container">
-            <h3 class="mt-4 text-center text-monospace">{{ company.name }}</h3>
+            <h3 class="mt-4 text-center text-monospace">{{ request.user.company.name }}</h3>
             <ul class="nav nav-tabs justify-content-center">
                 <li class="nav-item">
                     <a class="nav-link {% if time_path in request.path %} active {% else %} '' {% endif %} btn btn-link" href="{{ time_path }}">Time</a>
@@ -30,7 +30,7 @@
                     <a class="nav-link {% if request.path == projects_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ projects_path }}">Projects</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if request.path == team_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ team_path }}">Team</a>
+                    <a class="nav-link {% if team_path in request.path %} active {% else %} '' {% endif %} btn btn-link" href="{{ team_path }}">Team</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == invoices_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ invoices_path }}">Invoices</a>

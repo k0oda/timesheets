@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from company_panel.models import Company
-from times.forms import DatePicker
 from times.models import Entry
 from projects.models import Project
 from manage_app.models import Task
@@ -43,14 +41,13 @@ class Time:
     @login_required
     def add_entry(request, year, month, day):
         if request.method.lower() == 'post':
-            company = Company.objects.get(pk=request.user.company_id)
             _date = date(year, month, day)
-            project = Project.objects.get(name=request.POST.get('project'), company=company)
-            task = Task.objects.get(name=request.POST.get('task'), company=company)
+            project = Project.objects.get(name=request.POST.get('project'), company=request.user.company)
+            task = Task.objects.get(name=request.POST.get('task'), company=request.user.company)
             notes = request.POST.get('notes')
             timer = request.POST.get('timer')
             new_entry = Entry.objects.create(
-                company=company,
+                company=request.user.company,
                 user=request.user,
                 date=_date,
                 project=project,
@@ -65,10 +62,9 @@ class Time:
     @login_required
     def edit_entry(request, pk):
         if request.method.lower() == 'post':
-            company = Company.objects.get(pk=request.user.company_id)
-            entry = Entry.objects.get(company=company, pk=pk)
-            entry.project = Project.objects.get(name=request.POST.get('project'), company=company)
-            entry.task = Task.objects.get(name=request.POST.get('task'), company=company)
+            entry = Entry.objects.get(company=request.user.company, pk=pk)
+            entry.project = Project.objects.get(name=request.POST.get('project'), company=request.user.company)
+            entry.task = Task.objects.get(name=request.POST.get('task'), company=request.user.company)
             entry.notes = request.POST.get('notes')
             entry.timer = request.POST.get('timer')
             entry.save()
@@ -77,8 +73,7 @@ class Time:
     @staticmethod
     @login_required
     def delete_entry(request, pk):
-        company = Company.objects.get(pk=request.user.company_id)
-        entry = Entry.objects.get(company=company, pk=pk)
+        entry = Entry.objects.get(company=request.user.company, pk=pk)
         
         hourly_rate = 0
         for task in entry.project.tasks.all():
@@ -91,12 +86,6 @@ class Time:
     @staticmethod
     @login_required
     def time(request, year=0, month=0, day=0):
-        company_id = request.user.company_id
-        if Company.objects.filter(pk=company_id).exists():
-            company = Company.objects.get(pk=company_id)
-        else:
-            company = 0
-
         if year == 0 and month == 0 and day == 0:
             _date = date.today()
         else:
@@ -108,7 +97,7 @@ class Time:
         week_total = datetime(year=date.min.year, month=date.min.month, day=date.min.day, hour=0, minute=0)
         for i in range(0, 7):
             total = datetime(year=date.min.year, month=date.min.month, day=date.min.day, hour=0, minute=0)
-            day_entries = Entry.objects.filter(date=start_of_week + timedelta(days=i), company=company)
+            day_entries = Entry.objects.filter(date=start_of_week + timedelta(days=i), company=request.user.company)
             for entry in day_entries:
                 total += timedelta(hours=entry.timer.hour, minutes=entry.timer.minute)
                 week_total += timedelta(hours=entry.timer.hour, minutes=entry.timer.minute)
@@ -119,12 +108,11 @@ class Time:
         next_date = _date + timedelta(days=1)
         previous_date = _date - timedelta(days=1)
 
-        entries = Entry.objects.filter(date=_date, company=company, user=request.user)
-        projects = Project.objects.filter(company=company)
-        tasks = Task.objects.filter(company=company)
+        entries = Entry.objects.filter(date=_date, company=request.user.company, user=request.user)
+        projects = Project.objects.filter(company=request.user.company)
+        tasks = Task.objects.filter(company=request.user.company)
         today = date.today()
         return render(request, 'times/time.html', context={
-            'company': company,
             'date': _date,
             'entries': entries,
             'projects': projects,
@@ -135,8 +123,7 @@ class Time:
             'previous_date': previous_date,
             'totals': totals,
             'week_total': week_total,
-            'date_total': totals[_date.weekday()],
-            'datepicker': DatePicker()
+            'date_total': totals[_date.weekday()]
         })
 
     @staticmethod

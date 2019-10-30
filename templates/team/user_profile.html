@@ -1,0 +1,108 @@
+{% extends 'company_panel/company_header.html' %}
+
+{% block tab_content %}
+<div class="row">
+    <h3 class="col-auto font-weight-bold mx-auto text-primary">{{ user.first_name }} {{ user.last_name }}</h3>
+</div>
+
+<div class="row mt-4">
+    <div class="col-4">
+        <div class="list-group" role="tablist">
+            <a class="list-group-item list-group-item-action active" data-toggle="list" href="#main" role="tab">Main Info</a>
+            <a class="list-group-item list-group-item-action" data-toggle="list" href="#activity" role="tab">Activity</a>
+        </div>
+    </div>
+    <div class="col-8">
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="main" role="tabpanel">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 font-weight-bold">
+                                Username
+                            </div>
+                            <div class="col-auto">
+                                {{ user.username }}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 font-weight-bold">
+                                First name
+                            </div>
+                            <div class="col-auto">
+                                {{ user.first_name }}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 font-weight-bold">
+                                Last name
+                            </div>
+                            <div class="col-auto">
+                                {{ user.last_name }}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 font-weight-bold">
+                                Email
+                            </div>
+                            <div class="col-auto">
+                                {{ user.email }}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+                {% if request.user == company.owner and user != request.user %}
+                    <button class="btn btn-outline-danger mt-2 float-right" data-toggle="modal" data-target="#confirmKick">Kick out of company</button>
+
+                    <div class="modal fade" id="confirmKick" role="dialog">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Are you sure you want to kick {{ user.username }} out of company?</h5>
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="{% url 'kick_user' user.pk %}" class="btn btn-outline-danger">Yes</a>
+                                    <button class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="tab-pane fade" id="activity" role="tabpanel">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Project</th>
+                        <th scope="col">Task</th>
+                        <th scope="col">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in entries %}
+                            <tr>
+                                <th scope="row">{{ entry.date }}</th>
+                                <td>{{ entry.project }}</td>
+                                <td>{{ entry.task }}</td>
+                                <td>{{ entry.timer }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

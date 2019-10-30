@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from company_panel.models import Company
 from invoices.models import Invoice, Item
 from manage_app.models import Client
 from django.utils.dateparse import parse_date
@@ -10,18 +9,11 @@ class Invoices:
     @staticmethod
     @login_required
     def invoices(request):
-        company_id = request.user.company_id
-        if Company.objects.filter(pk=company_id).exists():
-            company = Company.objects.get(pk=company_id)
-        else:
-            company = 0
-        
-        invoices = Invoice.objects.filter(company=company)
-        items = Item.objects.filter(company=company)
-        clients = Client.objects.filter(company=company)
+        invoices = Invoice.objects.filter(company=request.user.company)
+        items = Item.objects.filter(company=request.user.company)
+        clients = Client.objects.filter(company=request.user.company)
 
         return render(request, 'invoices/invoices.html', context={
-            'company': company,
             'invoices': invoices,
             'items': items,
             'clients': clients
@@ -30,18 +22,12 @@ class Invoices:
     @staticmethod
     @login_required
     def add_invoice(request):
-        company_id = request.user.company_id
-        if Company.objects.filter(pk=company_id).exists():
-            company = Company.objects.get(pk=company_id)
-        else:
-            company = 0
-
         if request.method.lower() == 'post':
-            client = Client.objects.get(name=request.POST.get('client'), company=company)
+            client = Client.objects.get(name=request.POST.get('client'), company=request.user.company)
             date = parse_date(request.POST.get('date'))
             notes = request.POST.get('notes')
             new_invoice = Invoice.objects.create(
-                company=company,
+                company=request.user.company,
                 client=client,
                 date=date,
                 notes=notes
@@ -49,25 +35,18 @@ class Invoices:
             new_invoice.save()
             return redirect('add_item', new_invoice.pk)
         else:
-            clients = Client.objects.filter(company=company)
+            clients = Client.objects.filter(company=request.user.company)
 
             return render(request, 'invoices/new_invoice.html', context={
-                'company': company,
                 'clients': clients
             })
 
     @staticmethod
     @login_required
     def edit_invoice(request, pk):
-        company_id = request.user.company_id
-        if Company.objects.filter(pk=company_id).exists():
-            company = Company.objects.get(pk=company_id)
-        else:
-            company = 0
-
         if request.method.lower() == 'post':
-            invoice = Invoice.objects.get(company=company, pk=pk)
-            invoice.client = Client.objects.get(name=request.POST.get('client'), company=company)
+            invoice = Invoice.objects.get(company=request.user.company, pk=pk)
+            invoice.client = Client.objects.get(name=request.POST.get('client'), company=request.user.company)
             invoice.date = parse_date(request.POST.get('date'))
             invoice.notes = request.POST.get('notes')
             invoice.save()
@@ -76,27 +55,15 @@ class Invoices:
     @staticmethod
     @login_required
     def delete_invoice(request, pk):
-        company_id = request.user.company_id
-        if Company.objects.filter(pk=company_id).exists():
-            company = Company.objects.get(pk=company_id)
-        else:
-            company = 0
-
-        invoice = Invoice.objects.get(company=company, pk=pk)
+        invoice = Invoice.objects.get(company=request.user.company, pk=pk)
         invoice.delete()
         return redirect('invoices')
 
     @staticmethod
     @login_required
-    def add_item(request, invoice_pk):
-        company_id = request.user.company_id
-        if Company.objects.filter(pk=company_id).exists():
-            company = Company.objects.get(pk=company_id)
-        else:
-            company = 0
-        
-        invoice = Invoice.objects.get(company=company, pk=invoice_pk)
-        items = Item.objects.filter(company=company, invoice=invoice)
+    def add_item(request, invoice_pk):        
+        invoice = Invoice.objects.get(company=request.user.company, pk=invoice_pk)
+        items = Item.objects.filter(company=request.user.company, invoice=invoice)
 
         if request.method.lower() == 'post':
             new_item = Item.objects.create(
@@ -115,7 +82,6 @@ class Invoices:
             invoice.total_price += int(new_item.amount) * float(new_item.unit_price)
             invoice.save()
         return render(request, 'invoices/add_items.html', context={
-            'company': company,
             'invoice': invoice,
             'items': items
         })
