@@ -19,4 +19,12 @@
             </div>
         </div>
     </form>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger mx-auto text-center" style="width: 16em;" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
 {% endblock content %}

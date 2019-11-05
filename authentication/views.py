@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from .forms import LoginForm, RegisterForm
+from django.contrib import messages
 
 
 class Authentication:
@@ -17,7 +18,8 @@ class Authentication:
                     login(request, user)
                     return redirect('/')
                 else:
-                    return redirect('/login/')  # TODO: Add authentication error page
+                    messages.error(request, 'Login or password is incorrect!')
+                    return redirect('login')
         else:
             form = LoginForm()
         return render(request, 'authentication/auth.html', {
@@ -50,7 +52,8 @@ class Authentication:
                     user.save()
                     return redirect('/')
                 else:
-                    return redirect('/login/')  # TODO: Add registration error page
+                    messages.error(request, 'Passwords do not match!')
+                    return redirect('register')
         else:
             form = RegisterForm()
         return render(request, 'authentication/auth.html', {
