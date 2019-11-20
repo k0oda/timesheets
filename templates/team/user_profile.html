@@ -58,7 +58,7 @@
                     </li>
                 </ul>
 
-                {% if request.user == company.owner and user != request.user %}
+                {% if request.user == request.user.company.owner and user != request.user %}
                     <button class="btn btn-outline-danger mt-2 float-right" data-toggle="modal" data-target="#confirmKick">Kick out of company</button>
 
                     <div class="modal fade" id="confirmKick" role="dialog">
