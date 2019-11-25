@@ -3,6 +3,7 @@
 {% load l10n %}
 
 {% block tab_content %}
+    {% if request.user.role.expenses_manage_access %}
     <div class="row">
         <button type="button" class="mx-auto col-auto btn btn-outline-success" data-toggle="modal" data-target="#newExpenseModal"><img src="{% static 'expenses/img/add.svg' %}"> New Expense</button>
     </div>
@@ -52,6 +53,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
     <ul class="list-group list-group-flush mt-3">
         {% if expenses %}
@@ -68,12 +70,15 @@
                         <p class="col-auto" style="width: 7em;">{{ expense.date|date:"D, d M" }}</p>
                         <h6 class="col-auto" style="width: 26em; word-break: break-all;"><strong>{{ expense }}</strong> ({{ expense.project.client.name }})</h6>
                         <h4 class="col-auto align-self-center" style="width: 4em;">{{ expense.amount }}</h4>
+                        {% if request.user.role.expenses_manage_access %}
                         <button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_{{ expense.pk }}"><img src="{% static 'expenses/img/edit.svg' %}" alt="Edit"></button>
+                        {% endif %}
                     </div>
                     <p class="col-auto mb-1" style="margin-left: 7em;">{{ expense.category }}</p>
                     <p class="col-auto text-muted mb-1" style="width: 24em; word-break: break-word; margin-left: 7em;">{{ expense.notes }}</p>
                 </li>
 
+                {% if request.user.role.expenses_manage_access %}
                 <div class="modal fade" id="edit_{{ expense.pk }}" role="dialog">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -120,6 +125,7 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
             {% endfor %}
         {% else %}
             <hr>
