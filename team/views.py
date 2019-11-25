@@ -41,13 +41,16 @@ class Team:
     @staticmethod
     @login_required
     def user_profile(request, pk):
-        user = get_user_model().objects.get(company=request.user.company, pk=pk)
-        entries = Entry.objects.filter(user=user)
+        if request.user.role.user_info_access:
+            user = get_user_model().objects.get(company=request.user.company, pk=pk)
+            entries = Entry.objects.filter(user=user)
 
-        return render(request, 'team/user_profile.html', context={
-            'user': user,
-            'entries': entries
-        })
+            return render(request, 'team/user_profile.html', context={
+                'user': user,
+                'entries': entries
+            })
+        else:
+            return redirect('team')
 
     @staticmethod
     @login_required

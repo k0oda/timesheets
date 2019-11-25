@@ -45,7 +45,13 @@
             {% for user in team %}
                 <li class="list-group-item mx-auto">
                     <div class="d-flex w-100">
-                        <a href="{% url 'user_profile' user.pk %}"><h6 class="col-auto" style="width: 20em; word-break: break-all;">{{ user.first_name }} {{ user.last_name }}</h6></a>
+                        {% if request.user.role.user_info_access %}
+                        <a href="{% url 'user_profile' user.pk %}">
+                        {% endif %}
+                            <h6 class="col-auto" style="width: 20em; word-break: break-all;">{{ user.first_name }} {{ user.last_name }}</h6>
+                        {% if request.user.role.user_info_access %}
+                        </a>
+                        {% endif %}
                         <h6 class="align-self-center" style="width: 10em; word-break: break-all;"> ({{ user.username }}) {% if request.user.company.owner == user %} <span class="badge badge-secondary">OWNER</span> {% endif %}</h6>
                     </div>
                 </li>
