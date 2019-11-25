@@ -55,9 +55,10 @@ class Team:
     @staticmethod
     @login_required
     def kick_user(request, pk):
-        user_to_kick = get_user_model().objects.get(company=request.user.company, pk=pk)
+        if request.user.role.kick_user_access:
+            user_to_kick = get_user_model().objects.get(company=request.user.company, pk=pk)
 
-        if request.user == request.user.company.owner and request.user != user_to_kick:
-            user_to_kick.company_id = None
-            user_to_kick.save()
+            if request.user == request.user.company.owner and request.user != user_to_kick:
+                user_to_kick.company_id = None
+                user_to_kick.save()
         return redirect('team')
