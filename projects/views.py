@@ -32,7 +32,7 @@ class Projects:
                 if entries:
                     totals[user.username] = time(0, 0)
                     for entry in entries:
-                    timer_delta = timedelta(hours=entry.timer.hour, minutes=entry.timer.minute)
+                        timer_delta = timedelta(hours=entry.timer.hour, minutes=entry.timer.minute)
                         current_total = totals[user.username]
                         totals[user.username] = (datetime.min + (timedelta(hours=current_total.hour, minutes=current_total.minute) + timer_delta)).time()
             return render(request, 'projects/project.html', context={
