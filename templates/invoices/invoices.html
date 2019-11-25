@@ -2,9 +2,11 @@
 {% load static %}
 
 {% block tab_content %}
+{% if request.user.role.invoices_manage_access %}
 <div class="row">
     <a class="mx-auto col-auto btn btn-outline-success" href="{% url 'add_invoice' %}"><img src="{% static 'invoices/img/add.svg' %}"> New Invoice</a>
 </div>
+{% endif %}
 
 <ul class="list-group list-group-flush mt-3">
     {% if invoices %}
@@ -25,7 +27,9 @@
                     <h4 class="col-auto" style="width: 5em; word-break: break-all;">{{ invoice.total_amount }}</h4>
                     <h4 class="col-auto" style="width: 5em; word-break: break-all;">{{ invoice.total_unit_price }}</h4>
                     <h4 class="col-auto" style="width: 5em; word-break: break-all;">{{ invoice.total_price }}</h4>
+                    {% if request.user.role.invoices_manage_access %}
                     <button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_{{ invoice.pk }}"><img src="{% static 'invoices/img/edit.svg' %}" alt="Edit"></button>
+                    {% endif %}
                 </div>
                 {% for item in invoice.get_items %}
                     <div class="d-flex w-100">
@@ -37,7 +41,8 @@
                 {% endfor %}
                 <p class="col-auto text-muted mb-1" style="width: 24em; word-break: break-word;">{{ invoice.notes }}</p>
             </li>
-        
+            
+            {% if request.user.role.invoices_manage_access %}
             <div class="modal fade" id="edit_{{ invoice.pk }}" role="dialog">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -78,6 +83,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
         {% endfor %}
     {% else %}
         <hr>
