@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block tab_content %}
+{% if request.user.role.client_manage_access %}
 <div class="row">
     <button type="button" class="mx-auto col-auto btn btn-outline-success" data-toggle="modal" data-target="#newClientModal"><img src="{% static 'manage_app/img/add.svg' %}"> New Client</button>
 </div>
@@ -35,12 +36,15 @@
         </div>
     </div>
 </div>
+{% endif %}
 
 <ul class="list-group mt-3">
     {% for client in clients %}
         <li class="list-group-item mx-auto">
             <div class="d-flex w-100">
+                {% if request.user.role.client_manage_access %}
                 <button type="button" class="col-auto btn btn-outline-secondary" data-toggle="modal" data-target="#edit_{{ client.pk }}"><img src="{% static 'manage_app/img/edit.svg' %}" alt="Edit"></button>
+                {% endif %}
                 <h6 class="col-auto font-weight-bold align-self-center" style="width: 25em; word-break: break-all;">
                     {{ client }} 
                     {% if client.email %}
@@ -50,6 +54,7 @@
             </div>
         </li>
         
+        {% if request.user.role.client_manage_access %}
         <div class="modal fade" id="edit_{{ client.pk }}" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -80,6 +85,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
     {% endfor %}
 </ul>
 {% endblock %}

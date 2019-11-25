@@ -21,32 +21,35 @@ class Manage:
     @staticmethod
     @login_required
     def add_client(request):
-        if request.method.lower() == 'post':
-            name = request.POST.get('name')
-            email = request.POST.get('email')
-            new_client = Client.objects.create(
-                company=request.user.company,
-                name=name,
-                email=email
-            )
-            new_client.save()
+        if request.user.role.client_manage_access:
+            if request.method.lower() == 'post':
+                name = request.POST.get('name')
+                email = request.POST.get('email')
+                new_client = Client.objects.create(
+                    company=request.user.company,
+                    name=name,
+                    email=email
+                )
+                new_client.save()
         return redirect('clients')
 
     @staticmethod
     @login_required
     def edit_client(request, pk):
-        if request.method.lower() == 'post':
-            client = Client.objects.get(pk=pk)
-            client.name = request.POST.get('name')
-            client.email = request.POST.get('email')
-            client.save()
+        if request.user.role.client_manage_access:
+            if request.method.lower() == 'post':
+                client = Client.objects.get(pk=pk)
+                client.name = request.POST.get('name')
+                client.email = request.POST.get('email')
+                client.save()
         return redirect('clients')
 
     @staticmethod
     @login_required
     def delete_client(request, pk):
-        client = Client.objects.get(pk=pk)
-        client.delete()
+        if request.user.role.client_manage_access:
+            client = Client.objects.get(pk=pk)
+            client.delete()
         return redirect('clients')
 
     @staticmethod
