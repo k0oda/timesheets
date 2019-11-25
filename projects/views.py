@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
 from projects.models import Project
 from manage_app.models import Client, Task
+from times.models import Entry
+from datetime import time, timedelta, datetime
 
 
 class Projects:
@@ -15,6 +18,25 @@ class Projects:
             'projects': projects,
             'clients': clients,
             'tasks': tasks
+        })
+
+    @staticmethod
+    @login_required
+    def project(request, pk):
+        project = Project.objects.get(company=request.user.company, pk=pk)
+        team = get_user_model().objects.filter(company=request.user.company)
+        totals = {}
+        for user in team:
+            entries = Entry.objects.filter(company=request.user.company, user=user, project=project)
+            if entries:
+                totals[user.username] = time(0, 0)
+                for entry in entries:
+                    timer_delta = timedelta(hours=entry.timer.hour, minutes=entry.timer.minute)
+                    current_total = totals[user.username]
+                    totals[user.username] = (datetime.min + (timedelta(hours=current_total.hour, minutes=current_total.minute) + timer_delta)).time()
+        return render(request, 'projects/project.html', context={
+            'project': project,
+            'totals': totals
         })
 
     @staticmethod
