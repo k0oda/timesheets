@@ -29,6 +29,7 @@ class Expenses:
             amount = request.POST.get('amount')
             
             expense = Expense.objects.create(
+                company=request.user.company,
                 project=project,
                 category=category,
                 notes=notes,
