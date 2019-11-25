@@ -10,3 +10,20 @@ class Company(models.Model):
 
     def __str__(self):
         return self.name
+
+class Role(models.Model):
+    company = models.ForeignKey(Company, models.CASCADE, related_name='+')
+    name = models.CharField(max_length=150)
+    user_info_access = models.BooleanField()
+    detailed_project_info_access = models.BooleanField()
+    project_manage_access = models.BooleanField()
+    invite_user_access = models.BooleanField()
+    kick_user_access = models.BooleanField()
+    expenses_manage_access = models.BooleanField()
+    invoices_manage_access = models.BooleanField()
+    client_manage_access = models.BooleanField()
+    task_manage_access = models.BooleanField()
+    expense_category_manage_access = models.BooleanField()
+
+    def __str__(self):
+        return self.name
