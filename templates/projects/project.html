@@ -1,0 +1,109 @@
+{% extends 'company_panel/company_header.html' %}
+
+{% block tab_content %}
+<div class="row">
+    <h3 class="col-auto font-weight-bold mx-auto text-primary">{{ project }}</h3>
+</div>
+
+<div class="row mt-4">
+    <div class="col-4">
+        <div class="list-group" role="tablist">
+            <a class="list-group-item list-group-item-action active" data-toggle="list" href="#main" role="tab">Main Info</a>
+            <a class="list-group-item list-group-item-action" data-toggle="list" href="#activity" role="tab">Team Activity</a>
+        </div>
+    </div>
+    <div class="col-8">
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="main" role="tabpanel">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 font-weight-bold">
+                                Client
+                            </div>
+                            <div class="col-auto">
+                                {{ project.client }}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 font-weight-bold">
+                                Tasks
+                            </div>
+                            <div class="col-auto">
+                                <ul>
+                                    {% for task in project.tasks.all %}
+                                        <li>
+                                            {{ task }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 font-weight-bold">
+                                Notes
+                            </div>
+                            <div class="col-auto">
+                                {{ project.notes }}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 font-weight-bold">
+                                Budget
+                            </div>
+                            <div class="col-auto">
+                                {{ project.budget }}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 font-weight-bold">
+                                Total earned
+                            </div>
+                            <div class="col-auto">
+                                {{ project.total_earned }}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 font-weight-bold">
+                                Total spent
+                            </div>
+                            <div class="col-auto">
+                                {{ project.total_spent }}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tab-pane fade" id="activity" role="tabpanel">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">Username</th>
+                        <th scope="col">Total time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for username, total in totals.items %}
+                            <tr>
+                                <td>{{ username }}</td>
+                                <td>{{ total }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
