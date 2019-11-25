@@ -107,27 +107,30 @@ class Manage:
     @staticmethod
     @login_required
     def add_category(request):
-        if request.method.lower() == 'post':
-            name = request.POST.get('name')
-            new_category = Category.objects.create(
-                company=request.user.company,
-                name=name
-            )
-            new_category.save()
+        if request.user.role.expense_category_manage_access:
+            if request.method.lower() == 'post':
+                name = request.POST.get('name')
+                new_category = Category.objects.create(
+                    company=request.user.company,
+                    name=name
+                )
+                new_category.save()
         return redirect('expense_categories')
 
     @staticmethod
     @login_required
     def edit_category(request, pk):
-        if request.method.lower() == 'post':
-            category = Category.objects.get(pk=pk)
-            category.name = request.POST.get('name')
-            category.save()
+        if request.user.role.expense_category_manage_access:
+            if request.method.lower() == 'post':
+                category = Category.objects.get(pk=pk)
+                category.name = request.POST.get('name')
+                category.save()
         return redirect('expense_categories')
 
     @staticmethod
     @login_required
     def delete_category(request, pk):
-        category = Category.objects.get(pk=pk)
-        category.delete()
+        if request.user.role.expense_category_manage_access:
+            category = Category.objects.get(pk=pk)
+            category.delete()
         return redirect('expense_categories')
