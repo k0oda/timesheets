@@ -64,32 +64,35 @@ class Manage:
     @staticmethod
     @login_required
     def add_task(request):
-        if request.method.lower() == 'post':
-            name = request.POST.get('name')
-            hourly_rate = request.POST.get('hourly_rate')
-            new_task = Task.objects.create(
-                company=request.user.company,
-                name=name,
-                default_hourly_rate=hourly_rate
-            )
-            new_task.save()
+        if request.user.role.task_manage_access:
+            if request.method.lower() == 'post':
+                name = request.POST.get('name')
+                hourly_rate = request.POST.get('hourly_rate')
+                new_task = Task.objects.create(
+                    company=request.user.company,
+                    name=name,
+                    default_hourly_rate=hourly_rate
+                )
+                new_task.save()
         return redirect('tasks')
 
     @staticmethod
     @login_required
     def edit_task(request, pk):
-        if request.method.lower() == 'post':
-            task = Task.objects.get(pk=pk)
-            task.name = request.POST.get('name')
-            task.default_hourly_rate = request.POST.get('hourly_rate')
-            task.save()
+        if request.user.role.task_manage_access:
+            if request.method.lower() == 'post':
+                task = Task.objects.get(pk=pk)
+                task.name = request.POST.get('name')
+                task.default_hourly_rate = request.POST.get('hourly_rate')
+                task.save()
         return redirect('tasks')
 
     @staticmethod
     @login_required
     def delete_task(request, pk):
-        task = Task.objects.get(pk=pk)
-        task.delete()
+        if request.user.role.task_manage_access:
+            task = Task.objects.get(pk=pk)
+            task.delete()
         return redirect('tasks')
 
     @staticmethod
