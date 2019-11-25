@@ -27,7 +27,7 @@
                     <a class="nav-link {% if request.path == expenses_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ expenses_path }}">Expenses</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if request.path == projects_path %} active {% else %} '' {% endif %} btn btn-link" href="{{ projects_path }}">Projects</a>
+                    <a class="nav-link {% if projects_path in request.path %} active {% else %} '' {% endif %} btn btn-link" href="{{ projects_path }}">Projects</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {% if team_path in request.path %} active {% else %} '' {% endif %} btn btn-link" href="{{ team_path }}">Team</a>
