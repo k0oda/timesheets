@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block tab_content %}
+    {% if request.user.role.invite_user_access %}
     <div class="row">
         <button type="button" class="mx-auto col-auto btn btn-outline-success" data-toggle="modal" data-target="#inviteModal"><img src="{% static 'team/img/add.svg' %}">Invite Person</button>
     </div>
@@ -31,6 +32,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
     <ul class="list-group list-group-flush mt-3">
         {% if team %}

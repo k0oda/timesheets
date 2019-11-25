@@ -19,13 +19,14 @@ class Team:
     @staticmethod
     @login_required
     def invite(request):
-        if request.method.lower() == 'post':
-            user = get_user_model().objects.get(username=request.POST.get('username'))
-            new_invitation = Invitation.objects.create(
-                company = request.user.company,
-                target_user = user
-            )
-            new_invitation.save()
+        if request.user.role.invite_user_access:
+            if request.method.lower() == 'post':
+                user = get_user_model().objects.get(username=request.POST.get('username'))
+                new_invitation = Invitation.objects.create(
+                    company = request.user.company,
+                    target_user = user
+                )
+                new_invitation.save()
         return redirect('team')
 
     @staticmethod
