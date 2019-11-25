@@ -24,6 +24,7 @@ class Role(models.Model):
     client_manage_access = models.BooleanField()
     task_manage_access = models.BooleanField()
     expense_category_manage_access = models.BooleanField()
+    edit_company_info_access = models.BooleanField()
 
     def __str__(self):
         return self.name
