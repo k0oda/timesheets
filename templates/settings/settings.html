@@ -181,7 +181,9 @@
                                 </li>
                             </ul>
 
+                            {% if request.user.role.edit_company_info_access %}
                             <button class="btn btn-outline-primary mt-2 float-right" data-toggle="modal" data-target="#editCompanyModal"><img src="{% static 'settings/img/edit.svg' %}" alt="Edit"></button>
+                            {% endif %}
                             <button class="btn btn-outline-danger mt-2" data-toggle="modal" data-target="#confirmLeave">{% if request.user.company.owner == request.user %} Delete {% else %} Leave {% endif %} company</button>
 
                             <div class="modal fade" id="confirmLeave" role="dialog">
@@ -201,6 +203,7 @@
                                 </div>
                             </div>
 
+                            {% if request.user.role.edit_company_info_access %}
                             <div class="modal fade" id="editCompanyModal" role="dialog">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
@@ -226,6 +229,7 @@
                                     </div>
                                 </div>
                             </div>
+                            {% endif %}
                         </div>
                     {% endif %}
                 </div>
