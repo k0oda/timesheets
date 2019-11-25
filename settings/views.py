@@ -1,13 +1,17 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
+from company_panel.models import Role
 
 
 class Settings:
     @staticmethod
     @login_required
     def main(request):
-        return render(request, 'settings/settings.html', context={})
+        roles = Role.objects.filter(company=request.user.company)
+        return render(request, 'settings/settings.html', context={
+            'roles': roles
+        })
 
     @staticmethod
     @login_required
