@@ -14,6 +14,9 @@
                     {% if request.user.company is not None %}
                         <a class="list-group-item list-group-item-action" data-toggle="list" href="#company" role="tab">Company</a>
                     {% endif %}
+                    {% if request.user.role.manage_roles_access %}
+                        <a class="list-group-item list-group-item-action" data-toggle="list" href="#roles" role="tab">Roles</a>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-8">
@@ -231,6 +234,226 @@
                             </div>
                             {% endif %}
                         </div>
+                    {% endif %}
+                    {% if request.user.role.manage_roles_access %}
+                    <div class="tab-pane fade" id="roles" role="tabpanel">
+                        <div class="row">
+                            <button type="button" class="mx-auto col-auto btn btn-outline-success" data-toggle="modal" data-target="#newRoleModal"><img src="{% static 'settings/img/add.svg' %}"> New Role</button>
+                        </div>
+
+                        <div class="modal fade" id="newRoleModal" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">New Role</h5>
+                                        <button type="button" class="close" data-dismiss="modal">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="{% url 'add_role' %}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label>Name</label>
+                                                <input class="form-control" required type="text" name="name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>User info</label>
+                                                <input type="checkbox" name="user_info_access">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Detailed project info</label>
+                                                <input type="checkbox" name="detailed_project_info_access">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Project manage</label>
+                                                <input type="checkbox" name="project_manage_access">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Invite user</label>
+                                                <input type="checkbox" name="invite_user_access">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Kick user</label>
+                                                <input type="checkbox" name="kick_user_access">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Manage expenses</label>
+                                                <input type="checkbox" name="expenses_manage_access">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Manage invoices</label>
+                                                <input type="checkbox" name="invoices_manage_access">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Manage clients</label>
+                                                <input type="checkbox" name="client_manage_access">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Manage tasks</label>
+                                                <input type="checkbox" name="task_manage_access">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Manage expenses' categories</label>
+                                                <input type="checkbox" name="expense_category_manage_access">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Edit company info</label>
+                                                <input type="checkbox" name="edit_company_info_access">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Manage roles</label>
+                                                <input type="checkbox" name="manage_roles_access">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-outline-primary" type="submit">Create</button>
+                                            <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% for role in roles %}
+                            <div class="row">
+                                <h5 class="mt-5 mb-2 mx-auto col-auto font-weight-bold">{{ role.name }}</h5>
+                            </div>
+                            
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-4 font-weight-bold">
+                                            Role name
+                                        </div>
+                                        <div class="col-auto">
+                                            {{ role.name }}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-4 font-weight-bold">
+                                            User info
+                                        </div>
+                                        <div class="col-auto">
+                                            {{ role.user_info_access }}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-4 font-weight-bold">
+                                            Detailed project info
+                                        </div>
+                                        <div class="col-auto">
+                                            {{ role.detailed_project_info_access }}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-4 font-weight-bold">
+                                            Project manage
+                                        </div>
+                                        <div class="col-auto">
+                                            {{ role.project_manage_access }}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-4 font-weight-bold">
+                                            Invite user
+                                        </div>
+                                        <div class="col-auto">
+                                            {{ role.invite_user_access }}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-4 font-weight-bold">
+                                            Kick user
+                                        </div>
+                                        <div class="col-auto">
+                                            {{ role.kick_user_access }}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-4 font-weight-bold">
+                                            Manage expenses
+                                        </div>
+                                        <div class="col-auto">
+                                            {{ role.expenses_manage_access }}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-4 font-weight-bold">
+                                            Manage invoices
+                                        </div>
+                                        <div class="col-auto">
+                                            {{ role.invoices_manage_access }}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-4 font-weight-bold">
+                                            Manage clients
+                                        </div>
+                                        <div class="col-auto">
+                                            {{ role.client_manage_access }}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-4 font-weight-bold">
+                                            Manage tasks
+                                        </div>
+                                        <div class="col-auto">
+                                            {{ role.task_manage_access }}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-4 font-weight-bold">
+                                            Manage expenses' categories
+                                        </div>
+                                        <div class="col-auto">
+                                            {{ role.expense_category_manage_access }}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-4 font-weight-bold">
+                                            Edit company info
+                                        </div>
+                                        <div class="col-auto">
+                                            {{ role.edit_company_info_access }}
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-4 font-weight-bold">
+                                            Manage roles
+                                        </div>
+                                        <div class="col-auto">
+                                            {{ role.manage_roles_access }}
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        {% endfor %}
+                    </div>
                     {% endif %}
                 </div>
             </div>
