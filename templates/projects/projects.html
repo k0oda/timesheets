@@ -70,7 +70,7 @@
             {% for project in projects %}
                 <li class="list-group-item mx-auto">
                     <div class="d-flex w-100">
-                        <h6 class="col-auto" style="width: 26em; word-break: break-all;"><strong>{{ project }}</strong> ({{ project.client.name }})</h6>
+                        <a href="{% url 'project' project.pk %}"><h6 class="col-auto" style="width: 26em; word-break: break-all;"><strong>{{ project }}</strong> ({{ project.client.name }})</h6></a>
                         <h4 class="col-auto align-self-center" style="width: 4em;">{{ project.budget }}</h4>
                         <h4 class="col-auto align-self-center" style="width: 4em;">{{ project.total_earned }}</h4>
                         <h4 class="col-auto align-self-center" style="width: 4em;">{{ project.total_spent }}</h4>
