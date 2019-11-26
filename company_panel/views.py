@@ -100,21 +100,22 @@ class CompanyPanel:
         if request.user.role.manage_roles_access:
             if request.method.lower() == 'post':
                 role = Role.objects.get(company=request.user.company, pk=pk)
-                role.company = request.user.company
-                role.name = request.POST.get('name')
-                role.user_info_access = CHECKBOX_MAPPING[request.POST.get('user_info_access')]
-                role.detailed_project_info_access = CHECKBOX_MAPPING[request.POST.get('detailed_project_info_access')]
-                role.project_manage_access = CHECKBOX_MAPPING[request.POST.get('project_manage_access')]
-                role.invite_user_access = CHECKBOX_MAPPING[request.POST.get('invite_user_access')]
-                role.kick_user_access = CHECKBOX_MAPPING[request.POST.get('kick_user_access')]
-                role.expenses_manage_access = CHECKBOX_MAPPING[request.POST.get('expenses_manage_access')]
-                role.invoices_manage_access = CHECKBOX_MAPPING[request.POST.get('invoices_manage_access')]
-                role.client_manage_access = CHECKBOX_MAPPING[request.POST.get('client_manage_access')]
-                role.task_manage_access = CHECKBOX_MAPPING[request.POST.get('task_manage_access')]
-                role.expense_category_manage_access = CHECKBOX_MAPPING[request.POST.get('expense_category_manage_access')]
-                role.edit_company_info_access = CHECKBOX_MAPPING[request.POST.get('edit_company_info_access')]
-                role.manage_roles_access = CHECKBOX_MAPPING[request.POST.get('manage_roles_access')]
-                role.save()
+                if role != request.user.company.owner.role
+                    role.company = request.user.company
+                    role.name = request.POST.get('name')
+                    role.user_info_access = CHECKBOX_MAPPING[request.POST.get('user_info_access')]
+                    role.detailed_project_info_access = CHECKBOX_MAPPING[request.POST.get('detailed_project_info_access')]
+                    role.project_manage_access = CHECKBOX_MAPPING[request.POST.get('project_manage_access')]
+                    role.invite_user_access = CHECKBOX_MAPPING[request.POST.get('invite_user_access')]
+                    role.kick_user_access = CHECKBOX_MAPPING[request.POST.get('kick_user_access')]
+                    role.expenses_manage_access = CHECKBOX_MAPPING[request.POST.get('expenses_manage_access')]
+                    role.invoices_manage_access = CHECKBOX_MAPPING[request.POST.get('invoices_manage_access')]
+                    role.client_manage_access = CHECKBOX_MAPPING[request.POST.get('client_manage_access')]
+                    role.task_manage_access = CHECKBOX_MAPPING[request.POST.get('task_manage_access')]
+                    role.expense_category_manage_access = CHECKBOX_MAPPING[request.POST.get('expense_category_manage_access')]
+                    role.edit_company_info_access = CHECKBOX_MAPPING[request.POST.get('edit_company_info_access')]
+                    role.manage_roles_access = CHECKBOX_MAPPING[request.POST.get('manage_roles_access')]
+                    role.save()
         return redirect('settings')
 
     @staticmethod
