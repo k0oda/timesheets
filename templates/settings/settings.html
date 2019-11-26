@@ -317,7 +317,82 @@
 
                         {% for role in roles %}
                             <div class="row">
-                                <h5 class="mt-5 mb-2 mx-auto col-auto font-weight-bold">{{ role.name }}</h5>
+                                <h5 class="mt-5 mb-2 mx-auto col-auto font-weight-bold">{{ role.name }}<button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_{{ role.pk }}"><img src="{% static 'settings/img/edit.svg' %}" alt="Edit"></button></h5>
+                            </div>
+
+                            <div class="modal fade" id="edit_{{ role.pk }}" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Edit Role</h5>
+                                            <button type="button" class="close" data-dismiss="modal">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form action="{% url 'edit_role' role.pk %}" method="POST">
+                                            {% csrf_token %}
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label>Name</label>
+                                                    <input class="form-control" required type="text" name="name" value="{{ role.name }}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>User info</label>
+                                                    <input type="checkbox" name="user_info_access" {% if role.user_info_access %} checked {% endif %}>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Detailed project info</label>
+                                                    <input type="checkbox" name="detailed_project_info_access" {% if role.detailed_project_info_access %} checked {% endif %}>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Project manage</label>
+                                                    <input type="checkbox" name="project_manage_access" {% if role.project_manage_access %} checked {% endif %}>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Invite user</label>
+                                                    <input type="checkbox" name="invite_user_access" {% if role.invite_user_access %} checked {% endif %}>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Kick user</label>
+                                                    <input type="checkbox" name="kick_user_access" {% if role.kick_user_access %} checked {% endif %}>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Manage expenses</label>
+                                                    <input type="checkbox" name="expenses_manage_access" {% if role.expenses_manage_access %} checked {% endif %}>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Manage invoices</label>
+                                                    <input type="checkbox" name="invoices_manage_access" {% if role.invoices_manage_access %} checked {% endif %}>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Manage clients</label>
+                                                    <input type="checkbox" name="client_manage_access" {% if role.client_manage_access %} checked {% endif %}>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Manage tasks</label>
+                                                    <input type="checkbox" name="task_manage_access" {% if role.task_manage_access %} checked {% endif %}>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Manage expenses' categories</label>
+                                                    <input type="checkbox" name="expense_category_manage_access" {% if role.expense_category_manage_access %} checked {% endif %}>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Edit company info</label>
+                                                    <input type="checkbox" name="edit_company_info_access" {% if role.edit_company_info_access %} checked {% endif %}>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Manage roles</label>
+                                                    <input type="checkbox" name="manage_roles_access" {% if role.manage_roles_access %} checked {% endif %}>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a class="btn btn-outline-danger mr-auto" href="{% url 'delete_role' role.pk %}">Delete</a>
+                                                <button class="btn btn-outline-primary" type="submit">Save</button>
+                                                <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                             
                             <ul class="list-group">
