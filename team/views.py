@@ -4,6 +4,7 @@ from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
 from notifications.models import Invitation
 from times.models import Entry
+from company_panel.models import Role
 
 
 class Team:
@@ -44,13 +45,25 @@ class Team:
         if request.user.role.user_info_access:
             user = get_user_model().objects.get(company=request.user.company, pk=pk)
             entries = Entry.objects.filter(user=user)
+            roles = Role.objects.filter(company=request.user.company)
 
             return render(request, 'team/user_profile.html', context={
                 'user': user,
-                'entries': entries
+                'entries': entries,
+                'roles': roles
             })
         else:
             return redirect('team')
+
+    @staticmethod
+    @login_required
+    def edit_user_role(request, pk):
+        if request.user.role.manage_roles_access:
+            if request.method.lower() == 'post':
+                user = get_user_model().objects.get(company=request.user.company, pk=pk)
+                user.role = Role.objects.get(name=request.POST.get('role'), company=request.user.company)
+                user.save()
+        return redirect('user_profile', pk)
 
     @staticmethod
     @login_required
