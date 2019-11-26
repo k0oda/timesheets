@@ -26,7 +26,25 @@ class CompanyPanel:
             user = request.user
             company.owner = user
             company.save()
-            user.company_id = company.pk
+            role = Role.objects.create(
+                company=company,
+                name='Owner',
+                user_info_access=True,
+                detailed_project_info_access=True,
+                project_manage_access=True,
+                invite_user_access=True,
+                kick_user_access=True,
+                expenses_manage_access=True,
+                invoices_manage_access=True,
+                client_manage_access=True,
+                task_manage_access=True,
+                expense_category_manage_access=True,
+                edit_company_info_access=True,
+                manage_roles_access=True
+            )
+            role.save()
+            user.company = company
+            user.role = role
             user.save()
             return redirect('/')
         else:
@@ -47,8 +65,8 @@ class CompanyPanel:
     def leave_company(request):
         if request.user.company.owner == request.user:
             request.user.company.delete()
-
         request.user.company = None
+        request.user.role = None
         request.user.save()
         return redirect('settings')
 
