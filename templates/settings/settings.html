@@ -316,6 +316,7 @@
                         </div>
 
                         {% for role in roles %}
+                        {% if role != request.user.company.owner.role %}
                             <div class="row">
                                 <h5 class="mt-5 mb-2 mx-auto col-auto font-weight-bold">{{ role.name }}<button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_{{ role.pk }}"><img src="{% static 'settings/img/edit.svg' %}" alt="Edit"></button></h5>
                             </div>
@@ -527,6 +528,7 @@
                                     </div>
                                 </li>
                             </ul>
+                        {% endif %}
                         {% endfor %}
                     </div>
                     {% endif %}
