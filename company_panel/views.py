@@ -3,6 +3,11 @@ from django.contrib.auth.decorators import login_required
 from company_panel.models import Company, Role
 from company_panel.forms import CreateCompanyForm
 
+CHECKBOX_MAPPING = {
+    'on': True,
+    None: False
+}
+
 
 class CompanyPanel:
     @staticmethod
@@ -36,18 +41,18 @@ class CompanyPanel:
                 role = Role.objects.create(
                     company=request.user.company,
                     name=request.POST.get('name'),
-                    user_info_access=request.POST.get('user_info_access'),
-                    detailed_project_info_access=request.POST.get('detailed_project_info_access'),
-                    project_manage_access=request.POST.get('project_manage_access'),
-                    invite_user_access=request.POST.get('invite_user_access'),
-                    kick_user_access=request.POST.get('kick_user_access'),
-                    expenses_manage_access=request.POST.get('expenses_manage_access'),
-                    invoices_manage_access=request.POST.get('invoices_manage_access'),
-                    client_manage_access=request.POST.get('client_manage_access'),
-                    task_manage_access=request.POST.get('task_manage_access'),
-                    expense_category_manage_access=request.POST.get('expense_category_manage_access'),
-                    edit_company_info_access=request.POST.get('edit_company_info_access'),
-                    manage_roles_access=request.POST.get('manage_roles_access')
+                    user_info_access=CHECKBOX_MAPPING[request.POST.get('user_info_access')],
+                    detailed_project_info_access=CHECKBOX_MAPPING[request.POST.get('detailed_project_info_access')],
+                    project_manage_access=CHECKBOX_MAPPING[request.POST.get('project_manage_access')],
+                    invite_user_access=CHECKBOX_MAPPING[request.POST.get('invite_user_access')],
+                    kick_user_access=CHECKBOX_MAPPING[request.POST.get('kick_user_access')],
+                    expenses_manage_access=CHECKBOX_MAPPING[request.POST.get('expenses_manage_access')],
+                    invoices_manage_access=CHECKBOX_MAPPING[request.POST.get('invoices_manage_access')],
+                    client_manage_access=CHECKBOX_MAPPING[request.POST.get('client_manage_access')],
+                    task_manage_access=CHECKBOX_MAPPING[request.POST.get('task_manage_access')],
+                    expense_category_manage_access=CHECKBOX_MAPPING[request.POST.get('expense_category_manage_access')],
+                    edit_company_info_access=CHECKBOX_MAPPING[request.POST.get('edit_company_info_access')],
+                    manage_roles_access=CHECKBOX_MAPPING[request.POST.get('manage_roles_access')]
                 )
                 role.save()
         return redirect('settings')
