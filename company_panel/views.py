@@ -100,7 +100,7 @@ class CompanyPanel:
         if request.user.role.manage_roles_access:
             if request.method.lower() == 'post':
                 role = Role.objects.get(company=request.user.company, pk=pk)
-                if role != request.user.company.owner.role
+                if role != request.user.company.owner.role:
                     role.company = request.user.company
                     role.name = request.POST.get('name')
                     role.user_info_access = CHECKBOX_MAPPING[request.POST.get('user_info_access')]
