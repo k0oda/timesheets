@@ -32,7 +32,26 @@ class CompanyPanel:
         else:
             form = CreateCompanyForm()
         return render(request, 'company_panel/new_company.html', {'form': form})
-    
+
+    @staticmethod
+    @login_required
+    def edit_company(request):
+        if request.user.role.edit_company_info_access:
+            if request.method.lower() == 'post':
+                request.user.company.name = request.POST.get('name')
+                request.user.company.save()
+        return redirect('settings')
+
+    @staticmethod
+    @login_required
+    def leave_company(request):
+        if request.user.company.owner == request.user:
+            request.user.company.delete()
+
+        request.user.company = None
+        request.user.save()
+        return redirect('settings')
+
     @staticmethod
     @login_required
     def add_role(request):
