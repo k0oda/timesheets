@@ -1,4 +1,5 @@
 {% extends 'company_panel/company_header.html' %}
+{% load static %}
 
 {% block tab_content %}
 <div class="row">
@@ -56,9 +57,54 @@
                             </div>
                         </div>
                     </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 font-weight-bold">
+                                Role
+                            </div>
+                            <div class="col-auto">
+                                {{ user.role }}
+                                {% if request.user.role.manage_roles_access %}
+                                <button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_role_{{ user.role.pk }}"><img src="{% static 'team/img/edit.svg' %}" alt="Edit"></button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </li>
                 </ul>
 
-                {% if request.user.role.kick_user_access and user != request.user %}
+                {% if request.user.role.manage_roles_access %}
+                <div class="modal fade" id="edit_role_{{ user.role.pk }}" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Select role</h5>
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form action="{% url 'edit_user_role' user.pk %}" method="POST">
+                                {% csrf_token %}
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>Role</label>
+                                        <select name="role" class="form-control" required>
+                                            {% for role in roles %}
+                                                <option {% if user.role == role %} selected {% endif %}>{{ role }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-outline-primary" type="submit">Save</button>
+                                    <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if request.user.role.kick_user_access and user != request.user and user != request.user.company.owner %}
                     <button class="btn btn-outline-danger mt-2 float-right" data-toggle="modal" data-target="#confirmKick">Kick out of company</button>
 
                     <div class="modal fade" id="confirmKick" role="dialog">
