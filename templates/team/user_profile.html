@@ -64,7 +64,7 @@
                             </div>
                             <div class="col-auto">
                                 {{ user.role }}
-                                {% if request.user.role.manage_roles_access %}
+                                {% if request.user.role.manage_roles_access and request.user != user and user != request.user.company.owner %}
                                 <button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_role_{{ user.role.pk }}"><img src="{% static 'team/img/edit.svg' %}" alt="Edit"></button>
                                 {% endif %}
                             </div>
@@ -72,7 +72,7 @@
                     </li>
                 </ul>
 
-                {% if request.user.role.manage_roles_access %}
+                {% if request.user.role.manage_roles_access and request.user != user and user != request.user.company.owner %}
                 <div class="modal fade" id="edit_role_{{ user.role.pk }}" role="dialog">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
