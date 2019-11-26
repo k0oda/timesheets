@@ -52,7 +52,7 @@
                         {% if request.user.role.user_info_access %}
                         </a>
                         {% endif %}
-                        <h6 class="align-self-center" style="width: 10em; word-break: break-all;"> ({{ user.username }}) {% if request.user.company.owner == user %} <span class="badge badge-secondary">OWNER</span> {% endif %}</h6>
+                        <h6 class="align-self-center" style="width: 10em; word-break: break-all;"> ({{ user.username }}) {% if user.role %} <span class="badge badge-secondary">{{ user.role }}</span> {% endif %}</h6>
                     </div>
                 </li>
             {% endfor %}
