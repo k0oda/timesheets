@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from company_panel.models import Company, Role
+from company_panel.models import Role
 from company_panel.forms import CreateCompanyForm
 
 CHECKBOX_MAPPING = {
