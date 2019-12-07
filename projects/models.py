@@ -8,10 +8,10 @@ class Project(models.Model):
     name = models.CharField(max_length=150)
     client = models.ForeignKey(Client, models.CASCADE, related_name='+')
     tasks = models.ManyToManyField(Task)
-    notes = models.CharField(max_length=350, blank=True, default=' ')
-    budget = models.FloatField()
-    total_earned = models.FloatField(default=0)
-    total_spent = models.FloatField(default=0)
+    notes = models.TextField(max_length=350, blank=True, default=' ')
+    budget = models.DecimalField(max_digits=20, decimal_places=2)
+    total_earned = models.DecimalField(default=0, max_digits=20, decimal_places=2)
+    total_spent = models.DecimalField(default=0, max_digits=20, decimal_places=2)
 
     def __str__(self):
         return self.name
