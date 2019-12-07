@@ -22,3 +22,4 @@ notifications/migrations/__pycache__/
 notifications/templatetags/__pycache__/
 settings/__pycache__/
 settings/migrations/__pycache__/
+static/
