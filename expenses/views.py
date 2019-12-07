@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from expenses.models import Expense
 from projects.models import Project
@@ -20,8 +20,8 @@ def expenses(request):
 def add_expense(request):
     if request.user.role.expenses_manage_access:
         if request.method.lower() == 'post':
-            project = Project.objects.get(name=request.POST.get('project'), company=request.user.company)
-            category = Category.objects.get(name=request.POST.get('category'), company=request.user.company)
+            project = get_object_or_404(Project, name=request.POST.get('project'), company=request.user.company)
+            category = get_object_or_404(Category, name=request.POST.get('category'), company=request.user.company)
             notes = request.POST.get('notes')
             amount = request.POST.get('amount')
             
@@ -42,9 +42,9 @@ def add_expense(request):
 def edit_expense(request, expense_id):
     if request.user.role.expenses_manage_access:
         if request.method.lower() == 'post':
-            expense = Expense.objects.get(pk=expense_id, company=request.user.company)
-            project = Project.objects.get(name=request.POST.get('project'), company=request.user.company)
-            category = Category.objects.get(name=request.POST.get('category'), company=request.user.company)
+            expense = get_object_or_404(Expense, pk=expense_id, company=request.user.company)
+            project = get_object_or_404(Project, name=request.POST.get('project'), company=request.user.company)
+            category = get_object_or_404(Category, name=request.POST.get('category'), company=request.user.company)
             notes = request.POST.get('notes')
             amount = request.POST.get('amount')
 
@@ -58,7 +58,7 @@ def edit_expense(request, expense_id):
 @login_required
 def delete_expense(request, expense_id):
     if request.user.role.expenses_manage_access:
-        expense = Expense.objects.get(pk=expense_id, company=request.user.company)
+        expense = get_object_or_404(Expense, pk=expense_id, company=request.user.company)
         expense.project.total_spent -= expense.amount
         expense.project.save()
         expense.delete()

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from manage_app.models import Client, Task, Category
 
@@ -32,7 +32,7 @@ def add_client(request):
 def edit_client(request, pk):
     if request.user.role.client_manage_access:
         if request.method.lower() == 'post':
-            client = Client.objects.get(pk=pk)
+            client = get_object_or_404(Client, pk=pk)
             client.name = request.POST.get('name')
             client.email = request.POST.get('email')
             client.save()
@@ -41,7 +41,7 @@ def edit_client(request, pk):
 @login_required
 def delete_client(request, pk):
     if request.user.role.client_manage_access:
-        client = Client.objects.get(pk=pk)
+        client = get_object_or_404(Client, pk=pk)
         client.delete()
     return redirect('clients')
 
@@ -71,7 +71,7 @@ def add_task(request):
 def edit_task(request, pk):
     if request.user.role.task_manage_access:
         if request.method.lower() == 'post':
-            task = Task.objects.get(pk=pk)
+            task = get_object_or_404(Task, pk=pk)
             task.name = request.POST.get('name')
             task.default_hourly_rate = request.POST.get('hourly_rate')
             task.save()
@@ -80,7 +80,7 @@ def edit_task(request, pk):
 @login_required
 def delete_task(request, pk):
     if request.user.role.task_manage_access:
-        task = Task.objects.get(pk=pk)
+        task = get_object_or_404(Task, pk=pk)
         task.delete()
     return redirect('tasks')
 
@@ -108,7 +108,7 @@ def add_category(request):
 def edit_category(request, pk):
     if request.user.role.expense_category_manage_access:
         if request.method.lower() == 'post':
-            category = Category.objects.get(pk=pk)
+            category = get_object_or_404(Category, pk=pk)
             category.name = request.POST.get('name')
             category.save()
     return redirect('expense_categories')
@@ -116,6 +116,6 @@ def edit_category(request, pk):
 @login_required
 def delete_category(request, pk):
     if request.user.role.expense_category_manage_access:
-        category = Category.objects.get(pk=pk)
+        category = get_object_or_404(Category, pk=pk)
         category.delete()
     return redirect('expense_categories')

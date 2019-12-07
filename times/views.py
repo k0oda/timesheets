@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from times.models import Entry
 from projects.models import Project
@@ -7,7 +7,7 @@ from datetime import date, time, timedelta, datetime
 
 @login_required
 def start_timer(request, entry_id):
-    entry = Entry.objects.get(pk=entry_id)
+    entry = get_object_or_404(Entry, pk=entry_id)
     entry.start_time = datetime.now().time()
     entry.is_active = True
     entry.save()
@@ -15,7 +15,7 @@ def start_timer(request, entry_id):
 
 @login_required
 def stop_timer(request, entry_id):
-    entry = Entry.objects.get(pk=entry_id)
+    entry = get_object_or_404(Entry, pk=entry_id)
     entry.is_active = False
 
     now = datetime.now()
@@ -37,8 +37,8 @@ def stop_timer(request, entry_id):
 def add_entry(request, year, month, day):
     if request.method.lower() == 'post':
         _date = date(year, month, day)
-        project = Project.objects.get(name=request.POST.get('project'), company=request.user.company)
-        task = Task.objects.get(name=request.POST.get('task'), company=request.user.company)
+        project = get_object_or_404(Project, name=request.POST.get('project'), company=request.user.company)
+        task = get_object_or_404(Task, name=request.POST.get('task'), company=request.user.company)
         notes = request.POST.get('notes')
         timer = request.POST.get('timer')
         new_entry = Entry.objects.create(
@@ -56,9 +56,9 @@ def add_entry(request, year, month, day):
 @login_required
 def edit_entry(request, pk):
     if request.method.lower() == 'post':
-        entry = Entry.objects.get(company=request.user.company, pk=pk)
-        entry.project = Project.objects.get(name=request.POST.get('project'), company=request.user.company)
-        entry.task = Task.objects.get(name=request.POST.get('task'), company=request.user.company)
+        entry = get_object_or_404(Entry, company=request.user.company, pk=pk)
+        entry.project = get_object_or_404(Project, name=request.POST.get('project'), company=request.user.company)
+        entry.task = get_object_or_404(Task, name=request.POST.get('task'), company=request.user.company)
         entry.notes = request.POST.get('notes')
         entry.timer = request.POST.get('timer')
         entry.save()
@@ -66,7 +66,7 @@ def edit_entry(request, pk):
 
 @login_required
 def delete_entry(request, pk):
-    entry = Entry.objects.get(company=request.user.company, pk=pk)
+    entry = get_object_or_404(Entry, company=request.user.company, pk=pk)
     
     hourly_rate = 0
     for task in entry.project.tasks.all():

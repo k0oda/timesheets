@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect 
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
@@ -18,7 +18,7 @@ def team(request):
 def invite(request):
     if request.user.role.invite_user_access:
         if request.method.lower() == 'post':
-            user = get_user_model().objects.get(username=request.POST.get('username'))
+            user = get_object_or_404(get_user_model(), username=request.POST.get('username'))
             new_invitation = Invitation.objects.create(
                 company = request.user.company,
                 target_user = user
@@ -28,7 +28,7 @@ def invite(request):
 
 @login_required
 def accept_invitation(request, pk):
-    invitation = Invitation.objects.get(pk=pk)
+    invitation = get_object_or_404(Invitation, pk=pk)
     request.user.company = invitation.company
     request.user.save()
     invitation.delete()
@@ -37,7 +37,7 @@ def accept_invitation(request, pk):
 @login_required
 def user_profile(request, pk):
     if request.user.role.user_info_access:
-        user = get_user_model().objects.get(company=request.user.company, pk=pk)
+        user = get_object_or_404(get_user_model(), company=request.user.company, pk=pk)
         entries = Entry.objects.filter(user=user)
         roles = Role.objects.filter(company=request.user.company)
 
@@ -53,15 +53,15 @@ def user_profile(request, pk):
 def edit_user_role(request, pk):
     if request.user.role.manage_roles_access:
         if request.method.lower() == 'post':
-            user = get_user_model().objects.get(company=request.user.company, pk=pk)
-            user.role = Role.objects.get(name=request.POST.get('role'), company=request.user.company)
+            user = get_object_or_404(get_user_model(), company=request.user.company, pk=pk)
+            user.role = get_object_or_404(Role, name=request.POST.get('role'), company=request.user.company)
             user.save()
     return redirect('user_profile', pk)
 
 @login_required
 def kick_user(request, pk):
     if request.user.role.kick_user_access:
-        user_to_kick = get_user_model().objects.get(company=request.user.company, pk=pk)
+        user_to_kick = get_object_or_404(get_user_model(), company=request.user.company, pk=pk)
 
         if request.user == request.user.company.owner and request.user != user_to_kick:
             user_to_kick.company_id = None

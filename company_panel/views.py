@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from company_panel.models import Company, Role
 from company_panel.forms import CreateCompanyForm
@@ -91,7 +91,7 @@ def add_role(request):
 def edit_role(request, pk):
     if request.user.role.manage_roles_access:
         if request.method.lower() == 'post':
-            role = Role.objects.get(company=request.user.company, pk=pk)
+            role = get_object_or_404(Role, company=request.user.company, pk=pk)
             if role != request.user.company.owner.role:
                 role.company = request.user.company
                 role.name = request.POST.get('name')
@@ -113,6 +113,6 @@ def edit_role(request, pk):
 @login_required
 def delete_role(request, pk):
     if request.user.role.manage_roles_access:
-        role = Role.objects.get(company=request.user.company, pk=pk)
+        role = get_object_or_404(Role, company=request.user.company, pk=pk)
         role.delete()
     return redirect('settings')
