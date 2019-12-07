@@ -1,8 +1,8 @@
 from django.urls import path
-from settings.views import Settings
+from settings import views
 
 urlpatterns = [
-    path('', Settings.main, name='settings'),
-    path('user/', Settings.edit_user, name='edit_user'),
-    path('user/password/', Settings.change_password, name='change_password')
+    path('', views.settings, name='settings'),
+    path('user/', views.edit_user, name='edit_user'),
+    path('user/password/', views.change_password, name='change_password')
 ]

@@ -15,18 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from authentication.views import Authentication
-from company_panel.views import CompanyPanel
-from times.views import Time
-from expenses.views import Expenses
-from projects.views import Projects
-from team.views import Team
-from invoices.views import Invoices
-from manage_app.views import Manage
+from company_panel.views import company as main
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', CompanyPanel.main, name='main'),
+    path('', main, name='main'),
     path('auth/', include('authentication.urls')),
     path('company/', include('company_panel.urls')),
     path('time/', include('times.urls')),
