@@ -12,7 +12,7 @@ class Entry(models.Model):
     date = models.DateField(default=date.today())
     project = models.ForeignKey(Project, models.CASCADE, related_name='+')
     task = models.ForeignKey(Task, models.CASCADE, related_name='+')
-    notes = models.CharField(max_length=350, blank=True, default=' ')
+    notes = models.TextField(max_length=350, blank=True, default=' ')
     timer = models.TimeField(default=time(0, 0))
     start_time = models.TimeField(default=time(0, 0))
     is_active = models.BooleanField(default=False)

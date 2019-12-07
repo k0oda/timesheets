@@ -8,9 +8,9 @@ class Invoice(models.Model):
     company = models.ForeignKey(Company, models.CASCADE, related_name='+')
     date = models.DateField()
     total_amount = models.IntegerField(null=True, default=0)
-    total_unit_price = models.FloatField(null=True, default=0)
-    total_price = models.FloatField(null=True, default=0)
-    notes = models.CharField(max_length=350, blank=True)
+    total_unit_price = models.DecimalField(null=True, default=0, max_digits=20, decimal_places=2)
+    total_price = models.DecimalField(null=True, default=0, max_digits=20, decimal_places=2)
+    notes = models.TextField(max_length=350, blank=True)
 
     def __str__(self):
         return self.client.name
@@ -24,9 +24,9 @@ class Item(models.Model):
     invoice = models.ForeignKey(Invoice, models.CASCADE, related_name='+')
     name = models.CharField(max_length=150)
     description = models.CharField(max_length=350, blank=True)
-    unit_price = models.FloatField(default=0.0)
+    unit_price = models.DecimalField(default=0, max_digits=20, decimal_places=2)
     amount = models.IntegerField(default=0)
-    total_price = models.FloatField(null=True, default=0)
+    total_price = models.DecimalField(null=True, default=0, max_digits=20, decimal_places=2)
 
     def __str__(self):
         return self.name
