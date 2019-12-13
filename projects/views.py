@@ -22,9 +22,9 @@ def project(request, pk):
     if request.user.role.detailed_project_info_access:
         project = Project.objects.get(company=request.user.company, pk=pk)
         team = get_user_model().objects.filter(company=request.user.company)
+        entries = Entry.objects.filter(company=request.user.company, user__in=team, project=project)
         totals = {}
         for user in team:
-            entries = Entry.objects.filter(company=request.user.company, user=user, project=project)
             if entries:
                 totals[user.username] = time(0, 0)
                 for entry in entries:
@@ -53,9 +53,8 @@ def add_project(request):
                 notes=notes,
                 budget=budget
             )
-            tasks = request.POST.getlist('tasks')
-            for task in tasks:
-                new_project.tasks.add(Task.objects.get(company=request.user.company, name=task))
+            tasks = Task.objects.filter(company=request.user.company, name__in=request.POST.getlist('tasks'))
+            new_project.tasks.set(tasks)
             new_project.save()
     return redirect('projects')
 
@@ -69,9 +68,8 @@ def edit_project(request, pk):
             project.notes = request.POST.get('notes')
             project.budget = request.POST.get('budget')
             project.tasks.clear()
-            tasks = request.POST.getlist('tasks')
-            for task in tasks:
-                project.tasks.add(Task.objects.get(company=request.user.company, name=task))
+            tasks = Task.objects.filter(company=request.user.company, name__in=request.POST.getlist('tasks'))
+            project.tasks.set(tasks)
             project.save()
     return redirect('projects')
 
