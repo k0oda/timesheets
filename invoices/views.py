@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from invoices.models import Invoice, Item
 from manage_app.models import Client
@@ -20,7 +20,7 @@ def invoices(request):
 def add_invoice(request):
     if request.user.role.invoices_manage_access:
         if request.method.lower() == 'post':
-            client = Client.objects.get(name=request.POST.get('client'), company=request.user.company)
+            client = get_object_or_404(Client, name=request.POST.get('client'), company=request.user.company)
             date = parse_date(request.POST.get('date'))
             notes = request.POST.get('notes')
             new_invoice = Invoice.objects.create(
@@ -44,8 +44,8 @@ def add_invoice(request):
 def edit_invoice(request, pk):
     if request.user.role.invoices_manage_access:
         if request.method.lower() == 'post':
-            invoice = Invoice.objects.get(company=request.user.company, pk=pk)
-            invoice.client = Client.objects.get(name=request.POST.get('client'), company=request.user.company)
+            invoice = get_object_or_404(Invoice, company=request.user.company, pk=pk)
+            invoice.client = get_object_or_404(Client, name=request.POST.get('client'), company=request.user.company)
             invoice.date = parse_date(request.POST.get('date'))
             invoice.notes = request.POST.get('notes')
             invoice.save()
@@ -54,19 +54,19 @@ def edit_invoice(request, pk):
 @login_required
 def delete_invoice(request, pk):
     if request.user.role.invoices_manage_access:
-        invoice = Invoice.objects.get(company=request.user.company, pk=pk)
+        invoice = get_object_or_404(Invoice, company=request.user.company, pk=pk)
         invoice.delete()
     return redirect('invoices')
 
 @login_required
 def add_item(request, invoice_pk):
     if request.user.role.invoices_manage_access:
-        invoice = Invoice.objects.get(company=request.user.company, pk=invoice_pk)
+        invoice = get_object_or_404(Invoice, company=request.user.company, pk=invoice_pk)
         items = Item.objects.filter(company=request.user.company, invoice=invoice)
 
         if request.method.lower() == 'post':
             new_item = Item.objects.create(
-                company=company,
+                company=invoice.company,
                 invoice=invoice,
                 name=request.POST.get('name'),
                 description=request.POST.get('description'),
@@ -90,13 +90,7 @@ def add_item(request, invoice_pk):
 @login_required
 def edit_item(request, pk):
     if request.user.role.invoices_manage_access:
-        company_id = request.user.company_id
-        if Company.objects.filter(pk=company_id).exists():
-            company = Company.objects.get(pk=company_id)
-        else:
-            company = 0
-
-        item = Item.objects.get(company=company, pk=pk)
+        item = get_object_or_404(Item, company=request.user.company, pk=pk)
 
         if request.method.lower() == 'post':
             item.invoice.total_amount -= int(item.amount)
@@ -121,13 +115,7 @@ def edit_item(request, pk):
 @login_required
 def delete_item(request, pk):
     if request.user.role.invoices_manage_access:
-        company_id = request.user.company_id
-        if Company.objects.filter(pk=company_id).exists():
-            company = Company.objects.get(pk=company_id)
-        else:
-            company = 0
-
-        item = Item.objects.get(company=company, pk=pk)
+        item = get_object_or_404(Item, company=request.user.company, pk=pk)
         item.delete()
         return redirect('add_item', item.invoice.pk)
     else:

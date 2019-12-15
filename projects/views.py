@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from projects.models import Project
@@ -20,7 +20,7 @@ def projects(request):
 @login_required
 def project(request, pk):
     if request.user.role.detailed_project_info_access:
-        project = Project.objects.get(company=request.user.company, pk=pk)
+        project = get_object_or_404(Project, company=request.user.company, pk=pk)
         team = get_user_model().objects.filter(company=request.user.company)
         entries = Entry.objects.filter(company=request.user.company, user__in=team, project=project)
         totals = {}
@@ -43,7 +43,7 @@ def add_project(request):
     if request.user.role.project_manage_access:
         if request.method.lower() == 'post':
             name = request.POST.get('name')
-            client = Client.objects.get(company=request.user.company, name=request.POST.get('client'))
+            client = get_object_or_404(Client, company=request.user.company, name=request.POST.get('client'))
             notes = request.POST.get('notes')
             budget = request.POST.get('budget')
             new_project = Project.objects.create(
@@ -62,9 +62,9 @@ def add_project(request):
 def edit_project(request, pk):
     if request.user.role.project_manage_access:
         if request.method.lower() == 'post':
-            project = Project.objects.get(company=request.user.company, pk=pk)
+            project = get_object_or_404(Project, company=request.user.company, pk=pk)
             project.name = request.POST.get('name')
-            project.client = Client.objects.get(company=request.user.company, name=request.POST.get('client'))
+            project.client = get_object_or_404(Client, company=request.user.company, name=request.POST.get('client'))
             project.notes = request.POST.get('notes')
             project.budget = request.POST.get('budget')
             project.tasks.clear()
@@ -76,6 +76,6 @@ def edit_project(request, pk):
 @login_required
 def delete_project(request, pk):
     if request.user.role.project_manage_access:
-        project = Project.objects.get(company=request.user.company, pk=pk)
+        project = get_object_or_404(Project, company=request.user.company, pk=pk)
         project.delete()
     return redirect('projects')
