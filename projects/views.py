@@ -21,16 +21,16 @@ def projects(request):
 def project(request, pk):
     if request.user.role.detailed_project_info_access:
         project = get_object_or_404(Project, company=request.user.company, pk=pk)
-        team = get_user_model().objects.filter(company=request.user.company)
-        entries = Entry.objects.filter(company=request.user.company, user__in=team, project=project)
+        entries = Entry.objects.filter(company=request.user.company, project=project).order_by('user__username')
         totals = {}
-        for user in team:
-            if entries:
-                totals[user.username] = time(0, 0)
-                for entry in entries:
-                    timer_delta = timedelta(hours=entry.timer.hour, minutes=entry.timer.minute)
-                    current_total = totals[user.username]
-                    totals[user.username] = (datetime.min + (timedelta(hours=current_total.hour, minutes=current_total.minute) + timer_delta)).time()
+        last_username = None
+        for entry in entries:
+            if entry.user.username != last_username:
+                totals[entry.user.username] = time(0, 0)
+                last_username = entry.user.username
+            timer_delta = timedelta(hours=entry.timer.hour, minutes=entry.timer.minute)
+            current_total = totals[entry.user.username]
+            totals[entry.user.username] = (datetime.min + (timedelta(hours=current_total.hour, minutes=current_total.minute) + timer_delta)).time()
         return render(request, 'projects/project.html', context={
             'project': project,
             'totals': totals
