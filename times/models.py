@@ -7,6 +7,11 @@ from datetime import date, time
 
 
 class Entry(models.Model):
+    class Meta:
+        verbose_name = 'Entry'
+        verbose_name_plural = 'Entries'
+        ordering = ['company', 'user', 'date']
+
     company = models.ForeignKey(Company, models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE, related_name='+')
     date = models.DateField(default=date.today())

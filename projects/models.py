@@ -4,6 +4,11 @@ from manage_app.models import Client, Task
 
 
 class Project(models.Model):
+    class Meta:
+        verbose_name = 'Project'
+        verbose_name_plural = 'Projects'
+        ordering = ['company', 'name']
+
     company = models.ForeignKey(Company, models.CASCADE, related_name='+')
     name = models.CharField(max_length=150)
     client = models.ForeignKey(Client, models.CASCADE, related_name='+')

@@ -5,6 +5,11 @@ from manage_app.models import Category
 
 
 class Expense(models.Model):
+    class Meta:
+        verbose_name = 'Expense'
+        verbose_name_plural = 'Expenses'
+        ordering = ['company', 'date']
+
     company = models.ForeignKey(Company, models.CASCADE, related_name='+')
     project = models.ForeignKey(Project, models.CASCADE, related_name='+')
     category = models.ForeignKey(Category, models.CASCADE, related_name='+')

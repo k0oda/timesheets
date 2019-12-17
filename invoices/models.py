@@ -4,6 +4,11 @@ from company_panel.models import Company
 
 
 class Invoice(models.Model):
+    class Meta:
+        verbose_name = 'Invoice'
+        verbose_name_plural = 'Invoices'
+        ordering = ['company', 'date']
+
     client = models.ForeignKey(Client, models.CASCADE, related_name='+')
     company = models.ForeignKey(Company, models.CASCADE, related_name='+')
     date = models.DateField()
@@ -20,6 +25,11 @@ class Invoice(models.Model):
 
 
 class Item(models.Model):
+    class Meta:
+        verbose_name = 'Item'
+        verbose_name_plural = 'Items'
+        ordering = ['company', 'invoice']
+
     company = models.ForeignKey(Company, models.CASCADE, related_name='+')
     invoice = models.ForeignKey(Invoice, models.CASCADE, related_name='+')
     name = models.CharField(max_length=150)

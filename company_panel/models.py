@@ -4,6 +4,11 @@ from django.conf import settings
 
 
 class Company(models.Model):
+    class Meta:
+        verbose_name = 'Company'
+        verbose_name_plural = 'Companies'
+        ordering = ['date_of_creation']
+
     name = models.CharField(max_length=150)
     date_of_creation = models.DateField(default=date.today())
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE, related_name='company_own')
@@ -13,6 +18,11 @@ class Company(models.Model):
 
 
 class Role(models.Model):
+    class Meta:
+        verbose_name = 'Role'
+        verbose_name_plural = 'Roles'
+        ordering = ['company', 'name']
+
     company = models.ForeignKey(Company, models.CASCADE, related_name='+')
     name = models.CharField(max_length=150)
     user_info_access = models.BooleanField(default=False)
