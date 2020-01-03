@@ -49,6 +49,10 @@ INSTALLED_APPS = [
     'settings'
 ]
 
+FORMS = {
+    'CreateExpense': 'expenses.forms.CreateExpense'
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
