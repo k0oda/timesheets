@@ -13,7 +13,6 @@ def expenses(request):
 
     return render(request, 'expenses/expenses.html', context={
         'expenses': expenses,
-        'form': CreateExpense(request.user)
     })
 
 @login_required

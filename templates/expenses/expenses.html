@@ -1,6 +1,7 @@
 {% extends 'company_panel/company_header.html' %}
 {% load static %}
 {% load l10n %}
+{% load forms %}
 
 {% block tab_content %}
     {% if request.user.role.expenses_manage_access %}
@@ -8,6 +9,8 @@
         <button type="button" class="mx-auto col-auto btn btn-outline-success" data-toggle="modal" data-target="#newExpenseModal"><img src="{% static 'expenses/img/add.svg' %}"> New Expense</button>
     </div>
 
+
+    {% get_form "CreateExpense" request.user as form %}
     <div class="modal fade" id="newExpenseModal" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
