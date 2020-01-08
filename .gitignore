@@ -1,4 +1,5 @@
 .idea/
+db.sqlite3
 timesheets/__pycache__/
 authentication/__pycache__/
 authentication/migrations/__pycache__/
