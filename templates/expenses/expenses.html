@@ -74,6 +74,7 @@
                 </li>
 
                 {% if request.user.role.expenses_manage_access %}
+                {% get_form "CreateExpense" request.user expense as edit_form %}
                 <div class="modal fade" id="edit_{{ expense.pk }}" role="dialog">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -87,27 +88,19 @@
                                 {% csrf_token %}
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <label>Project</label>
-                                        <select name="project" class="form-control" required>
-                                            {% for project in projects %}
-                                                <option {% if expense.project == project %} selected {% endif %}>{{ project }}</option>
-                                            {% endfor %}
-                                        </select>
+                                        <label>{{ edit_form.project.label }}</label>
+                                        {{ edit_form.project }}
                                     </div>
                                     <div class="form-group">
-                                        <label>Category</label>
-                                        <select name="category" class="form-control" required>
-                                            {% for category in categories %}
-                                                <option {% if expense.category == category %} selected {% endif %}>{{ category }}</option>
-                                            {% endfor %}
-                                        </select>
+                                        <label>{{ edit_form.category.label }}</label>
+                                        {{ edit_form.category }}
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col">
-                                            <textarea class="form-control" name="notes" cols="3" rows="5" placeholder="Notes (optional)">{{ expense.notes }}</textarea>
+                                            {{ edit_form.notes }}
                                         </div>
                                         <div class="form-group col-2">
-                                            <input type="text" name="amount" class="form-control" required value="{{ expense.amount|unlocalize }}">
+                                            {{ edit_form.amount }}
                                         </div>
                                     </div>
                                 </div>
