@@ -5,7 +5,7 @@ from manage_app.models import Category
 
 
 class CreateExpense(forms.ModelForm):
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, user, editable_object=None, *args, **kwargs):
         super(CreateExpense, self).__init__(*args, **kwargs)
         use_required_attribute = True
         self.fields['project'] = forms.ModelChoiceField(
@@ -15,6 +15,7 @@ class CreateExpense(forms.ModelForm):
                 }
             ),
             queryset=Project.objects.filter(company=user.company),
+            initial=editable_object.project if editable_object else None,
             required=True,
             label='Project'
         )
@@ -25,6 +26,7 @@ class CreateExpense(forms.ModelForm):
                 }
             ),
             queryset=Category.objects.filter(company=user.company),
+            initial=editable_object.category if editable_object else None,
             required=True,
             label='Category'
         )
@@ -36,7 +38,8 @@ class CreateExpense(forms.ModelForm):
                     'rows': '5',
                     'placeholder': 'Notes (optional)'
                 }
-            )
+            ),
+            initial=editable_object.notes if editable_object else None
         )
         self.fields['amount'] = forms.DecimalField(
             widget=forms.NumberInput(
@@ -44,6 +47,7 @@ class CreateExpense(forms.ModelForm):
                     'class': 'form-control',
                 }
             ),
+            initial=editable_object.amount if editable_object else None,
             required=True
         )
 
