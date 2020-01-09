@@ -1,7 +1,6 @@
 from django import forms
 from .models import Invoice
 from manage_app.models import Client
-from datetime import date
 
 
 class CreateInvoice(forms.ModelForm):
