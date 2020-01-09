@@ -33,15 +33,12 @@ def edit_expense(request, expense_id):
     if request.user.role.expenses_manage_access:
         if request.method.lower() == 'post':
             expense = get_object_or_404(Expense, pk=expense_id, company=request.user.company)
-            project = get_object_or_404(Project, name=request.POST.get('project'), company=request.user.company)
-            category = get_object_or_404(Category, name=request.POST.get('category'), company=request.user.company)
-            notes = request.POST.get('notes')
-            amount = request.POST.get('amount')
-
-            expense.project = project
-            expense.category = category
-            expense.notes = notes
-            expense.amount = amount
+            form = CreateExpense(request.user, expense, data=request.POST)
+            new_expense = form.save(commit=False)
+            expense.project = new_expense.project
+            expense.category = new_expense.category
+            expense.notes = new_expense.notes
+            expense.amount = new_expense.amount
             expense.save()
     return redirect('expenses')
 
