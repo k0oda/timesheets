@@ -51,7 +51,8 @@ INSTALLED_APPS = [
 
 FORMS = {
     'CreateExpense': 'expenses.forms.CreateExpense',
-    'CreateInvoice': 'invoices.forms.CreateInvoice'
+    'CreateInvoice': 'invoices.forms.CreateInvoice',
+    'CreateItem': 'invoices.forms.CreateItem'
 }
 
 MIDDLEWARE = [
