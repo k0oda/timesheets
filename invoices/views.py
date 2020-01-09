@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from invoices.models import Invoice, Item
 from manage_app.models import Client
-from invoices.forms import CreateInvoice
+from invoices.forms import CreateInvoice, CreateItem
 
 @login_required
 def invoices(request):
@@ -57,20 +57,16 @@ def add_item(request, invoice_pk):
         items = Item.objects.filter(company=request.user.company, invoice=invoice)
 
         if request.method.lower() == 'post':
-            new_item = Item.objects.create(
-                company=invoice.company,
-                invoice=invoice,
-                name=request.POST.get('name'),
-                description=request.POST.get('description'),
-                amount=request.POST.get('amount'),
-                unit_price=request.POST.get('unit_price'),
-                total_price=int(request.POST.get('amount')) * float(request.POST.get('unit_price'))
-            )
+            form = CreateItem(data=request.POST)
+            new_item = form.save(commit=False)
+            new_item.company = invoice.company
+            new_item.invoice = invoice
+            new_item.total_price = new_item.amount * new_item.unit_price
             new_item.save()
 
-            invoice.total_amount += int(new_item.amount)
-            invoice.total_unit_price += float(new_item.unit_price)
-            invoice.total_price += int(new_item.amount) * float(new_item.unit_price)
+            invoice.total_amount += new_item.amount
+            invoice.total_unit_price += new_item.unit_price
+            invoice.total_price += new_item.amount * new_item.unit_price
             invoice.save()
         return render(request, 'invoices/add_items.html', context={
             'invoice': invoice,
@@ -85,19 +81,21 @@ def edit_item(request, pk):
         item = get_object_or_404(Item, company=request.user.company, pk=pk)
 
         if request.method.lower() == 'post':
-            item.invoice.total_amount -= int(item.amount)
-            item.invoice.total_unit_price -= float(item.unit_price)
-            item.invoice.total_price -= int(item.amount) * float(item.unit_price)
+            item.invoice.total_amount -= item.amount
+            item.invoice.total_unit_price -= item.unit_price
+            item.invoice.total_price -= item.total_price
 
-            item.name = request.POST.get('name')
-            item.description = request.POST.get('description')
-            item.amount = request.POST.get('amount')
-            item.unit_price = request.POST.get('unit_price')
-            item.total_price = int(item.amount) * float(item.unit_price)
+            form = CreateItem(item, data=request.POST)
+            new_item = form.save(commit=False)
+            item.name = new_item.name
+            item.description = new_item.description
+            item.amount = new_item.amount
+            item.unit_price = new_item.unit_price
+            item.total_price = new_item.amount * new_item.unit_price
             item.save()
 
-            item.invoice.total_amount += int(item.amount)
-            item.invoice.total_unit_price += float(item.unit_price)
+            item.invoice.total_amount += item.amount
+            item.invoice.total_unit_price += item.unit_price
             item.invoice.total_price += item.total_price
             item.invoice.save()
         return redirect('add_item', item.invoice.pk)
@@ -108,6 +106,10 @@ def edit_item(request, pk):
 def delete_item(request, pk):
     if request.user.role.invoices_manage_access:
         item = get_object_or_404(Item, company=request.user.company, pk=pk)
+        item.invoice.total_amount -= item.amount
+        item.invoice.total_unit_price -= item.unit_price
+        item.invoice.total_price -= item.total_price
+        item.invoice.save()
         item.delete()
         return redirect('add_item', item.invoice.pk)
     else:
