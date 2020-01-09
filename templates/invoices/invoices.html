@@ -1,5 +1,6 @@
 {% extends 'company_panel/company_header.html' %}
 {% load static %}
+{% load forms %}
 
 {% block tab_content %}
 {% if request.user.role.invoices_manage_access %}
@@ -52,24 +53,21 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+                        {% get_form "CreateInvoice" request.user invoice as edit_form %}
                         <form action="{% url 'edit_invoice' invoice.pk %}" method="POST">
                             {% csrf_token %}
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label>Client</label>
-                                    <select name="client" class="form-control" required>
-                                        {% for client in clients %}
-                                            <option {% if invoice.client == client %} selected {% endif %}>{{ client }}</option>
-                                        {% endfor %}
-                                    </select>
+                                    <label>{{ edit_form.client.label }}</label>
+                                    {{ edit_form.client }}
                                 </div>
                                 <div class="form-group">
-                                    <label>Date</label>
-                                    <input type="date" name="date" class="form-control" value="{{ invoice.date|date:"Y-m-d" }}" required>
+                                    <label>{{ edit_form.date.label }}</label>
+                                    {{ edit_form.date }}
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col">
-                                        <textarea class="form-control" name="notes" cols="3" rows="5" placeholder="Notes (optional)">{{ invoice.notes }}</textarea>
+                                        {{ edit_form.notes }}
                                     </div>
                                 </div>
                             </div>

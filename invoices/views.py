@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from invoices.models import Invoice, Item
 from manage_app.models import Client
-from django.utils.dateparse import parse_date
+from invoices.forms import CreateInvoice
 
 @login_required
 def invoices(request):
@@ -20,23 +20,13 @@ def invoices(request):
 def add_invoice(request):
     if request.user.role.invoices_manage_access:
         if request.method.lower() == 'post':
-            client = get_object_or_404(Client, name=request.POST.get('client'), company=request.user.company)
-            date = parse_date(request.POST.get('date'))
-            notes = request.POST.get('notes')
-            new_invoice = Invoice.objects.create(
-                company=request.user.company,
-                client=client,
-                date=date,
-                notes=notes
-            )
-            new_invoice.save()
-            return redirect('add_item', new_invoice.pk)
+            form = CreateInvoice(request.user, data=request.POST)
+            invoice = form.save(commit=False)
+            invoice.company = request.user.company
+            invoice.save()
+            return redirect('add_item', invoice.pk)
         else:
-            clients = Client.objects.filter(company=request.user.company)
-
-            return render(request, 'invoices/new_invoice.html', context={
-                'clients': clients
-            })
+            return render(request, 'invoices/new_invoice.html')
     else:
         return redirect('invoices')
 
@@ -45,9 +35,11 @@ def edit_invoice(request, pk):
     if request.user.role.invoices_manage_access:
         if request.method.lower() == 'post':
             invoice = get_object_or_404(Invoice, company=request.user.company, pk=pk)
-            invoice.client = get_object_or_404(Client, name=request.POST.get('client'), company=request.user.company)
-            invoice.date = parse_date(request.POST.get('date'))
-            invoice.notes = request.POST.get('notes')
+            form = CreateInvoice(request.user, invoice, data=request.POST)
+            new_invoice = form.save(commit=False)
+            invoice.client = new_invoice.client
+            invoice.date = new_invoice.date
+            invoice.notes = new_invoice.notes
             invoice.save()
     return redirect('invoices')
 

@@ -1,28 +1,26 @@
 {% extends 'company_panel/company_header.html' %}
 {% load static %}
+{% load forms %}
 
 {% block tab_content %}
 <div class="row">
     <h3 class="col-auto font-weight-bold mx-auto text-primary">New invoice</h3>
 </div>
 
+{% get_form "CreateInvoice" request.user as form %}
 <form action="{% url 'add_invoice' %}" method="POST">
     {% csrf_token %}
     <div class="form-group">
-        <label>Client</label>
-        <select name="client" class="form-control" required>
-            {% for client in clients %}
-                <option>{{ client }}</option>
-            {% endfor %}
-        </select>
+        <label>{{ form.client.label }}</label>
+        {{ form.client }}
     </div>
     <div class="form-group">
-        <label>Date</label>
-        <input type="date" name="date" class="form-control" required>
+        <label>{{ form.date.label }}</label>
+        {{ form.date }}
     </div>
     <div class="form-row">
         <div class="form-group col">
-            <textarea class="form-control" name="notes" cols="3" rows="5" placeholder="Notes (optional)"></textarea>
+            {{ form.notes }}
         </div>
     </div>
 
