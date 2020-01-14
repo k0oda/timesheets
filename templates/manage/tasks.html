@@ -1,6 +1,7 @@
 {% extends 'manage/base.html' %}
 {% load static %}
 {% load l10n %}
+{% load forms %}
 
 {% block tab_content %}
 {% if request.user.role.task_manage_access %}
@@ -8,6 +9,7 @@
     <button type="button" class="mx-auto col-auto btn btn-outline-success" data-toggle="modal" data-target="#newTaskModal"><img src="{% static 'manage_app/img/add.svg' %}"> New Task</button>
 </div>
 
+{% get_form "CreateTask" as form %}
 <div class="modal fade" id="newTaskModal" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -21,12 +23,12 @@
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Task name</label>
-                        <input type="text" name="name" class="form-control" required>
+                        <label>{{ form.name.label }}</label>
+                        {{ form.name }}
                     </div>
                     <div class="form-group">
-                        <label>Default hourly rate</label>
-                        <input type="text" name="hourly_rate" class="form-control" value="0.0">
+                        <label>{{ form.default_hourly_rate.label }}</label>
+                        {{ form.default_hourly_rate }}
                     </div>
                 </div>
                 <div class="modal-footer">

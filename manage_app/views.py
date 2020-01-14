@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from manage_app.models import Client, Task, Category
+from manage_app.forms import CreateTask
 
 @login_required
 def manage(request):
@@ -57,13 +58,9 @@ def tasks(request):
 def add_task(request):
     if request.user.role.task_manage_access:
         if request.method.lower() == 'post':
-            name = request.POST.get('name')
-            hourly_rate = request.POST.get('hourly_rate')
-            new_task = Task.objects.create(
-                company=request.user.company,
-                name=name,
-                default_hourly_rate=hourly_rate
-            )
+            form = CreateTask(data=request.POST)
+            new_task = form.save(commit=False)
+            new_task.company = request.user.company
             new_task.save()
     return redirect('tasks')
 
