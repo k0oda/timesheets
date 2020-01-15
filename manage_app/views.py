@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from manage_app.models import Client, Task, Category
-from manage_app.forms import CreateTask, CreateClient
+from manage_app.forms import CreateTask, CreateClient, CreateExpenseCategory
 
 @login_required
 def manage(request):
@@ -93,11 +93,9 @@ def expense_categories(request):
 def add_category(request):
     if request.user.role.expense_category_manage_access:
         if request.method.lower() == 'post':
-            name = request.POST.get('name')
-            new_category = Category.objects.create(
-                company=request.user.company,
-                name=name
-            )
+            form = CreateExpenseCategory(data=request.POST)
+            new_category = form.save(commit=False)
+            new_category.company = request.user.company
             new_category.save()
     return redirect('expense_categories')
 
@@ -106,7 +104,9 @@ def edit_category(request, pk):
     if request.user.role.expense_category_manage_access:
         if request.method.lower() == 'post':
             category = get_object_or_404(Category, pk=pk)
-            category.name = request.POST.get('name')
+            form = CreateExpenseCategory(category, data=request.POST)
+            new_category = form.save(commit=False)
+            category.name = new_category.name
             category.save()
     return redirect('expense_categories')
 

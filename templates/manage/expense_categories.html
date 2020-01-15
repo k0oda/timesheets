@@ -1,5 +1,6 @@
 {% extends 'manage/base.html' %}
 {% load static %}
+{% load forms %}
 
 {% block tab_content %}
 {% if request.user.role.expense_category_manage_access %}
@@ -16,12 +17,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            {% get_form "CreateExpenseCategory" as form %}
             <form action="{% url 'add_expense_category' %}" method="POST">
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Category name</label>
-                        <input type="text" name="name" class="form-control" required>
+                        <label>{{ form.name.label }}</label>
+                        {{ form.name }}
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -57,12 +59,13 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+                    {% get_form "CreateExpenseCategory" category as edit_form %}
                     <form action="{% url 'edit_expense_category' category.pk %}" method="POST">
                         {% csrf_token %}
                         <div class="modal-body">
                             <div class="form-group">
-                                <label>Category name</label>
-                                <input type="text" name="name" class="form-control" value="{{ category.name }}" required>
+                                <label>{{ edit_form.name.label }}</label>
+                                {{ edit_form.name }}
                             </div>
                         </div>
                         <div class="modal-footer">
