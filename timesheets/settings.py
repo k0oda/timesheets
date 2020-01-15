@@ -54,7 +54,8 @@ FORMS = {
     'CreateInvoice': 'invoices.forms.CreateInvoice',
     'CreateItem': 'invoices.forms.CreateItem',
     'CreateTask': 'manage_app.forms.CreateTask',
-    'CreateClient': 'manage_app.forms.CreateClient'
+    'CreateClient': 'manage_app.forms.CreateClient',
+    'CreateExpenseCategory': 'manage_app.forms.CreateExpenseCategory'
 }
 
 MIDDLEWARE = [
