@@ -1,5 +1,6 @@
 {% extends 'manage/base.html' %}
 {% load static %}
+{% load forms %}
 
 {% block tab_content %}
 {% if request.user.role.client_manage_access %}
@@ -16,16 +17,17 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            {% get_form "CreateClient" as form %}
             <form action="{% url 'add_client' %}" method="POST">
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Client name</label>
-                        <input type="text" name="name" class="form-control" required>
+                        <label>{{ form.name.label }}</label>
+                        {{ form.name }}
                     </div>
                     <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" name="email" class="form-control">
+                        <label>{{ form.email.label }}</label>
+                        {{ form.email }}
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -64,16 +66,17 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+                    {% get_form "CreateClient" client as edit_form %}
                     <form action="{% url 'edit_client' client.pk %}" method="POST">
                         {% csrf_token %}
                         <div class="modal-body">
                             <div class="form-group">
-                                <label>Client name</label>
-                                <input type="text" name="name" class="form-control" value="{{ client.name }}" required>
+                                <label>{{ edit_form.name.label }}</label>
+                                {{ edit_form.name }}
                             </div>
                             <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" name="email" class="form-control" value="{{ client.email }}">
+                                <label>{{ edit_form.email.label }}</label>
+                                {{ edit_form.email }}
                             </div>
                         </div>
                         <div class="modal-footer">

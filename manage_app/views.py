@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from manage_app.models import Client, Task, Category
-from manage_app.forms import CreateTask
+from manage_app.forms import CreateTask, CreateClient
 
 @login_required
 def manage(request):
@@ -19,13 +19,9 @@ def clients(request):
 def add_client(request):
     if request.user.role.client_manage_access:
         if request.method.lower() == 'post':
-            name = request.POST.get('name')
-            email = request.POST.get('email')
-            new_client = Client.objects.create(
-                company=request.user.company,
-                name=name,
-                email=email
-            )
+            form = CreateClient(data=request.POST)
+            new_client = form.save(commit=False)
+            new_client.company = request.user.company
             new_client.save()
     return redirect('clients')
 
@@ -34,8 +30,10 @@ def edit_client(request, pk):
     if request.user.role.client_manage_access:
         if request.method.lower() == 'post':
             client = get_object_or_404(Client, pk=pk)
-            client.name = request.POST.get('name')
-            client.email = request.POST.get('email')
+            form = CreateClient(client, data=request.POST)
+            new_client = form.save(commit=False)
+            client.name = new_client.name
+            client.email = new_client.email
             client.save()
     return redirect('clients')
 
