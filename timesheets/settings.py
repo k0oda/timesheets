@@ -53,7 +53,8 @@ FORMS = {
     'CreateExpense': 'expenses.forms.CreateExpense',
     'CreateInvoice': 'invoices.forms.CreateInvoice',
     'CreateItem': 'invoices.forms.CreateItem',
-    'CreateTask': 'manage_app.forms.CreateTask'
+    'CreateTask': 'manage_app.forms.CreateTask',
+    'CreateClient': 'manage_app.forms.CreateClient'
 }
 
 MIDDLEWARE = [
