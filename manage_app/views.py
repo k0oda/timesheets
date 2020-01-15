@@ -69,8 +69,10 @@ def edit_task(request, pk):
     if request.user.role.task_manage_access:
         if request.method.lower() == 'post':
             task = get_object_or_404(Task, pk=pk)
-            task.name = request.POST.get('name')
-            task.default_hourly_rate = request.POST.get('hourly_rate')
+            form = CreateTask(task, data=request.POST)
+            new_task = form.save(commit=False)
+            task.name = new_task.name
+            task.default_hourly_rate = new_task.default_hourly_rate
             task.save()
     return redirect('tasks')
 

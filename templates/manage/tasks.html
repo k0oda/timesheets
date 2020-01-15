@@ -65,16 +65,17 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+                    {% get_form "CreateTask" task as edit_form %}
                     <form action="{% url 'edit_task' task.pk %}" method="POST">
                         {% csrf_token %}
                         <div class="modal-body">
                             <div class="form-group">
-                                <label>Task name</label>
-                                <input type="text" name="name" class="form-control" value="{{ task.name }}" required>
+                                <label>{{ edit_form.name.label }}</label>
+                                {{ edit_form.name }}
                             </div>
                             <div class="form-group">
-                                <label>Default hourly rate</label>
-                                <input type="text" name="hourly_rate" class="form-control" value="{{ task.default_hourly_rate|unlocalize }}">
+                                <label>{{ edit_form.default_hourly_rate.label }}</label>
+                                {{ edit_form.default_hourly_rate }}
                             </div>
                         </div>
                         <div class="modal-footer">
