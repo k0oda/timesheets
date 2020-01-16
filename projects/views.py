@@ -9,12 +9,8 @@ from datetime import time, timedelta, datetime
 @login_required
 def projects(request):
     projects = Project.objects.filter(company=request.user.company)
-    clients = Client.objects.filter(company=request.user.company)
-    tasks = Task.objects.filter(company=request.user.company)
     return render(request, 'projects/projects.html', context={
-        'projects': projects,
-        'clients': clients,
-        'tasks': tasks
+        'projects': projects
     })
 
 @login_required
