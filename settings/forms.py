@@ -44,3 +44,34 @@ class EditUser(forms.Form):
             label='Email'
         )
 
+
+class ChangePassword(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(ChangePassword, self).__init__(*args, **kwargs)
+        self.fields['old_password'] = forms.CharField(
+            widget=forms.PasswordInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            max_length=150,
+            label='Old password'
+        )
+        self.fields['new_password'] = forms.CharField(
+            widget=forms.PasswordInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            max_length=150,
+            label='New password'
+        )
+        self.fields['new_password_repeat'] = forms.CharField(
+            widget=forms.PasswordInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            max_length=150,
+            label='New password (repeat)'
+        )
