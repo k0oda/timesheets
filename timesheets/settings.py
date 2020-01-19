@@ -57,6 +57,8 @@ FORMS = {
     'CreateClient': 'manage_app.forms.CreateClient',
     'CreateExpenseCategory': 'manage_app.forms.CreateExpenseCategory',
     'CreateProject': 'projects.forms.CreateProject'
+    'CreateProject': 'projects.forms.CreateProject',
+    'EditUser': 'settings.forms.EditUser',
 }
 
 MIDDLEWARE = [
