@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from company_panel.models import Role
+from .forms import EditUser, ChangePassword
 
 @login_required
 def settings(request):
@@ -13,23 +14,27 @@ def settings(request):
 @login_required
 def edit_user(request):
     if request.method.lower() == 'post':
-        request.user.username = request.POST.get('username')
-        request.user.first_name = request.POST.get('first_name')
-        request.user.last_name = request.POST.get('last_name')
-        request.user.email = request.POST.get('email')
-        request.user.save()
+        form = EditUser(request.user, data=request.POST)
+        if form.is_valid():
+            request.user.username = form.cleaned_data['username']
+            request.user.first_name = form.cleaned_data['first_name']
+            request.user.last_name = form.cleaned_data['last_name']
+            request.user.email = form.cleaned_data['email']
+            request.user.save()
     return redirect('settings')
 
 @login_required
 def change_password(request):
     if request.method.lower() == 'post':
-        old_password = request.POST.get('old_password')
-        new_password = request.POST.get('new_password')
-        repeat_password = request.POST.get('repeat_password')
-        
-        user = authenticate(username=request.user.username, password=old_password)
-        if user is not None:
-            if new_password == repeat_password:
-                request.user.set_password(new_password)
-                request.user.save()
+        form = ChangePassword(data=request.POST)
+        if form.is_valid():
+            old_password = form.cleaned_data['old_password']
+            new_password = form.cleaned_data['new_password']
+            new_password_repeat = form.cleaned_data['new_password_repeat']
+            
+            user = authenticate(username=request.user.username, password=old_password)
+            if user is not None:
+                if new_password == new_password_repeat:
+                    request.user.set_password(new_password)
+                    request.user.save()
     return redirect('settings')
