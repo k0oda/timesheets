@@ -51,8 +51,10 @@ def new_company(request):
 def edit_company(request):
     if request.user.role.edit_company_info_access:
         if request.method.lower() == 'post':
-            request.user.company.name = request.POST.get('name')
-            request.user.company.save()
+            form = CreateCompany(request.user.company, data=request.POST)
+            if form.is_valid():
+                request.user.company.name = form.cleaned_data['name']
+                request.user.company.save()
     return redirect('settings')
 
 @login_required

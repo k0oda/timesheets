@@ -219,12 +219,13 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
+                                        {% get_form 'CreateCompany' request.user.company as form %}
                                         <form action="{% url 'edit_company' %}" method="POST">
                                             {% csrf_token %}
                                             <div class="modal-body">
                                                 <div class="form-group">
-                                                    <label>Company name</label>
-                                                    <input class="form-control" type="text" name="name" value="{{ company.name }}" required>
+                                                    <label>{{ form.name.label }}</label>
+                                                    {{ form.name }}
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
