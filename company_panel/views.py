@@ -1,12 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from company_panel.models import Role
-from company_panel.forms import CreateCompany
-
-CHECKBOX_MAPPING = {
-    'on': True,
-    None: False
-}
+from company_panel.forms import CreateCompany, CreateRole
 
 def company(request):
     if request.user.is_authenticated:
@@ -70,23 +65,10 @@ def leave_company(request):
 def add_role(request):
     if request.user.role.manage_roles_access:
         if request.method.lower() == 'post':
-            role = Role.objects.create(
-                company=request.user.company,
-                name=request.POST.get('name'),
-                user_info_access=CHECKBOX_MAPPING[request.POST.get('user_info_access')],
-                detailed_project_info_access=CHECKBOX_MAPPING[request.POST.get('detailed_project_info_access')],
-                project_manage_access=CHECKBOX_MAPPING[request.POST.get('project_manage_access')],
-                invite_user_access=CHECKBOX_MAPPING[request.POST.get('invite_user_access')],
-                kick_user_access=CHECKBOX_MAPPING[request.POST.get('kick_user_access')],
-                expenses_manage_access=CHECKBOX_MAPPING[request.POST.get('expenses_manage_access')],
-                invoices_manage_access=CHECKBOX_MAPPING[request.POST.get('invoices_manage_access')],
-                client_manage_access=CHECKBOX_MAPPING[request.POST.get('client_manage_access')],
-                task_manage_access=CHECKBOX_MAPPING[request.POST.get('task_manage_access')],
-                expense_category_manage_access=CHECKBOX_MAPPING[request.POST.get('expense_category_manage_access')],
-                edit_company_info_access=CHECKBOX_MAPPING[request.POST.get('edit_company_info_access')],
-                manage_roles_access=CHECKBOX_MAPPING[request.POST.get('manage_roles_access')]
-            )
-            role.save()
+            form = CreateRole(data=request.POST)
+            new_role = form.save(commit=False)
+            new_role.company = request.user.company
+            new_role.save()
     return redirect('settings')
 
 @login_required
@@ -95,20 +77,21 @@ def edit_role(request, pk):
         if request.method.lower() == 'post':
             role = get_object_or_404(Role, company=request.user.company, pk=pk)
             if role != request.user.company.owner.role:
-                role.company = request.user.company
-                role.name = request.POST.get('name')
-                role.user_info_access = CHECKBOX_MAPPING[request.POST.get('user_info_access')]
-                role.detailed_project_info_access = CHECKBOX_MAPPING[request.POST.get('detailed_project_info_access')]
-                role.project_manage_access = CHECKBOX_MAPPING[request.POST.get('project_manage_access')]
-                role.invite_user_access = CHECKBOX_MAPPING[request.POST.get('invite_user_access')]
-                role.kick_user_access = CHECKBOX_MAPPING[request.POST.get('kick_user_access')]
-                role.expenses_manage_access = CHECKBOX_MAPPING[request.POST.get('expenses_manage_access')]
-                role.invoices_manage_access = CHECKBOX_MAPPING[request.POST.get('invoices_manage_access')]
-                role.client_manage_access = CHECKBOX_MAPPING[request.POST.get('client_manage_access')]
-                role.task_manage_access = CHECKBOX_MAPPING[request.POST.get('task_manage_access')]
-                role.expense_category_manage_access = CHECKBOX_MAPPING[request.POST.get('expense_category_manage_access')]
-                role.edit_company_info_access = CHECKBOX_MAPPING[request.POST.get('edit_company_info_access')]
-                role.manage_roles_access = CHECKBOX_MAPPING[request.POST.get('manage_roles_access')]
+                form = CreateRole(role, data=request.POST)
+                new_role = form.save(commit=False)
+                role.name = new_role.name
+                role.user_info_access = new_role.user_info_access
+                role.detailed_project_info_access = new_role.detailed_project_info_access
+                role.project_manage_access = new_role.project_manage_access
+                role.invite_user_access = new_role.invite_user_access
+                role.kick_user_access = new_role.kick_user_access
+                role.expenses_manage_access = new_role.expenses_manage_access
+                role.invoices_manage_access = new_role.invoices_manage_access
+                role.client_manage_access = new_role.client_manage_access
+                role.task_manage_access = new_role.task_manage_access
+                role.expense_category_manage_access = new_role.expense_category_manage_access
+                role.edit_company_info_access = new_role.edit_company_info_access
+                role.manage_roles_access = new_role.manage_roles_access
                 role.save()
     return redirect('settings')
 
