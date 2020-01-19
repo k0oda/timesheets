@@ -59,7 +59,8 @@ FORMS = {
     'CreateProject': 'projects.forms.CreateProject',
     'EditUser': 'settings.forms.EditUser',
     'ChangePassword': 'settings.forms.ChangePassword',
-    'CreateCompany': 'company_panel.forms.CreateCompany'
+    'CreateCompany': 'company_panel.forms.CreateCompany',
+    'CreateRole': 'company_panel.forms.CreateRole'
 }
 
 MIDDLEWARE = [
