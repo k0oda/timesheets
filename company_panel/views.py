@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from company_panel.models import Role
-from company_panel.forms import CreateCompanyForm
+from company_panel.forms import CreateCompany
 
 CHECKBOX_MAPPING = {
     'on': True,
@@ -17,7 +17,7 @@ def company(request):
 @login_required
 def new_company(request):
     if request.method.lower() == 'post':
-        form = CreateCompanyForm(request.POST)
+        form = CreateCompany(data=request.POST)
         company = form.save(commit=False)
         user = request.user
         company.owner = user
@@ -44,7 +44,7 @@ def new_company(request):
         user.save()
         return redirect('/')
     else:
-        form = CreateCompanyForm()
+        form = CreateCompany()
     return render(request, 'company_panel/new_company.html', {'form': form})
 
 @login_required

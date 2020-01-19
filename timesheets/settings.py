@@ -58,7 +58,8 @@ FORMS = {
     'CreateExpenseCategory': 'manage_app.forms.CreateExpenseCategory',
     'CreateProject': 'projects.forms.CreateProject',
     'EditUser': 'settings.forms.EditUser',
-    'ChangePassword': 'settings.forms.ChangePassword'
+    'ChangePassword': 'settings.forms.ChangePassword',
+    'CreateCompany': 'company_panel.forms.CreateCompany'
 }
 
 MIDDLEWARE = [
