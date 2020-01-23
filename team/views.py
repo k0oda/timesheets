@@ -41,12 +41,10 @@ def user_profile(request, pk):
     if request.user.role.user_info_access:
         user = get_object_or_404(get_user_model(), company=request.user.company, pk=pk)
         entries = Entry.objects.filter(user=user)
-        roles = Role.objects.filter(company=request.user.company)
 
         return render(request, 'team/user_profile.html', context={
             'user': user,
-            'entries': entries,
-            'roles': roles
+            'entries': entries
         })
     else:
         return redirect('team')
