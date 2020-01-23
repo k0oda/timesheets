@@ -60,7 +60,8 @@ FORMS = {
     'EditUser': 'settings.forms.EditUser',
     'ChangePassword': 'settings.forms.ChangePassword',
     'CreateCompany': 'company_panel.forms.CreateCompany',
-    'CreateRole': 'company_panel.forms.CreateRole'
+    'CreateRole': 'company_panel.forms.CreateRole',
+    'InviteUser': 'team.forms.InviteUser',
 }
 
 MIDDLEWARE = [
