@@ -1,5 +1,6 @@
 {% extends 'company_panel/company_header.html' %}
 {% load static %}
+{% load forms %}
 
 {% block tab_content %}
 <div class="row">
@@ -82,16 +83,13 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
+                            {% get_form "EditUser" request.user as form %}
                             <form action="{% url 'edit_user_role' user.pk %}" method="POST">
                                 {% csrf_token %}
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <label>Role</label>
-                                        <select name="role" class="form-control" required>
-                                            {% for role in roles %}
-                                                <option {% if user.role == role %} selected {% endif %}>{{ role }}</option>
-                                            {% endfor %}
-                                        </select>
+                                        <label>{{ form.role.label }}</label>
+                                        {{ form.role }}
                                     </div>
                                 </div>
                                 <div class="modal-footer">

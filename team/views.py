@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from notifications.models import Invitation
 from times.models import Entry
 from company_panel.models import Role
-from .forms import InviteUser
+from .forms import InviteUser, EditUser
 
 @login_required
 def team(request):
@@ -55,9 +55,11 @@ def user_profile(request, pk):
 def edit_user_role(request, pk):
     if request.user.role.manage_roles_access:
         if request.method.lower() == 'post':
-            user = get_object_or_404(get_user_model(), company=request.user.company, pk=pk)
-            user.role = get_object_or_404(Role, name=request.POST.get('role'), company=request.user.company)
-            user.save()
+            form = EditUser(request.user, data=request.POST)
+            if form.is_valid():
+                user = get_object_or_404(get_user_model(), company=request.user.company, pk=pk)
+                user.role = form.cleaned_data['role']
+                user.save()
     return redirect('user_profile', pk)
 
 @login_required
