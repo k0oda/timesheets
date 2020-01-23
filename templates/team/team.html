@@ -1,5 +1,6 @@
 {% extends 'company_panel/company_header.html' %}
 {% load static %}
+{% load forms %}
 
 {% block tab_content %}
     {% if request.user.role.invite_user_access %}
@@ -16,12 +17,13 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                {% get_form "InviteUser" as form %}
                 <form action="{% url 'invite' %}" method="POST">
                     {% csrf_token %}
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Username</label>
-                            <input type="text" name="username" class="form-control" required>
+                            <label>{{ form.username.label }}</label>
+                            {{ form.username }}
                         </div>
                     </div>
                     <div class="modal-footer">

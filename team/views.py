@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from notifications.models import Invitation
 from times.models import Entry
 from company_panel.models import Role
+from .forms import InviteUser
 
 @login_required
 def team(request):
@@ -17,12 +18,14 @@ def team(request):
 def invite(request):
     if request.user.role.invite_user_access:
         if request.method.lower() == 'post':
-            user = get_object_or_404(get_user_model(), username=request.POST.get('username'))
-            new_invitation = Invitation.objects.create(
-                company = request.user.company,
-                target_user = user
-            )
-            new_invitation.save()
+            form = InviteUser(data=request.POST)
+            if form.is_valid():
+                user = get_object_or_404(get_user_model(), username=form.cleaned_data['username'])
+                new_invitation = Invitation.objects.create(
+                    company = request.user.company,
+                    target_user = user
+                )
+                new_invitation.save()
     return redirect('team')
 
 @login_required
