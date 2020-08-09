@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from times.models import Entry
 from projects.models import Project
@@ -78,6 +80,11 @@ def delete_entry(request, pk):
 
 @login_required
 def time(request, year=0, month=0, day=0):
+    page = request.GET.get('page')
+    if not page:
+        page = 1
+    page = int(page)
+
     if year == 0 and month == 0 and day == 0:
         _date = date.today()
     else:
@@ -100,12 +107,16 @@ def time(request, year=0, month=0, day=0):
     next_date = _date + timedelta(days=1)
     previous_date = _date - timedelta(days=1)
 
-    entries = Entry.objects.filter(date=_date, company=request.user.company, user=request.user)
+    pages = Paginator(Entry.objects.filter(date=_date, company=request.user.company, user=request.user), settings.ITEMS_PER_PAGE)
+    entries = pages.page(page).object_list
+
     projects = Project.objects.filter(company=request.user.company)
     tasks = Task.objects.filter(company=request.user.company)
     today = date.today()
     return render(request, 'times/time.html', context={
         'date': _date,
+        'pages': pages,
+        'current_page': page,
         'entries': entries,
         'projects': projects,
         'tasks': tasks,

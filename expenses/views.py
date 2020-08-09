@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.conf import settings
 from expenses.models import Expense
 from projects.models import Project
 from manage_app.models import Category
@@ -7,12 +9,20 @@ from .forms import CreateExpense
 
 @login_required
 def expenses(request):
-    expenses = Expense.objects.filter(company=request.user.company).order_by('-date')
+    page = request.GET.get('page')
+    if not page:
+        page = 1
+    page = int(page)
+
     projects = Project.objects.filter(company=request.user.company)
     categories = Category.objects.filter(company=request.user.company)
+    pages = Paginator(Expense.objects.filter(company=request.user.company).order_by('-date'), settings.ITEMS_PER_PAGE)
+    expenses = pages.page(page).object_list
 
     return render(request, 'expenses/expenses.html', context={
         'expenses': expenses,
+        'pages': pages,
+        'current_page': page,
     })
 
 @login_required

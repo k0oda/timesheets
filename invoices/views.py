@@ -1,19 +1,29 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.conf import settings
 from invoices.models import Invoice, Item
 from manage_app.models import Client
 from invoices.forms import CreateInvoice, CreateItem
 
 @login_required
 def invoices(request):
-    invoices = Invoice.objects.filter(company=request.user.company)
+    page = request.GET.get('page')
+    if not page:
+        page = 1
+    page = int(page)
+
     items = Item.objects.filter(company=request.user.company)
     clients = Client.objects.filter(company=request.user.company)
+    pages = Paginator(Invoice.objects.filter(company=request.user.company), settings.ITEMS_PER_PAGE)
+    invoices = pages.page(page).object_list
 
     return render(request, 'invoices/invoices.html', context={
         'invoices': invoices,
         'items': items,
-        'clients': clients
+        'clients': clients,
+        'pages': pages,
+        'current_page': page,
     })
 
 @login_required

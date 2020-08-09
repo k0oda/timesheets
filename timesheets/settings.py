@@ -143,6 +143,8 @@ TIME_FORMAT = 'H:i'
 
 USE_TZ = True
 
+ITEMS_PER_PAGE = 20
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

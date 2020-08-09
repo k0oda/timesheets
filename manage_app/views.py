@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.conf import settings
 from manage_app.models import Client, Task, Category
 from manage_app.forms import CreateTask, CreateClient, CreateExpenseCategory
 
@@ -9,10 +11,18 @@ def manage(request):
 
 @login_required
 def clients(request):
-    clients = Client.objects.filter(company=request.user.company)
+    page = request.GET.get('page')
+    if not page:
+        page = 1
+    page = int(page)
+
+    pages = Paginator(Client.objects.filter(company=request.user.company), settings.ITEMS_PER_PAGE)
+    clients = pages.page(page).object_list
 
     return render(request, 'manage/clients.html', context={
-        'clients': clients
+        'clients': clients,
+        'pages': pages,
+        'current_page': page,
     })
 
 @login_required
@@ -46,10 +56,18 @@ def delete_client(request, pk):
 
 @login_required
 def tasks(request):
-    tasks = Task.objects.filter(company=request.user.company)
+    page = request.GET.get('page')
+    if not page:
+        page = 1
+    page = int(page)
+
+    pages = Paginator(Task.objects.filter(company=request.user.company), settings.ITEMS_PER_PAGE)
+    tasks = pages.page(page).object_list
 
     return render(request, 'manage/tasks.html', context={
-        'tasks': tasks
+        'tasks': tasks,
+        'pages': pages,
+        'current_page': page,
     })
 
 @login_required
@@ -83,10 +101,18 @@ def delete_task(request, pk):
 
 @login_required
 def expense_categories(request):
-    categories = Category.objects.filter(company=request.user.company)
+    page = request.GET.get('page')
+    if not page:
+        page = 1
+    page = int(page)
+
+    pages = Paginator(Category.objects.filter(company=request.user.company), settings.ITEMS_PER_PAGE)
+    categories = pages.page(page).object_list
 
     return render(request, 'manage/expense_categories.html', context={
-        'categories': categories
+        'categories': categories,
+        'pages': pages,
+        'current_page': page,
     })
 
 @login_required

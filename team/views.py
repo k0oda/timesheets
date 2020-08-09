@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from django.core.paginator import Paginator
+from django.conf import settings
 from notifications.models import Invitation
 from times.models import Entry
 from company_panel.models import Role
@@ -8,10 +10,17 @@ from .forms import InviteUser, EditUser
 
 @login_required
 def team(request):
-    team = get_user_model().objects.filter(company=request.user.company)
+    page = request.GET.get('page')
+    if not page:
+        page = 1
+    page = int(page)
 
+    pages = Paginator(get_user_model().objects.filter(company=request.user.company), settings.ITEMS_PER_PAGE)
+    team = pages.page(page).object_list
     return render(request, 'team/team.html', context={
-        'team': team
+        'team': team,
+        'pages': pages,
+        'current_page': page,
     })
 
 @login_required

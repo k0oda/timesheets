@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from django.core.paginator import Paginator
+from django.conf import settings
 from projects.models import Project
 from manage_app.models import Client, Task
 from times.models import Entry
@@ -9,9 +11,17 @@ from .forms import CreateProject
 
 @login_required
 def projects(request):
-    projects = Project.objects.filter(company=request.user.company)
+    page = request.GET.get('page')
+    if not page:
+        page = 1
+    page = int(page)
+
+    pages = Paginator(Project.objects.filter(company=request.user.company), settings.ITEMS_PER_PAGE)
+    projects = pages.page(page).object_list
     return render(request, 'projects/projects.html', context={
-        'projects': projects
+        'projects': projects,
+        'pages': pages,
+        'current_page': page,
     })
 
 @login_required
