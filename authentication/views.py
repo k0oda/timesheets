@@ -30,7 +30,7 @@ def _register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            login = form.cleaned_data['login']
+            username = form.cleaned_data['login']
             email = form.cleaned_data['email']
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
@@ -39,13 +39,14 @@ def _register(request):
 
             if password == repeat_password:
                 user = get_user_model().objects.create_user(
-                    login, 
+                    username, 
                     email=email, 
                     password=password, 
                     first_name=first_name, 
                     last_name=last_name
                     )
                 user.save()
+                login(request, user)
                 return redirect('/')
             else:
                 messages.error(request, 'Passwords do not match!')
