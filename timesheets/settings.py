@@ -44,18 +44,15 @@ INSTALLED_APPS = [
     'projects',
     'manage_app',
     'invoices',
-    'expenses',
     'notifications',
     'settings'
 ]
 
 FORMS = {
-    'CreateExpense': 'expenses.forms.CreateExpense',
     'CreateInvoice': 'invoices.forms.CreateInvoice',
     'CreateItem': 'invoices.forms.CreateItem',
     'CreateTask': 'manage_app.forms.CreateTask',
     'CreateClient': 'manage_app.forms.CreateClient',
-    'CreateExpenseCategory': 'manage_app.forms.CreateExpenseCategory',
     'CreateProject': 'projects.forms.CreateProject',
     'EditUser': 'settings.forms.EditUser',
     'ChangePassword': 'settings.forms.ChangePassword',

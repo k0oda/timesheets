@@ -1,5 +1,5 @@
 from django import forms
-from .models import Task, Client, Category
+from .models import Task, Client
 from projects.models import Project
 
 
@@ -49,28 +49,18 @@ class CreateClient(forms.ModelForm):
             label='Email',
             initial=editable_object.email if editable_object else None
         )
-
-    class Meta:
-        model = Client
-        fields = ('name', 'email')
-
-
-class CreateExpenseCategory(forms.ModelForm):
-    def __init__(self, editable_object=None, *args, **kwargs):
-        super(CreateExpenseCategory, self).__init__(*args, **kwargs)
-        use_required_attribute = True
-        self.fields['name'] = forms.CharField(
+        self.fields['address'] = forms.CharField(
             widget=forms.TextInput(
                 attrs={
                     'class': 'form-control'
                 }
             ),
             max_length=150,
-            label='Name',
-            required=True,
-            initial=editable_object.name if editable_object else None
+            required=False,
+            label='Address',
+            initial=editable_object.address if editable_object else None
         )
 
     class Meta:
-        model = Category
-        fields = ('name',)
+        model = Client
+        fields = ('name', 'email', 'address',)

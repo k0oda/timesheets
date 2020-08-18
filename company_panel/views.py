@@ -25,11 +25,9 @@ def new_company(request):
             project_manage_access=True,
             invite_user_access=True,
             kick_user_access=True,
-            expenses_manage_access=True,
             invoices_manage_access=True,
             client_manage_access=True,
             task_manage_access=True,
-            expense_category_manage_access=True,
             edit_company_info_access=True,
             manage_roles_access=True,
             manage_hourly_rates_access=True
@@ -86,11 +84,9 @@ def edit_role(request, pk):
                 role.project_manage_access = new_role.project_manage_access
                 role.invite_user_access = new_role.invite_user_access
                 role.kick_user_access = new_role.kick_user_access
-                role.expenses_manage_access = new_role.expenses_manage_access
                 role.invoices_manage_access = new_role.invoices_manage_access
                 role.client_manage_access = new_role.client_manage_access
                 role.task_manage_access = new_role.task_manage_access
-                role.expense_category_manage_access = new_role.expense_category_manage_access
                 role.edit_company_info_access = new_role.edit_company_info_access
                 role.manage_roles_access = new_role.manage_roles_access
                 role.manage_hourly_rates_access = new_role.manage_hourly_rates_access

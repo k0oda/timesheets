@@ -59,11 +59,6 @@ class CreateRole(forms.ModelForm):
             initial=editable_object.kick_user_access if editable_object else None,
             required=False
         )
-        self.fields['expenses_manage_access'] = forms.BooleanField(
-            widget=forms.CheckboxInput(),
-            initial=editable_object.expenses_manage_access if editable_object else None,
-            required=False
-        )
         self.fields['invoices_manage_access'] = forms.BooleanField(
             widget=forms.CheckboxInput(),
             initial=editable_object.invoices_manage_access if editable_object else None,
@@ -77,11 +72,6 @@ class CreateRole(forms.ModelForm):
         self.fields['task_manage_access'] = forms.BooleanField(
             widget=forms.CheckboxInput(),
             initial=editable_object.task_manage_access if editable_object else None,
-            required=False
-        )
-        self.fields['expense_category_manage_access'] = forms.BooleanField(
-            widget=forms.CheckboxInput(),
-            initial=editable_object.expense_category_manage_access if editable_object else None,
             required=False
         )
         self.fields['edit_company_info_access'] = forms.BooleanField(

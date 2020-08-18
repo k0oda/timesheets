@@ -11,8 +11,4 @@ urlpatterns = [
     path('tasks/new/', views.add_task, name='add_task'),
     path('tasks/edit/<int:pk>/', views.edit_task, name='edit_task'),
     path('tasks/delete/<int:pk>/', views.delete_task, name='delete_task'),
-    path('expense_categories', views.expense_categories, name='expense_categories'),
-    path('expense_categories/new/', views.add_category, name='add_expense_category'),
-    path('expense_categories/edit/<int:pk>/', views.edit_category, name='edit_expense_category'),
-    path('expense_categories/delete/<int:pk>/', views.delete_category, name='delete_expense_category')
 ]

@@ -8,9 +8,6 @@ company_panel/__pycache__/
 company_panel/migrations/__pycache__/
 company_panel/templatetags/__pycache__/
 company_panel/static/
-expenses/__pycache__/
-expenses/migrations/__pycache__/
-expenses/static/
 invoices/__pycache__/
 invoices/migrations/__pycache__/
 invoices/static/

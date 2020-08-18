@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.conf import settings
-from manage_app.models import Client, Task, Category
-from manage_app.forms import CreateTask, CreateClient, CreateExpenseCategory
+from manage_app.models import Client, Task
+from manage_app.forms import CreateTask, CreateClient
 
 @login_required
 def manage(request):
@@ -44,6 +44,7 @@ def edit_client(request, pk):
             new_client = form.save(commit=False)
             client.name = new_client.name
             client.email = new_client.email
+            client.address = new_client.address
             client.save()
     return redirect('clients')
 
@@ -98,47 +99,3 @@ def delete_task(request, pk):
         task = get_object_or_404(Task, pk=pk)
         task.delete()
     return redirect('tasks')
-
-@login_required
-def expense_categories(request):
-    page = request.GET.get('page')
-    if not page:
-        page = 1
-    page = int(page)
-
-    pages = Paginator(Category.objects.filter(company=request.user.company), settings.ITEMS_PER_PAGE)
-    categories = pages.page(page).object_list
-
-    return render(request, 'manage/expense_categories.html', context={
-        'categories': categories,
-        'pages': pages,
-        'current_page': page,
-    })
-
-@login_required
-def add_category(request):
-    if request.user.role.expense_category_manage_access:
-        if request.method.lower() == 'post':
-            form = CreateExpenseCategory(data=request.POST)
-            new_category = form.save(commit=False)
-            new_category.company = request.user.company
-            new_category.save()
-    return redirect('expense_categories')
-
-@login_required
-def edit_category(request, pk):
-    if request.user.role.expense_category_manage_access:
-        if request.method.lower() == 'post':
-            category = get_object_or_404(Category, pk=pk)
-            form = CreateExpenseCategory(category, data=request.POST)
-            new_category = form.save(commit=False)
-            category.name = new_category.name
-            category.save()
-    return redirect('expense_categories')
-
-@login_required
-def delete_category(request, pk):
-    if request.user.role.expense_category_manage_access:
-        category = get_object_or_404(Category, pk=pk)
-        category.delete()
-    return redirect('expense_categories')

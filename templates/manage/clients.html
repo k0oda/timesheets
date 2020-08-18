@@ -29,6 +29,10 @@
                         <label>{{ form.email.label }}</label>
                         {{ form.email }}
                     </div>
+                    <div class="form-group">
+                        <label>{{ form.address.label }}</label>
+                        {{ form.address }}
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-outline-primary" type="submit">Create</button>
@@ -53,6 +57,7 @@
                     <span class="text-muted">({{ client.email }})</span>
                     {% endif %}
                 </h6>
+                <p>{{ client.address }}</p>
             </div>
         </li>
         
@@ -77,6 +82,10 @@
                             <div class="form-group">
                                 <label>{{ edit_form.email.label }}</label>
                                 {{ edit_form.email }}
+                            </div>
+                            <div class="form-group">
+                                <label>{{ edit_form.address.label }}</label>
+                                {{ edit_form.address }}
                             </div>
                         </div>
                         <div class="modal-footer">

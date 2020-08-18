@@ -24,19 +24,7 @@ class Client(models.Model):
     company = models.ForeignKey(Company, models.CASCADE, related_name='+')
     name = models.CharField(max_length=150)
     email = models.EmailField(blank=True)
-
-    def __str__(self):
-        return self.name
-
-
-class Category(models.Model):
-    class Meta:
-        verbose_name = 'Expense Category'
-        verbose_name_plural = 'Expenses Categories'
-        ordering = ['company', 'name']
-
-    company = models.ForeignKey(Company, models.CASCADE, related_name='+')
-    name = models.CharField(max_length=150)
+    address = models.CharField(max_length=150, blank=True)
 
     def __str__(self):
         return self.name

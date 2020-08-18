@@ -23,7 +23,6 @@ urlpatterns = [
     path('auth/', include('authentication.urls')),
     path('company/', include('company_panel.urls')),
     path('time/', include('times.urls')),
-    path('expenses/', include('expenses.urls')),
     path('projects/', include('projects.urls')),
     path('team/', include('team.urls')),
     path('invoices/', include('invoices.urls')),

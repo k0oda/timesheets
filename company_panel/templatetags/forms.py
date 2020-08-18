@@ -1,7 +1,6 @@
 from importlib import import_module
 from django import template
 from django.conf import settings
-from expenses.forms import CreateExpense
 
 register = template.Library()
 
