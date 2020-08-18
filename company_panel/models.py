@@ -10,7 +10,7 @@ class Company(models.Model):
         ordering = ['date_of_creation']
 
     name = models.CharField(max_length=150)
-    date_of_creation = models.DateField(default=date.today())
+    date_of_creation = models.DateField(default=date.today)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE, related_name='company_own')
 
     def __str__(self):
