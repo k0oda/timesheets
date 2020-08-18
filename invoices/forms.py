@@ -40,6 +40,7 @@ class CreateInvoice(forms.ModelForm):
                     'placeholder': 'Notes (optional)'
                 }
             ),
+            required=False,
             initial=editable_object.notes if editable_object else None
         )
 
