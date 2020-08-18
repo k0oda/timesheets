@@ -52,17 +52,7 @@ class CreateProject(forms.ModelForm):
             required=False,
             initial=editable_object.notes if editable_object else None
         )
-        self.fields['budget'] = forms.DecimalField(
-            widget=forms.NumberInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Budget'
-                }
-            ),
-            initial=editable_object.budget if editable_object else None,
-            required=True
-        )
 
     class Meta:
         model = Project
-        fields = ('name', 'client', 'tasks', 'notes', 'budget')
+        fields = ('name', 'client', 'tasks', 'notes',)
