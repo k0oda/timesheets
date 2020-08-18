@@ -25,6 +25,7 @@
                     <h4 class="col-auto" style="width: 10em; word-break: break-all;">{{ invoice.client }}</h4>
                     <h4 class="col-auto" style="width: 5em; word-break: break-all;">{{ invoice.total_price }}</h4>
                     {% if request.user.role.invoices_manage_access %}
+                    <a href="{% url 'approve_invoice' invoice.pk %}" class="col-auto btn btn-outline-success" style="margin-left: 1em;">Approve</a>
                     <button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_{{ invoice.pk }}"><img src="{% static 'invoices/img/edit.svg' %}" alt="Edit"></button>
                     {% endif %}
                 </div>
