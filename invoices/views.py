@@ -67,16 +67,16 @@ def add_item(request, invoice_pk):
         items = Item.objects.filter(company=request.user.company, invoice=invoice)
 
         if request.method.lower() == 'post':
-            form = CreateItem(data=request.POST)
+            form = CreateItem(request.user, data=request.POST)
             new_item = form.save(commit=False)
             new_item.company = invoice.company
             new_item.invoice = invoice
-            new_item.total_price = new_item.amount * new_item.unit_price
+            entries = new_item.project.entries.all()
+            for entry in entries:
+                new_item.total_price += entry.timer.hour * entry.user.hourly_rate
             new_item.save()
 
-            invoice.total_amount += new_item.amount
-            invoice.total_unit_price += new_item.unit_price
-            invoice.total_price += new_item.amount * new_item.unit_price
+            invoice.total_price += new_item.total_price
             invoice.save()
         return render(request, 'invoices/add_items.html', context={
             'invoice': invoice,
@@ -91,21 +91,16 @@ def edit_item(request, pk):
         item = get_object_or_404(Item, company=request.user.company, pk=pk)
 
         if request.method.lower() == 'post':
-            item.invoice.total_amount -= item.amount
-            item.invoice.total_unit_price -= item.unit_price
             item.invoice.total_price -= item.total_price
+            item.total_price = 0
 
             form = CreateItem(item, data=request.POST)
             new_item = form.save(commit=False)
-            item.name = new_item.name
-            item.description = new_item.description
-            item.amount = new_item.amount
-            item.unit_price = new_item.unit_price
-            item.total_price = new_item.amount * new_item.unit_price
+            entries = new_item.project.entries.all()
+            for entry in entries:
+                item.total_price += entry.timer.hour * entry.user.hourly_rate
             item.save()
 
-            item.invoice.total_amount += item.amount
-            item.invoice.total_unit_price += item.unit_price
             item.invoice.total_price += item.total_price
             item.invoice.save()
         return redirect('add_item', item.invoice.pk)
@@ -116,8 +111,6 @@ def edit_item(request, pk):
 def delete_item(request, pk):
     if request.user.role.invoices_manage_access:
         item = get_object_or_404(Item, company=request.user.company, pk=pk)
-        item.invoice.total_amount -= item.amount
-        item.invoice.total_unit_price -= item.unit_price
         item.invoice.total_price -= item.total_price
         item.invoice.save()
         item.delete()

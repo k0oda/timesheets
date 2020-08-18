@@ -8,25 +8,12 @@
     <h3 class="col-auto font-weight-bold mx-auto text-primary">Add items</h3>
 </div>
 
-{% get_form "CreateItem" as form %}
+{% get_form "CreateItem" request.user as form %}
 <form action="{% url 'add_item' invoice.pk %}" method="POST">
     {% csrf_token %}
     <div class="form-group">
-        <label>{{ form.name.label }}</label>
-        {{ form.name }}
-    </div>
-    <div class="form-row">
-        <div class="form-group col">
-            {{ form.amount }}
-        </div>
-        <div class="form-group col">
-            {{ form.unit_price }}
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group col">
-            {{ form.description }}
-        </div>
+        <label>{{ form.project.label }}</label>
+        {{ form.project }}
     </div>
 
     <button class="btn btn-outline-success float-right" type="submit">Create item</button>
@@ -39,8 +26,6 @@
             <li class="list-group-item mx-auto">
                 <div class="d-flex w-100">
                     <h5 class="col-auto mb-1" style="width: 21em; word-break: break-word;">{{ item }}</h5>
-                    <h5 class="col-auto" style="width: 5em; word-break: break-all;">{{ item.amount }}</h5>
-                    <h5 class="col-auto" style="width: 5em; word-break: break-all; margin-left: 1em;">{{ item.unit_price }}</h5>
                     <h5 class="col-auto" style="width: 5em; word-break: break-all; margin-left: 1em;">{{ item.total_price }}</h5>
                     <button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_{{ item.pk }}"><img src="{% static 'invoices/img/edit.svg' %}" alt="Edit"></button>
                 </div>
@@ -54,27 +39,14 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        {% get_form "CreateItem" item as edit_form %}
+                        {% get_form "CreateItem" request.user item as edit_form %}
                         <form action="{% url 'edit_item' item.pk %}" method="POST">
                             {% csrf_token %}
                             <div class="modal-body">
-                                    <div class="form-group">
-                                        <label>{{ edit_form.name.label }}</label>
-                                        {{ edit_form.name }}
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group col">
-                                            {{ edit_form.amount }}
-                                        </div>
-                                        <div class="form-group col">
-                                            {{ edit_form.unit_price }}
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group col">
-                                            {{ edit_form.description }}
-                                        </div>
-                                    </div>
+                                <div class="form-group">
+                                    <label>{{ edit_form.project.label }}</label>
+                                    {{ edit_form.project }}
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <a class="btn btn-outline-danger mr-auto" href="{% url 'delete_item' item.pk %}">Delete</a>

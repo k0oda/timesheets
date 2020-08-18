@@ -1,6 +1,7 @@
 from django import forms
 from .models import Invoice, Item
 from manage_app.models import Client
+from projects.models import Project
 
 
 class CreateInvoice(forms.ModelForm):
@@ -48,55 +49,21 @@ class CreateInvoice(forms.ModelForm):
 
 
 class CreateItem(forms.ModelForm):
-    def __init__(self, editable_object=None, *args, **kwargs):
+    def __init__(self, user, editable_object=None, *args, **kwargs):
         super(CreateItem, self).__init__(*args, **kwargs)
         use_required_attribute = True
-        self.fields['name'] = forms.CharField(
-            widget=forms.TextInput(
+        self.fields['project'] = forms.ModelChoiceField(
+            widget=forms.Select(
                 attrs={
                     'class': 'form-control'
                 }
             ),
-            max_length=150,
-            label='Name',
+            queryset=Project.objects.filter(company=user.company),
+            initial=editable_object.project if editable_object else None,
             required=True,
-            initial=editable_object.name if editable_object else None
-        )
-        self.fields['description'] = forms.CharField(
-            widget=forms.Textarea(
-                attrs={
-                    'class': 'form-control',
-                    'cols': '3',
-                    'rows': '5',
-                    'placeholder': 'Description (optional)'
-                }
-            ),
-            max_length=350,
-            required=False,
-            initial=editable_object.description if editable_object else None
-        )
-        self.fields['amount'] = forms.IntegerField(
-            widget=forms.NumberInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Amount'
-                }
-            ),
-            min_value=0,
-            required=True,
-            initial=editable_object.amount if editable_object else None
-        )
-        self.fields['unit_price'] = forms.DecimalField(
-            widget=forms.NumberInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Unit price'
-                }
-            ),
-            required=True,
-            initial=editable_object.unit_price if editable_object else None
+            label='Project'
         )
 
     class Meta:
         model = Item
-        fields = ('name', 'amount', 'unit_price', 'description')
+        fields = ('project',)

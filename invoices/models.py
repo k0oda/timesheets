@@ -31,12 +31,9 @@ class Item(models.Model):
         ordering = ['company', 'invoice']
 
     company = models.ForeignKey(Company, models.CASCADE, related_name='+')
-    invoice = models.ForeignKey(Invoice, models.CASCADE, related_name='+')
-    name = models.CharField(max_length=150)
-    description = models.CharField(max_length=350, blank=True)
-    unit_price = models.DecimalField(default=0, max_digits=20, decimal_places=2)
-    amount = models.IntegerField(default=0)
+    invoice = models.ForeignKey(Invoice, models.CASCADE, related_name='items')
+    project = models.ForeignKey(Project, models.CASCADE, related_name='+')
     total_price = models.DecimalField(null=True, default=0, max_digits=20, decimal_places=2)
 
     def __str__(self):
-        return self.name
+        return self.project.name
