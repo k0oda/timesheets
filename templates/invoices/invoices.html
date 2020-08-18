@@ -15,8 +15,6 @@
             <div class="d-flex w-100">
                 <h5 class="col-auto align-self-center" style="width: 9em; word-break: break-all;">Date</h5>
                 <h5 class="col-auto align-self-center" style="width: 10em; margin-right: 1em;">Client</h5>
-                <h5 class="col-auto align-self-center" style="width: 5em; margin-right: 1em;">Amount</h5>
-                <h5 class="col-auto align-self-center" style="width: 5em; margin-right: 1em;">Unit price</h5>
                 <h5 class="col-auto align-self-center" style="width: 5em; margin-right: 5em;">Total price</h5>
             </div>
         </li>
@@ -25,8 +23,6 @@
                 <div class="d-flex w-100">
                     <h6 class="col-auto align-self-center" style="width: 11em;">{{ invoice.date }}</h6>
                     <h4 class="col-auto" style="width: 10em; word-break: break-all;">{{ invoice.client }}</h4>
-                    <h4 class="col-auto" style="width: 5em; word-break: break-all;">{{ invoice.total_amount }}</h4>
-                    <h4 class="col-auto" style="width: 5em; word-break: break-all;">{{ invoice.total_unit_price }}</h4>
                     <h4 class="col-auto" style="width: 5em; word-break: break-all;">{{ invoice.total_price }}</h4>
                     {% if request.user.role.invoices_manage_access %}
                     <button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_{{ invoice.pk }}"><img src="{% static 'invoices/img/edit.svg' %}" alt="Edit"></button>
