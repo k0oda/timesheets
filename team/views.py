@@ -6,7 +6,7 @@ from django.conf import settings
 from notifications.models import Invitation
 from times.models import Entry
 from company_panel.models import Role
-from .forms import InviteUser, EditUser
+from .forms import InviteUser, EditUserRole, EditUserHourlyRate
 
 @login_required
 def team(request):
@@ -62,10 +62,23 @@ def user_profile(request, pk):
 def edit_user_role(request, pk):
     if request.user.role.manage_roles_access:
         if request.method.lower() == 'post':
-            form = EditUser(request.user, data=request.POST)
+            form = EditUserRole(request.user, data=request.POST)
             if form.is_valid():
                 user = get_object_or_404(get_user_model(), company=request.user.company, pk=pk)
                 user.role = form.cleaned_data['role']
+                user.save()
+    return redirect('user_profile', pk)
+
+@login_required
+def edit_user_hourly_rate(request, pk):
+    if request.user.role.manage_hourly_rates_access:
+        if request.method.lower() == 'post':
+            form = EditUserHourlyRate(request.user, data=request.POST)
+            if form.is_valid():
+                user = get_object_or_404(get_user_model(), company=request.user.company, pk=pk)
+                print("abcd")
+                print(form.cleaned_data['hourly_rate'])
+                user.hourly_rate = form.cleaned_data['hourly_rate']
                 user.save()
     return redirect('user_profile', pk)
 

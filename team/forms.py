@@ -16,9 +16,9 @@ class InviteUser(forms.Form):
         )
 
 
-class EditUser(forms.Form):
+class EditUserRole(forms.Form):
     def __init__(self, user, *args, **kwargs):
-        super(EditUser, self).__init__(*args, **kwargs)
+        super(EditUserRole, self).__init__(*args, **kwargs)
         use_required_attribute = True
         self.fields['role'] = forms.ModelChoiceField(
             widget=forms.Select(
@@ -30,4 +30,20 @@ class EditUser(forms.Form):
             initial=user.role,
             label='Role',
             required=True
+        )
+
+
+class EditUserHourlyRate(forms.Form):
+    def __init__(self, user, *args, **kwargs):
+        super(EditUserHourlyRate, self).__init__(*args, **kwargs)
+        use_required_attribute = True
+        self.fields['hourly_rate'] = forms.DecimalField(
+            widget=forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            label='Hourly rate',
+            required=True,
+            initial=user.hourly_rate if user else 0
         )

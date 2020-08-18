@@ -71,6 +71,19 @@
                             </div>
                         </div>
                     </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4 font-weight-bold">
+                                Hourly rate
+                            </div>
+                            <div class="col-auto">
+                                {{ user.hourly_rate }}
+                                {% if request.user.role.manage_hourly_rates_access and request.user != user and user != request.user.company.owner %}
+                                <button type="button" class="col-auto btn btn-outline-secondary" style="margin-left: 1em;" data-toggle="modal" data-target="#edit_hourly_rate_{{ user.pk }}"><img src="{% static 'team/img/edit.svg' %}" alt="Edit"></button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </li>
                 </ul>
 
                 {% if request.user.role.manage_roles_access and request.user != user and user != request.user.company.owner %}
@@ -83,13 +96,36 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            {% get_form "EditUser" request.user as form %}
+                            {% get_form "EditUserRole" request.user as form %}
                             <form action="{% url 'edit_user_role' user.pk %}" method="POST">
                                 {% csrf_token %}
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <label>{{ form.role.label }}</label>
                                         {{ form.role }}
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-outline-primary" type="submit">Save</button>
+                                    <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if request.user.role.manage_hourly_rates_access and request.user != user and user != request.user.company.owner %}
+                <div class="modal fade" id="edit_hourly_rate_{{ user.pk }}" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            {% get_form "EditUserHourlyRate" user as form %}
+                            <form action="{% url 'edit_user_hourly_rate' user.pk %}" method="POST">
+                                {% csrf_token %}
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>{{ form.hourly_rate.label }}</label>
+                                        {{ form.hourly_rate }}
                                     </div>
                                 </div>
                                 <div class="modal-footer">

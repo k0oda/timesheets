@@ -37,6 +37,7 @@ class Role(models.Model):
     expense_category_manage_access = models.BooleanField(default=False)
     edit_company_info_access = models.BooleanField(default=False)
     manage_roles_access = models.BooleanField(default=False)
+    manage_hourly_rates_access = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

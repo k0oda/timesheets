@@ -31,7 +31,8 @@ def new_company(request):
             task_manage_access=True,
             expense_category_manage_access=True,
             edit_company_info_access=True,
-            manage_roles_access=True
+            manage_roles_access=True,
+            manage_hourly_rates_access=True
         )
         role.save()
         user.company = company
@@ -92,6 +93,7 @@ def edit_role(request, pk):
                 role.expense_category_manage_access = new_role.expense_category_manage_access
                 role.edit_company_info_access = new_role.edit_company_info_access
                 role.manage_roles_access = new_role.manage_roles_access
+                role.manage_hourly_rates_access = new_role.manage_hourly_rates_access
                 role.save()
     return redirect('settings')
 

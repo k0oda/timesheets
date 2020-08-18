@@ -18,20 +18,10 @@ class CreateTask(forms.ModelForm):
             required=True,
             initial=editable_object.name if editable_object else None
         )
-        self.fields['default_hourly_rate'] = forms.DecimalField(
-            widget=forms.NumberInput(
-                attrs={
-                    'class': 'form-control'
-                }
-            ),
-            label='Default hourly rate',
-            required=True,
-            initial=editable_object.default_hourly_rate if editable_object else None
-        )
 
     class Meta:
         model = Task
-        fields = ('name', 'default_hourly_rate')
+        fields = ('name',)
 
 
 class CreateClient(forms.ModelForm):

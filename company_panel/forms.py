@@ -94,6 +94,11 @@ class CreateRole(forms.ModelForm):
             initial=editable_object.manage_roles_access if editable_object else None,
             required=False
         )
+        self.fields['manage_hourly_rates_access'] = forms.BooleanField(
+            widget=forms.CheckboxInput(),
+            initial=editable_object.manage_hourly_rates_access if editable_object else None,
+            required=False
+        )
     
     class Meta:
         model = Role

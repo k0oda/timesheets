@@ -27,11 +27,6 @@ def stop_timer(request, entry_id):
 
     entry.timer = (datetime.min + ((now_delta - start_time_delta) + timer_delta)).time()
     entry.start_time = time(0, 0)
-    hourly_rate = 0
-    for task in entry.project.tasks.all():
-        hourly_rate += task.default_hourly_rate
-    entry.project.total_earned += entry.timer.hour * hourly_rate
-    entry.project.save()
     entry.save()
     return redirect('time', entry.date.year, entry.date.month, entry.date.day)
 
@@ -69,12 +64,6 @@ def edit_entry(request, pk):
 @login_required
 def delete_entry(request, pk):
     entry = get_object_or_404(Entry, company=request.user.company, pk=pk)
-    
-    hourly_rate = 0
-    for task in entry.project.tasks.all():
-        hourly_rate += task.default_hourly_rate
-    entry.project.total_earned -= entry.timer.hour * hourly_rate
-    entry.project.save()
     entry.delete()
     return redirect('time', entry.date.year, entry.date.month, entry.date.day)
 
